@@ -6,7 +6,7 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.common.exception.BusinessException;
-import com.prandini.smartwallet.common.exception.CommonMessagesException;
+import com.prandini.smartwallet.common.exception.CommonExceptionMessages;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -25,7 +25,7 @@ public class ContaValidator {
 
     private void validarContaExistente(ContaInput input){
         if(getter.existsContaByNomeBanco(input)){
-            throw new BusinessException(CommonMessagesException.jaExistente("Conta"));
+            throw new BusinessException(CommonExceptionMessages.jaExistente("Conta"));
         }
     }
 }

@@ -5,6 +5,7 @@ package com.prandini.smartwallet.lancamento.service.actions;
  * created 5/10/24
  */
 
+import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.dto.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
@@ -26,12 +27,9 @@ public class LancamentoGetter {
         return repository.findAll(pageable);
     }
 
-    public List<Lancamento> getListAll(){
-        return repository.findAll();
-    }
-
     public List<Lancamento> findByDtCriacao(Integer mes) {
-        return repository.findByDtCriacao(mes);
+        return repository.findByDtCriacao(mes)
+                .orElseThrow(CommonExceptionSupplier.naoEncontrado("Lançamento"));
     }
 
     public List<Lancamento> findByFilter(LancamentoFilter filter) {

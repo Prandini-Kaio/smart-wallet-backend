@@ -10,6 +10,7 @@ import com.prandini.smartwallet.lancamento.domain.dto.LancamentoInput;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoCreator;
 import jakarta.annotation.Resource;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
  */
 
 @Component
+@CommonsLog
 public class LancamentoCreator {
 
     @Resource
@@ -37,21 +39,17 @@ public class LancamentoCreator {
     @Resource
     private LancamentoValidator validator;
 
-    public Lancamento criarLancamento(LancamentoInput input) {
+    public Lancamento create(LancamentoInput input) {
+
+        log.info("Criando lançamento.");
 
         validator.validarCriacao(input);
 
         Conta conta = contaGetter.getContaByFilter(input.getConta());
-
         Lancamento lancamento = repository.save(buildLancamento(input, conta));
+        transacaoCreator.create(lancamento);
 
-        transacaoCreator.criarTransacoes(lancamento);
-
-        if(input.getTipoLancamento() == TipoLancamentoEnum.SAIDA)
-            contaUpdater.atualizaLancamentoSaida(conta.getId(), lancamento);
-        else{
-            contaUpdater.atualizaLancamentoEntrada(conta.getId(), lancamento.getValor());
-        }
+        contaUpdater.atualizaLancamento(conta.getId(), lancamento);
 
         return lancamento;
     }

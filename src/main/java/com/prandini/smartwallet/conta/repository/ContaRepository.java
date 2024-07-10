@@ -13,7 +13,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContaRepository extends JpaRepository<Conta, Long> {
 
-    @Query("SELECT c FROM Conta c WHERE lower(c.nome) LIKE CONCAT('%', LOWER(:filter), '%') OR lower(c.banco) LIKE CONCAT('%', LOWER(:filter),'%')")
+    @Query("SELECT c " +
+            "FROM Conta c " +
+            "WHERE lower(c.nome) LIKE CONCAT('%', LOWER(:filter), '%') " +
+            "OR lower(c.banco) LIKE CONCAT('%', LOWER(:filter),'%')")
     Conta getContaByFilter(String filter);
 
     @Query("SELECT COUNT(c) > 0 " +
