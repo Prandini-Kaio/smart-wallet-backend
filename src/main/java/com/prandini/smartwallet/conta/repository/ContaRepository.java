@@ -15,4 +15,10 @@ public interface ContaRepository extends JpaRepository<Conta, Long> {
 
     @Query("SELECT c FROM Conta c WHERE lower(c.nome) LIKE CONCAT('%', LOWER(:filter), '%') OR lower(c.banco) LIKE CONCAT('%', LOWER(:filter),'%')")
     Conta getContaByFilter(String filter);
+
+    @Query("SELECT COUNT(c) > 0 " +
+            "FROM Conta c " +
+            "WHERE LOWER(c.nome) = :nome " +
+            "AND LOWER(c.banco) = :banco ")
+    boolean existsContaByNomeBanco(String nome, String banco);
 }

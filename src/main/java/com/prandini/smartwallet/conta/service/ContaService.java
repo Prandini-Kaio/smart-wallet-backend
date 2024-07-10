@@ -12,11 +12,13 @@ import com.prandini.smartwallet.conta.service.actions.ContaCreator;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.conta.service.actions.ContaValidator;
 import jakarta.annotation.Resource;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@CommonsLog
 public class ContaService {
 
     @Resource
@@ -25,15 +27,15 @@ public class ContaService {
     @Resource
     private ContaGetter getter;
 
-    @Resource
-    private ContaValidator validator;
-
     public Page<ContaOutput> getAll(Pageable pageable){
+        log.info("Iniciando consulta de contas.");
+
         return getter.getAll(pageable).map(ContaConverter::toOutput);
     }
 
     public ContaOutput create(ContaInput input){
-//        validator.validarCriacao(input);
+        log.info(String.format("Iniciando criação de conta %s.", input.getNome()));
+
         return ContaConverter.toOutput(creator.criarConta(input));
     }
 }

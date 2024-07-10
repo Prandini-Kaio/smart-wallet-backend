@@ -5,8 +5,9 @@ package com.prandini.smartwallet.conta.service.actions;
  * created 4/5/24
  */
 
+import com.prandini.smartwallet.common.exception.BusinessException;
+import com.prandini.smartwallet.common.exception.CommonMessagesException;
 import com.prandini.smartwallet.conta.model.ContaInput;
-import com.prandini.smartwallet.conta.repository.ContaRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
@@ -16,9 +17,15 @@ import org.springframework.stereotype.Component;
 public class ContaValidator {
 
     @Resource
-    private ContaRepository repository;
+    private ContaGetter getter;
 
     public void validarCriacao(ContaInput input){
-        log.info("Implementar validator criacao conta!");
+        this.validarContaExistente(input);
+    }
+
+    private void validarContaExistente(ContaInput input){
+        if(getter.existsContaByNomeBanco(input)){
+            throw new BusinessException(CommonMessagesException.jaExistente("Conta"));
+        }
     }
 }
