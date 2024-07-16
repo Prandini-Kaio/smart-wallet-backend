@@ -6,6 +6,7 @@ package com.prandini.smartwallet.transacao.controller;
  */
 
 import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transacao/status")
+@Tag(name = "Transação")
 public class StatusTransacaoController {
 
     @GetMapping

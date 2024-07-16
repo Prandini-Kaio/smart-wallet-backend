@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.lancamento.service.actions;
 
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.dto.LancamentoInput;
 import com.prandini.smartwallet.lancamento.exceptions.LancamentoException;
 import com.prandini.smartwallet.lancamento.exceptions.LancamentoExceptionMessages;
@@ -24,7 +25,7 @@ public class LancamentoValidator {
         if(input.getParcelas() > 1)
             throw new LancamentoException(LancamentoExceptionMessages.entradaComParcelas());
 
-        if(!input.isDebito())
+        if(input.getTipoPagamento().equals(TipoPagamentoEnum.CREDITO))
             throw new LancamentoException(LancamentoExceptionMessages.entradaCreditoInvalida());
     }
 }

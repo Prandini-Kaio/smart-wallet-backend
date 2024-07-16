@@ -2,6 +2,7 @@ package com.prandini.smartwallet.lancamento.domain.dto;
 
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -19,10 +20,10 @@ public class LancamentoInput {
     private TipoLancamentoEnum tipoLancamento;
 
     @NotNull
-    private CategoriaLancamentoEnum categoriaLancamento;
+    private TipoPagamentoEnum tipoPagamento;
 
     @NotNull
-    private boolean debito;
+    private CategoriaLancamentoEnum categoriaLancamento;
 
     @NotNull
     private BigDecimal valor;

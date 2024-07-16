@@ -6,6 +6,7 @@ package com.prandini.smartwallet.lancamento.service;
  */
 
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
+import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.dto.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.domain.dto.LancamentoInput;
 import com.prandini.smartwallet.lancamento.domain.dto.LancamentoOutput;
@@ -16,6 +17,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,12 +32,15 @@ public class LancamentoService {
     private LancamentoGetter getter;
 
 
-    public Page<LancamentoOutput> findAll(Pageable pageable){
+    public List<LancamentoOutput> findAll(Pageable pageable){
         log.info("Iniciando busca de todos os lancamentos.");
 
-        return getter.getAll(pageable).map(LancamentoConverter::toOutput);
+        List<Lancamento> lancamentos = getter.findTodos();
+
+        return lancamentos.stream().map(LancamentoConverter::toOutput).toList();
     }
 
+    @Transactional
     public LancamentoOutput criarLancamento(LancamentoInput input) {
         log.info("Iniciando criação de lancamento.");
 

@@ -9,6 +9,7 @@ import com.prandini.smartwallet.lancamento.domain.dto.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.domain.dto.LancamentoInput;
 import com.prandini.smartwallet.lancamento.domain.dto.LancamentoOutput;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -25,13 +26,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/lancamento")
+@Tag(name = "Lançamento")
 public class LancamentoController {
 
     @Resource
     private LancamentoService service;
 
     @GetMapping
-    public ResponseEntity<Page<LancamentoOutput>> searchAll(Pageable pageable){
+    public ResponseEntity<List<LancamentoOutput>> searchAll(Pageable pageable){
         return ResponseEntity.ok().body(service.findAll(pageable));
     }
 

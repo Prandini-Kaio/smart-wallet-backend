@@ -5,6 +5,7 @@ package com.prandini.smartwallet.conta.service.actions;
  * created 4/16/24
  */
 
+import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
@@ -30,7 +31,7 @@ public class ContaGetter {
     public Conta getContaByFilter(String filter){
         log.info(String.format("Buscando conta por filtro %s.", filter));
 
-        return repository.getContaByFilter(filter);
+        return repository.getContaByFilter(filter).orElseThrow(CommonExceptionSupplier.naoEncontrado("Conta"));
     }
 
     public boolean existsContaByNomeBanco(ContaInput input) {

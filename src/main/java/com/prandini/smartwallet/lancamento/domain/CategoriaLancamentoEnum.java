@@ -6,28 +6,31 @@ package com.prandini.smartwallet.lancamento.domain;
  */
 public enum CategoriaLancamentoEnum {
 
-    MORADIA("Moradia"), // GASTOS COM A CASA
+    MORADIA("Moradia", "home"), // GASTOS COM A CASA
 
-    ALIMENTACAO("Alimentação"), // SUPERMERCADO...
+    ALIMENTACAO("Alimentação", "food"), // SUPERMERCADO...
 
-    SAUDE("Saúde"), // REMEDIOS, CONSULTAS, ACADEMIA
+    SAUDE("Saúde", "heart-multiple"), // REMEDIOS, CONSULTAS, ACADEMIA
 
-    CARRO("Carro"), // COMBUSTIVEL, MECANICA, CONSORCIO...
+    CARRO("Carro", "car"), // COMBUSTIVEL, MECANICA, CONSORCIO...
 
-    EDUCACAO("Educação"), // FACULDADE, CURSOS...
+    EDUCACAO("Educação", "school"), // FACULDADE, CURSOS...
 
-    LAZER("Lazer"),
+    LAZER("Lazer", "beach"),
 
-    IMPOSTOS("Impostos"), // IPVA, INSS, IMPOSTO DE RENDA...
+    IMPOSTOS("Impostos", "knife"), // IPVA, INSS, IMPOSTO DE RENDA...
 
-    ECONOMIA("Economia"), // INVESTIMENTOS E POUPANCA
+    ECONOMIA("Economia", "piggy-bank"), // INVESTIMENTOS E POUPANCA
 
-    OUTROS("Outros");
+    OUTROS("Outros", "cube");
 
     public final String nome;
 
-    CategoriaLancamentoEnum(String nome){
+    public String icone;
+
+    CategoriaLancamentoEnum(String nome, String icone){
         this.nome = nome;
+        this.icone = icone;
     }
 
     @Override

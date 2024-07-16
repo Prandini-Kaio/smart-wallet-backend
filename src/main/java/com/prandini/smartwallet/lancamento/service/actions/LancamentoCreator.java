@@ -46,7 +46,9 @@ public class LancamentoCreator {
         validator.validarCriacao(input);
 
         Conta conta = contaGetter.getContaByFilter(input.getConta());
+
         Lancamento lancamento = repository.save(buildLancamento(input, conta));
+
         transacaoCreator.create(lancamento);
 
         contaUpdater.atualizaLancamento(conta.getId(), lancamento);
@@ -58,13 +60,13 @@ public class LancamentoCreator {
         return Lancamento.builder()
                 .tipoLancamento(input.getTipoLancamento())
                 .categoriaLancamento(input.getCategoriaLancamento())
-                .tipoPagamento(input.isDebito() ? TipoPagamentoEnum.DEBITO : TipoPagamentoEnum.CREDITO)
+                .tipoPagamento(input.getTipoPagamento())
                 .valor(input.getValor())
                 .dtCriacao(LocalDateTime.now())
                 .parcelas(input.getParcelas())
                 .conta(conta)
                 .descricao(input.getDescricao())
-                .icone(input.getIcone())
+                .icone(input.getCategoriaLancamento().icone)
                 .build();
 
     }

@@ -4,6 +4,7 @@ package com.prandini.smartwallet.lancamento.domain.dto;
  * @author prandini
  * created 4/5/24
  */
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import lombok.Builder;
@@ -19,13 +20,15 @@ public class LancamentoOutput {
 
     private TipoLancamentoEnum tipoLancamento;
 
-    private String categoriaLancamento;
+    private CategoriaLancamentoEnum categoriaLancamento;
 
     private TipoPagamentoEnum tipoPagamento;
 
     private BigDecimal valor;
 
     private String conta;
+
+    private String banco;
 
     private String dtCriacao;
 

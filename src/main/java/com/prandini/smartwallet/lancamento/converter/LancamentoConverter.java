@@ -15,14 +15,15 @@ public class LancamentoConverter {
         return LancamentoOutput.builder()
                 .id(lancamento.getId())
                 .tipoLancamento(lancamento.getTipoLancamento())
-                .categoriaLancamento(lancamento.getCategoriaLancamento().toString())
+                .categoriaLancamento(lancamento.getCategoriaLancamento())
                 .tipoPagamento(lancamento.getTipoPagamento())
                 .valor(lancamento.getValor())
                 .dtCriacao(LocalDateConverter.toBrazilianDateTimeString(lancamento.getDtCriacao()))
-                .conta(lancamento.getConta().getBanco() + " - " + lancamento.getConta().getNome())
+                .conta(lancamento.getConta().getNome())
+                .banco(lancamento.getConta().getBanco())
                 .parcelas(lancamento.getParcelas())
                 .descricao(lancamento.getDescricao())
-                .icone(lancamento.getIcone())
+                .icone(lancamento.getCategoriaLancamento().icone)
                 .build();
     }
 }

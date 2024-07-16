@@ -14,4 +14,8 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, L
 
     @Query("SELECT l FROM Lancamento l WHERE MONTH(l.dtCriacao) = :mes")
     Optional<List<Lancamento>> findByDtCriacao(Integer mes);
+
+    @Query("SELECT l " +
+            "FROM Lancamento l ")
+    List<Lancamento> findTodos();
 }
