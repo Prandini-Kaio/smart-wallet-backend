@@ -8,7 +8,9 @@ package com.prandini.smartwallet.lancamento.controller;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
+import com.prandini.smartwallet.lancamento.model.TotalizadorLancamento;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -34,6 +36,12 @@ public class LancamentoController {
     @GetMapping
     public ResponseEntity<List<LancamentoOutput>> searchAll(Pageable pageable){
         return ResponseEntity.ok().body(service.findAll(pageable));
+    }
+
+    @GetMapping("/totalizador")
+    @Operation(description = "Retorna o totalizador dos lançamentos ativos do sistema.")
+    public ResponseEntity<TotalizadorLancamento> getTotalizador(@RequestParam String conta){
+        return ResponseEntity.ok().body(this.service.getTotalizador(conta));
     }
 
     @GetMapping("/vencimento")

@@ -1,5 +1,9 @@
 package com.prandini.smartwallet.lancamento.service.actions;
 
+import com.prandini.smartwallet.common.exception.BusinessException;
+import com.prandini.smartwallet.common.exception.CommonExceptionMessages;
+import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
@@ -17,7 +21,27 @@ public class LancamentoValidator {
 
 
     public void validarCriacao(LancamentoInput input) {
-        if(input.getTipoLancamento() == TipoLancamentoEnum.ENTRADA)
+        this.validarInput(input);
+    }
+
+    private void validarInput(LancamentoInput input){
+        this.validarTipoPagamento(input);
+        this.validarTipoLancamento(input);
+    }
+
+    private void validarTipoPagamento(LancamentoInput input){
+        if(input.getTipoPagamento() == null)
+            throw new BusinessException(CommonExceptionMessages.campoObrigatorio("Tipo pagamento"));
+
+        if(input.getTipoPagamento().equals(TipoPagamentoEnum.DEBITO) && input.getParcelas() > 1)
+            throw new BusinessException(LancamentoExceptionMessages.debitoComParcelas());
+    }
+
+    private void validarTipoLancamento(LancamentoInput input){
+        if(input.getTipoLancamento() == null)
+            throw new BusinessException(CommonExceptionMessages.campoObrigatorio("Tipo lançamento"));
+
+        if(input.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA))
             validarEntrada(input);
     }
 

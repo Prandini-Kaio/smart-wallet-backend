@@ -64,6 +64,7 @@ public class LancamentoCreator {
                 .parcelas(input.getParcelas())
                 .conta(conta)
                 .descricao(input.getDescricao())
+                .quitado(false)
                 .icone(input.getCategoriaLancamento().icone)
                 .build();
 

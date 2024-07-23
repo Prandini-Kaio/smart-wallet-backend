@@ -10,6 +10,7 @@ import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
+import com.prandini.smartwallet.lancamento.model.TotalizadorLancamento;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import jakarta.annotation.Resource;
@@ -60,5 +61,9 @@ public class LancamentoService {
 
     public List<String> getCategorias() {
         return this.getter.getCategorias();
+    }
+
+    public TotalizadorLancamento getTotalizador(String conta) {
+        return this.getter.getTotalizador(conta);
     }
 }

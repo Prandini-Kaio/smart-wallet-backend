@@ -60,6 +60,9 @@ public class Lancamento {
     @Column(name = "DESCRICAO")
     private String descricao;
 
+    @Column(name = "QUITADO")
+    private boolean quitado;
+
     @Column(name = "ICONE")
     private String icone;
 }

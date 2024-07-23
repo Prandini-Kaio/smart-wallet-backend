@@ -36,6 +36,8 @@ public class LancamentoOutput {
 
     private String descricao;
 
+    private boolean quitado;
+
     private String icone;
 
 }

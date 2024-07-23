@@ -30,7 +30,7 @@ public class TransacaoCreator {
 
     public List<Transacao> create(Lancamento lancamento){
 
-        log.info(String.format("Gerando %s transações a partir do lançamento %s a partir da data %s.", lancamento.getParcelas(), lancamento.getId(), LocalDateConverter.toBrazilianDateTimeString(lancamento.getDtCriacao())));
+        log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.", lancamento.getParcelas(), lancamento.getId(), LocalDateConverter.toBrazilianDateTimeString(lancamento.getDtCriacao())));
 
         int parcelas = lancamento.getParcelas();
 

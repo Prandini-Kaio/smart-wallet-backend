@@ -2,6 +2,7 @@ package com.prandini.smartwallet.lancamento.repository;
 
 
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.model.TotalizadorLancamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,10 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, L
     @Query("SELECT l " +
             "FROM Lancamento l ")
     List<Lancamento> findTodos();
+
+    @Query("SELECT l " +
+            "FROM Lancamento l " +
+            "WHERE l.quitado = false ")
+    List<Lancamento> findNaoPagos();
+
 }
