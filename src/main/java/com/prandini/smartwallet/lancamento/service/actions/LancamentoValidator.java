@@ -26,6 +26,7 @@ public class LancamentoValidator {
 
     private void validarInput(LancamentoInput input){
         this.validarTipoPagamento(input);
+        this.validarCategoriaLancamento(input);
         this.validarTipoLancamento(input);
     }
 
@@ -35,6 +36,11 @@ public class LancamentoValidator {
 
         if(input.getTipoPagamento().equals(TipoPagamentoEnum.DEBITO) && input.getParcelas() > 1)
             throw new BusinessException(LancamentoExceptionMessages.debitoComParcelas());
+    }
+
+    private void validarCategoriaLancamento(LancamentoInput input){
+        if(input.getCategoriaLancamento() == null)
+            throw new BusinessException(CommonExceptionMessages.campoObrigatorio("Categoria lançamento"));
     }
 
     private void validarTipoLancamento(LancamentoInput input){
