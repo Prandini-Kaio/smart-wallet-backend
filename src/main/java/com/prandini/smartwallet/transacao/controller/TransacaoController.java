@@ -34,12 +34,18 @@ public class TransacaoController {
     @Resource
     private TransacaoRepository repository;
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(description = "Retorna todas as transações.")
     public ResponseEntity<Page<TransacaoOutput>> searchAll(Pageable pageable){
         return ResponseEntity.ok().body(
                 repository.findAll(pageable).map(TransacaoConverter::toOutput)
         );
+    }
+
+    @GetMapping
+    @Operation(description = "Retorna todas as transações.")
+    public ResponseEntity<List<TransacaoOutput>> findByIdLancamento(@RequestParam Long idLancamento){
+        return ResponseEntity.ok().body(service.findByIdLancamento(idLancamento));
     }
 
     @GetMapping("/filter")

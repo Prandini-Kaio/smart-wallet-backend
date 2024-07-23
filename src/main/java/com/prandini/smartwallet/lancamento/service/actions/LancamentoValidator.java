@@ -2,7 +2,7 @@ package com.prandini.smartwallet.lancamento.service.actions;
 
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoInput;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.exceptions.LancamentoException;
 import com.prandini.smartwallet.lancamento.exceptions.LancamentoExceptionMessages;
 import org.springframework.stereotype.Component;

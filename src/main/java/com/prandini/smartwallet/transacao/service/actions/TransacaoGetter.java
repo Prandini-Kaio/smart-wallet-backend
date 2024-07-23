@@ -7,6 +7,7 @@ package com.prandini.smartwallet.transacao.service.actions;
 
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.TransacaoFilter;
+import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -37,5 +38,9 @@ public class TransacaoGetter {
         log.info(String.format("Consulta a transações com filtro %s.", filter));
 
         return repository.findByStringFilter(filter);
+    }
+
+    public List<Transacao> findByIdLancamento(Long idLancamento) {
+        return repository.findByIdLancamento(idLancamento);
     }
 }

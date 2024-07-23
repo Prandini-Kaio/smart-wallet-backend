@@ -5,14 +5,13 @@ package com.prandini.smartwallet.lancamento.controller;
  * created 4/16/24
  */
 
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoFilter;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoInput;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoOutput;
+import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
+import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

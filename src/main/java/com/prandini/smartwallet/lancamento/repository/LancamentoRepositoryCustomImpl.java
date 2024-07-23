@@ -1,7 +1,7 @@
 package com.prandini.smartwallet.lancamento.repository;
 
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoFilter;
+import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;

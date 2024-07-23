@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,10 @@ public class Conta {
     @Column(name = "NOME")
     private String nome;
 
+    @Column(name = "DATA_VENCIMENTO")
+    private LocalDate dtVencimento;
+
+    @Column(name = "SALDO_PARCIAL")
     private BigDecimal saldoParcial;
 
     @OneToMany

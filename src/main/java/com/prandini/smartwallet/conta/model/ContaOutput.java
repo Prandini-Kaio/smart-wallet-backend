@@ -20,6 +20,8 @@ public class ContaOutput {
 
     private String nome;
 
+    private String dtVencimento;
+
     private BigDecimal saldoParcial;
 
     private BigDecimal totalLancamentos;

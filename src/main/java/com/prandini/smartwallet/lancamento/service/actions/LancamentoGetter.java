@@ -6,8 +6,9 @@ package com.prandini.smartwallet.lancamento.service.actions;
  */
 
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoFilter;
+import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -15,7 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -44,5 +45,9 @@ public class LancamentoGetter {
 
     public List<Lancamento> findByFilter(LancamentoFilter filter) {
         return repository.findByFilter(filter);
+    }
+
+    public List<String> getCategorias() {
+        return Arrays.stream(CategoriaLancamentoEnum.values()).map(c -> c.nome).toList();
     }
 }

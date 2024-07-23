@@ -1,4 +1,4 @@
-package com.prandini.smartwallet.lancamento.domain.dto;
+package com.prandini.smartwallet.lancamento.model;
 
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import lombok.Getter;

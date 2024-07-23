@@ -3,7 +3,7 @@ package com.prandini.smartwallet.lancamento.converter;
 
 import com.prandini.smartwallet.common.LocalDateConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoOutput;
+import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 
 /*
  * @author prandini

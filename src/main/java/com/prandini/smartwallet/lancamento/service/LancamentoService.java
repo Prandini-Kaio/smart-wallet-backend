@@ -7,14 +7,13 @@ package com.prandini.smartwallet.lancamento.service;
 
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoFilter;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoInput;
-import com.prandini.smartwallet.lancamento.domain.dto.LancamentoOutput;
+import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
+import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,5 +56,9 @@ public class LancamentoService {
         log.info(String.format("Iniciando busca de lancamentos por filtro %s.", filter));
 
         return getter.findByFilter(filter).stream().map(LancamentoConverter::toOutput).toList();
+    }
+
+    public List<String> getCategorias() {
+        return this.getter.getCategorias();
     }
 }

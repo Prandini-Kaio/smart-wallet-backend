@@ -8,6 +8,8 @@ package com.prandini.smartwallet.conta.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Getter
 public class ContaInput {
 
@@ -18,4 +20,7 @@ public class ContaInput {
 
     @Schema(example = "CORRENTE")
     private String nome;
+
+    @Schema(example = "2024-04-05")
+    private LocalDate dtVencimento;
 }

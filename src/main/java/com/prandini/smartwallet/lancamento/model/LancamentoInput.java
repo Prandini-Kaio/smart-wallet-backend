@@ -1,41 +1,40 @@
-package com.prandini.smartwallet.lancamento.domain.dto;
+package com.prandini.smartwallet.lancamento.model;
 
-/*
- * @author prandini
- * created 4/5/24
- */
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
-import lombok.Builder;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 
-@Builder
+/*
+ * @author prandini
+ * created 4/16/24
+ */
 @Getter
-public class LancamentoOutput {
+public class LancamentoInput {
 
-    private Long id;
-
+    @NotNull
     private TipoLancamentoEnum tipoLancamento;
 
-    private CategoriaLancamentoEnum categoriaLancamento;
-
+    @NotNull
     private TipoPagamentoEnum tipoPagamento;
 
+    @NotNull
+    private CategoriaLancamentoEnum categoriaLancamento;
+
+    @NotNull
     private BigDecimal valor;
 
-    private String conta;
-
-    private String banco;
-
-    private String dtCriacao;
-
+    @NotNull
     private int parcelas;
+
+    @NotEmpty
+    private String conta;
 
     private String descricao;
 
     private String icone;
-
 }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * @author prandini
@@ -58,4 +59,8 @@ public class TransacaoService {
     }
 
 
+    public List<TransacaoOutput> findByIdLancamento(Long idLancamento) {
+        return getter.findByIdLancamento(idLancamento).stream()
+                .map(TransacaoConverter::toOutput).collect(Collectors.toList());
+    }
 }
