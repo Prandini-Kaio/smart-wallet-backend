@@ -5,6 +5,7 @@ package com.prandini.smartwallet.conta.controller;
  * created 4/5/24
  */
 
+import com.prandini.smartwallet.common.model.AutcompleteDTO;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.model.ContaOutput;
 import com.prandini.smartwallet.conta.service.ContaService;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/conta")
@@ -32,6 +36,12 @@ public class ContaController {
     @Operation(summary = "Retorna todas as contas.")
     public ResponseEntity<Page<ContaOutput>> findAll(Pageable pageable){
         return ResponseEntity.ok().body(service.getAll(pageable));
+    }
+
+    @GetMapping("/autocomplete")
+    @Operation(summary = "Autocomplete de contas")
+    public ResponseEntity<List<AutcompleteDTO>> autocompleteContas(@RequestParam String conta){
+        return ResponseEntity.ok().body(this.service.autcompleteContas(conta));
     }
 
     @PostMapping

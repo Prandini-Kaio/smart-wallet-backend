@@ -30,11 +30,13 @@ public class ContaCreator {
 
         validator.validarCriacao(input);
 
-        return repository.save(Conta.builder()
-                        .banco(input.getBanco())
-                        .nome(input.getNome())
-                        .dtVencimento(input.getDtVencimento())
-                        .saldoParcial(BigDecimal.ZERO)
-                .build());
+        Conta conta = Conta.builder()
+                .banco(input.getBanco())
+                .nome(input.getNome())
+                .dtVencimento(input.getDtVencimento())
+                .saldoParcial(BigDecimal.ZERO)
+                .build();
+
+        return repository.save(conta);
     }
 }

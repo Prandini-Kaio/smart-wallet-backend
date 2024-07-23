@@ -6,6 +6,7 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
+import com.prandini.smartwallet.common.model.AutcompleteDTO;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
@@ -14,6 +15,8 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @CommonsLog
@@ -36,5 +39,9 @@ public class ContaGetter {
 
     public boolean existsContaByNomeBanco(ContaInput input) {
         return repository.existsContaByNomeBanco(input.getNome(), input.getBanco());
+    }
+
+    public List<AutcompleteDTO> autocompleteContas(String conta) {
+        return this.repository.autcompleteContas(conta);
     }
 }
