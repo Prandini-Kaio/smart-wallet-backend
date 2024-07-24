@@ -45,7 +45,4 @@ public class Conta {
 
     @Column(name = "SALDO_PARCIAL")
     private BigDecimal saldoParcial;
-
-    @OneToMany
-    private List<Lancamento> lancamentos = new ArrayList<>();
 }

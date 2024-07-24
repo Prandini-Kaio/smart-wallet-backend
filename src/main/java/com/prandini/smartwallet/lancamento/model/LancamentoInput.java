@@ -35,6 +35,4 @@ public class LancamentoInput {
     private String conta;
 
     private String descricao;
-
-    private String icone;
 }

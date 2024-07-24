@@ -62,7 +62,4 @@ public class Lancamento {
 
     @Column(name = "QUITADO")
     private boolean quitado;
-
-    @Column(name = "ICONE")
-    private String icone;
 }

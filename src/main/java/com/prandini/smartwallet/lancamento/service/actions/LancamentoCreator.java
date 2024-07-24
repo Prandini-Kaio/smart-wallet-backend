@@ -29,27 +29,19 @@ public class LancamentoCreator {
     private ContaGetter contaGetter;
 
     @Resource
-    private ContaUpdater contaUpdater;
-
-    @Resource
     private TransacaoCreator transacaoCreator;
 
     @Resource
     private LancamentoValidator validator;
 
     public Lancamento create(LancamentoInput input) {
-
         log.info("Criando lançamento.");
-
         validator.validarCriacao(input);
 
         Conta conta = contaGetter.getContaByFilter(input.getConta());
 
         Lancamento lancamento = repository.save(buildLancamento(input, conta));
-
         transacaoCreator.create(lancamento);
-
-        contaUpdater.atualizaLancamento(conta.getId(), lancamento);
 
         return lancamento;
     }
@@ -65,7 +57,6 @@ public class LancamentoCreator {
                 .conta(conta)
                 .descricao(input.getDescricao())
                 .quitado(false)
-                .icone(input.getCategoriaLancamento().icone)
                 .build();
 
     }

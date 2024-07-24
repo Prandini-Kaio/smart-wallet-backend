@@ -24,34 +24,5 @@ public class ContaUpdater {
 
     public void atualizaLancamento(Long id, Lancamento lancamento){
         log.info("Atualizando lançamentos.");
-
-        if(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA)){
-            atualizaLancamentoEntrada(id, lancamento.getValor());
-        }
-
-        if(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.SAIDA)){
-            atualizaLancamentoSaida(id, lancamento);
-        }
-    }
-
-    private void atualizaLancamentoSaida(Long id, Lancamento lancamento){
-        Conta conta = repository.getReferenceById(id);
-
-        log.info(String.format("Atualizando lancamentos de saida da conta %s - %s.", conta.getBanco(), conta.getNome()));
-        log.info("REVER LOGICA");
-
-        conta.getLancamentos().add(lancamento);
-
-        repository.save(conta);
-    }
-
-    private void atualizaLancamentoEntrada(Long id, BigDecimal valor){
-        Conta conta = repository.getReferenceById(id);
-
-        log.info(String.format("Atualizando lancamentos de entrada da conta %s - %s.", conta.getBanco(), conta.getNome()));
-
-        conta.setSaldoParcial(conta.getSaldoParcial().add(valor));
-
-        repository.save(conta);
     }
 }

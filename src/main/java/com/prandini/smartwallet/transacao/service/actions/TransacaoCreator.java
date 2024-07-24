@@ -7,6 +7,7 @@ package com.prandini.smartwallet.transacao.service.actions;
 
 import com.prandini.smartwallet.common.LocalDateConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
@@ -32,18 +33,9 @@ public class TransacaoCreator {
 
         log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.", lancamento.getParcelas(), lancamento.getId(), LocalDateConverter.toBrazilianDateTimeString(lancamento.getDtCriacao())));
 
-        int parcelas = lancamento.getParcelas();
-
-        BigDecimal valorPorParcela = lancamento.getValor().divide(BigDecimal.valueOf(parcelas), RoundingMode.CEILING);
-
-        List<Transacao> transacoes = IntStream.range(0, parcelas)
-                        .mapToObj(i -> Transacao.builder()
-                                .valor(valorPorParcela)
-                                .dtVencimento(calcularDataVencimento(lancamento.getDtCriacao(), i))
-                                .lancamento(lancamento)
-                                .status(TransacaoStatusEnum.PENDENTE)
-                                .descricao(" [" + (i+1) + " / " + parcelas + "]")
-                                .build())
+        List<Transacao> transacoes = IntStream
+                .range(0, lancamento.getParcelas())
+                .mapToObj(i -> buildTransacao(lancamento, i))
                 .toList();
 
         repository.saveAll(transacoes);
@@ -53,5 +45,18 @@ public class TransacaoCreator {
 
     private LocalDateTime calcularDataVencimento(LocalDateTime dtCriacao, int indiceParcela) {
         return LocalDateTime.now().plusMonths(indiceParcela + 1);
+    }
+
+    private Transacao buildTransacao(Lancamento lancamento, int i){
+        BigDecimal valor = lancamento.getValor()
+                .divide(BigDecimal.valueOf(lancamento.getParcelas()), RoundingMode.CEILING);
+
+        return Transacao.builder()
+                .valor(valor)
+                .dtVencimento(calcularDataVencimento(lancamento.getDtCriacao(), i))
+                .lancamento(lancamento)
+                .status(TransacaoStatusEnum.PENDENTE)
+                .descricao(" [" + (i+1) + " / " + lancamento.getParcelas() + "]")
+                .build();
     }
 }
