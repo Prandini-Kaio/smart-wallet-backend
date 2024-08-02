@@ -5,9 +5,8 @@ package com.prandini.smartwallet.transacao.service.actions;
  * created 4/29/24
  */
 
+import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.domain.TransacaoFilter;
-import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -28,12 +27,6 @@ public class TransacaoGetter {
         return repository.findByVencimento(month);
     }
 
-    public List<Transacao> findByFilter(TransacaoFilter filter){
-        log.info("Consulta a transações com filtro.");
-
-        return repository.findByFilter(filter.getStatus(), filter.getMes());
-    }
-
     public List<Transacao> findByStringFilter(String filter){
         log.info(String.format("Consulta a transações com filtro %s.", filter));
 
@@ -42,5 +35,9 @@ public class TransacaoGetter {
 
     public List<Transacao> findByIdLancamento(Long idLancamento) {
         return repository.findByIdLancamento(idLancamento);
+    }
+
+    public Transacao byId(Long id) {
+        return this.repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Transação"));
     }
 }

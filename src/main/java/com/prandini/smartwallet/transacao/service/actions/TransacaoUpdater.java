@@ -12,9 +12,14 @@ import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @CommonsLog
 public class TransacaoUpdater {
+
+    @Resource
+    private TransacaoGetter getter;
 
     @Resource
     private TransacaoRepository repository;
@@ -22,14 +27,18 @@ public class TransacaoUpdater {
     @Resource
     private TransacaoValidator validator;
 
-    public Transacao pagarTransacao(Long id) {
+    public Transacao pagar(Long id) {
         log.info(String.format("Pagando transação %s.", id));
 
-        validator.validarPagament(id);
+        Transacao transacao = getter.byId(id);
 
-        Transacao transacao = repository.getReferenceById(id);
+        validator.validarPagamento(transacao);
 
         transacao.setStatus(TransacaoStatusEnum.PAGO);
+        transacao.setDtPagamento(LocalDateTime.now());
+
+        if(transacao.getProxima() == null)
+            transacao.getLancamento().setQuitado(true);
 
         return repository.save(transacao);
     }

@@ -22,5 +22,7 @@ public class TransacaoOutput {
 
     private String dtVencimento;
 
+    private String dtPagamento;
+
     private String descricao;
 }

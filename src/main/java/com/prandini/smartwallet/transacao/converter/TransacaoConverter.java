@@ -19,11 +19,18 @@ public class TransacaoConverter {
     }
 
     public static TransacaoOutput toOutput(Transacao transacao){
+
+        String dtVencimento = LocalDateConverter.toBrazilianDateString(transacao.getDtVencimento().toLocalDate());
+        String dtPagamento = transacao.getDtPagamento() != null
+                ? LocalDateConverter.toBrazilianDateString(transacao.getDtPagamento().toLocalDate())
+                : null;
+
         return TransacaoOutput.builder()
                 .id(transacao.getId())
                 .status(transacao.getStatus())
                 .valor(transacao.getValor())
-                .dtVencimento(LocalDateConverter.toBrazilianDateString(transacao.getDtVencimento().toLocalDate()))
+                .dtVencimento(dtVencimento)
+                .dtPagamento(dtPagamento)
                 .descricao(transacao.getDescricao())
                 .build();
     }

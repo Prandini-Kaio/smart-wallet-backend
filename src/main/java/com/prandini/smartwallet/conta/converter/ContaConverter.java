@@ -16,18 +16,19 @@ public class ContaConverter {
 
     public static ContaOutput toOutput(Conta conta){
 
-        BigDecimal totalLancamentos = BigDecimal.ZERO;
-        if(conta.getLancamentos() != null)
-            totalLancamentos = conta.getLancamentos().stream()
-                .map(Lancamento::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//        BigDecimal totalLancamentos = BigDecimal.ZERO;
+//        if(conta.getLancamentos() != null)
+//            totalLancamentos = conta.getLancamentos().stream()
+//                .map(Lancamento::getValor)
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return ContaOutput.builder()
                 .id(conta.getId())
                 .banco(conta.getBanco())
                 .nome(conta.getNome())
                 .saldoParcial(conta.getSaldoParcial())
-                .totalLancamentos(totalLancamentos)
+                .totalLancamentos(BigDecimal.ZERO)
+                .tipoConta(conta.getTipoConta())
                 .build();
     }
 }

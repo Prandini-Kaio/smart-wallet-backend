@@ -1,12 +1,9 @@
 package com.prandini.smartwallet.transacao.service;
 
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
-import com.prandini.smartwallet.transacao.domain.TransacaoFilter;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
-import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoUpdater;
-import com.prandini.smartwallet.transacao.service.actions.TransacaoValidator;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Page;
@@ -35,7 +32,7 @@ public class TransacaoService {
     public TransacaoOutput pagarTransacao(Long id) {
         log.info(String.format("Iniciando pagamento da transação %s.", id));
 
-        return TransacaoConverter.toOutput(updater.pagarTransacao(id));
+        return TransacaoConverter.toOutput(updater.pagar(id));
     }
 
     public Page<TransacaoOutput> findByMonth(Integer month){
@@ -50,12 +47,6 @@ public class TransacaoService {
 
         return new PageImpl<>(getter.findByStringFilter(filter))
                 .map(TransacaoConverter::toOutput);
-    }
-
-    public List<TransacaoOutput> findByFilter(TransacaoFilter filter){
-        log.info("Iniciando consulta a transações com filtro.");
-
-        return TransacaoConverter.toListOutputs(getter.findByFilter(filter));
     }
 
 

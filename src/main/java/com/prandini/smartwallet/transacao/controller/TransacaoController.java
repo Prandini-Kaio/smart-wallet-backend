@@ -1,7 +1,6 @@
 package com.prandini.smartwallet.transacao.controller;
 
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
-import com.prandini.smartwallet.transacao.domain.TransacaoFilter;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import com.prandini.smartwallet.transacao.service.TransacaoService;
@@ -48,28 +47,22 @@ public class TransacaoController {
         return ResponseEntity.ok().body(service.findByIdLancamento(idLancamento));
     }
 
-    @GetMapping("/filter")
-    @Operation(description = "Retorna as transações com base no status e mes de vencimento")
-    public ResponseEntity<List<TransacaoOutput>> findByVencimento(TransacaoFilter filter){
-        return ResponseEntity.ok().body(service.findByFilter(filter));
-    }
-
     @PutMapping("/pagar")
     @Operation(description = "Paga uma transação em aberto.")
     public ResponseEntity<TransacaoOutput> pagarTransacao(@RequestParam Long id){
-        return ResponseEntity.ok().body(service.pagarTransacao(id));
+        return ResponseEntity.ok().body(this.service.pagarTransacao(id));
     }
 
     @GetMapping("/vencimento")
     @Operation(description = "Retorna todas as transações com base no mês de vencimento.")
     public ResponseEntity<Page<TransacaoOutput>> searchByMonth(@RequestParam Integer month){
-        return ResponseEntity.ok().body(service.findByMonth(month));
+        return ResponseEntity.ok().body(this.service.findByMonth(month));
     }
 
     @GetMapping("/stringFilter")
     @Operation(description = "Retorna todas as transações com base em um filtro.")
     public ResponseEntity<Page<TransacaoOutput>> searchByFilter(@RequestParam String filter){
-        return ResponseEntity.ok().body(service.findByStringFilter(filter));
+        return ResponseEntity.ok().body(this.service.findByStringFilter(filter));
     }
 
 }

@@ -35,6 +35,7 @@ public class ContaCreator {
                 .nome(input.getNome())
                 .dtVencimento(input.getDtVencimento())
                 .saldoParcial(BigDecimal.ZERO)
+                .tipoConta(input.getTipoConta())
                 .build();
 
         return repository.save(conta);

@@ -9,7 +9,7 @@ public class LancamentoExceptionMessages {
 
     private static String ENTRADA_CREDITO_INVALIDA = "Um lançamento de entrada não pode ser por crédito.";
 
-    private static String DEBITO_COM_PARCELAS = "Não é permitida a inclusão de uma entrada com mais de uma parcela.";
+    private static String DEBITO_COM_PARCELAS = "Um débito não contém parcelas.";
 
     public static String entradaComParcelas(){
         return ENTRADA_COM_PARCELAS;

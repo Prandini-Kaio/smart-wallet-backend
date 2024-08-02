@@ -5,23 +5,45 @@ package com.prandini.smartwallet.transacao.service.actions;
  * created 4/29/24
  */
 
+import com.prandini.smartwallet.common.exception.BusinessException;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import com.prandini.smartwallet.transacao.exceptions.TransacaoExceptionMessages;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class TransacaoValidator {
 
     @Resource
-    private TransacaoRepository repository;
+    private TransacaoGetter getter;
 
-    public void validarPagament(Long id){
-        Transacao transacao = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Transação não encontrada."));
+    public void validarPagamento(Transacao transacao){
+        this.validarSequencia(transacao);
+        this.validarStatus(transacao);
+    }
 
-        if(transacao.getStatus() != TransacaoStatusEnum.PENDENTE)
-            throw new IllegalStateException("Tentativa de pagamento a uma transação cancelada ou em atraso.");
+    private void validarSequencia(Transacao transacao) {
+
+        List<Transacao> transacoes = getter.findByIdLancamento(transacao.getLancamento().getId());
+
+        boolean hasTransacaoAberta = transacoes.stream()
+                .filter(t -> transacao.getId() != t.getId())
+                .filter(t -> t.getStatus().equals(TransacaoStatusEnum.PENDENTE))
+                .anyMatch(t -> t.getDtVencimento().isBefore(transacao.getDtVencimento()));
+
+        if(hasTransacaoAberta)
+            throw new BusinessException(TransacaoExceptionMessages.sequenciaInvalida());
+    }
+
+    private void validarStatus(Transacao transacao){
+        if(transacao.getStatus().equals(TransacaoStatusEnum.CANCELADO))
+            throw new BusinessException(TransacaoExceptionMessages.pagamentoIncorreto());
+
+        if(transacao.getStatus().equals(TransacaoStatusEnum.PAGO))
+            throw new BusinessException(TransacaoExceptionMessages.pagamentoJaEfetuado());
     }
 }

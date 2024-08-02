@@ -26,4 +26,6 @@ public class ContaOutput {
 
     private BigDecimal totalLancamentos;
 
+    private TipoConta tipoConta;
+
 }

@@ -72,7 +72,7 @@ public class LancamentoGetter {
                 .map(Lancamento::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        total = totalCredito.subtract(totalDebito);
+        total = totalDebito.subtract(totalCredito);
 
         return new TotalizadorLancamento(total, totalDebito, totalCredito);
     }

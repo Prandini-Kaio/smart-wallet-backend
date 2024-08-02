@@ -21,6 +21,8 @@ public class ContaInput {
     @Schema(example = "CORRENTE")
     private String nome;
 
+    private TipoConta tipoConta;
+
     @Schema(example = "2024-04-05")
     private LocalDate dtVencimento;
 }
