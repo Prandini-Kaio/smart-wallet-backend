@@ -22,6 +22,8 @@ public enum CategoriaLancamentoEnum {
 
     ECONOMIA("Economia", "piggy-bank"), // INVESTIMENTOS E POUPANCA
 
+    INVESTIMENTO("Investimento", "piggy-bank"), // INVESTIMENTOS E POUPANCA
+
     OUTROS("Outros", "cube");
 
     public final String nome;

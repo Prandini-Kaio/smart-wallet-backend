@@ -31,7 +31,7 @@ public class TransacaoValidator {
         List<Transacao> transacoes = getter.findByIdLancamento(transacao.getLancamento().getId());
 
         boolean hasTransacaoAberta = transacoes.stream()
-                .filter(t -> transacao.getId() != t.getId())
+                .filter(t -> !transacao.getId().equals(t.getId()))
                 .filter(t -> t.getStatus().equals(TransacaoStatusEnum.PENDENTE))
                 .anyMatch(t -> t.getDtVencimento().isBefore(transacao.getDtVencimento()));
 

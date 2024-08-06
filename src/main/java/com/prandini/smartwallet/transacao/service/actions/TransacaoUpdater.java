@@ -5,6 +5,7 @@ package com.prandini.smartwallet.transacao.service.actions;
  * created 4/29/24
  */
 
+import com.prandini.smartwallet.lancamento.service.actions.LancamentoUpdater;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
@@ -27,6 +28,9 @@ public class TransacaoUpdater {
     @Resource
     private TransacaoValidator validator;
 
+    @Resource
+    private LancamentoUpdater lancamentoUpdater;
+
     public Transacao pagar(Long id) {
         log.info(String.format("Pagando transação %s.", id));
 
@@ -38,7 +42,7 @@ public class TransacaoUpdater {
         transacao.setDtPagamento(LocalDateTime.now());
 
         if(transacao.getProxima() == null)
-            transacao.getLancamento().setQuitado(true);
+            lancamentoUpdater.quitarLancamento(transacao.getLancamento().getId());
 
         return repository.save(transacao);
     }

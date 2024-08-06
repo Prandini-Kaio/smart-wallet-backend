@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @CommonsLog
@@ -33,6 +34,10 @@ public class LancamentoGetter {
         log.info("Consultando todos os lançamentos");
 
         return repository.findAll(pageable);
+    }
+
+    public Lancamento byId(Long id){
+        return repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Lançamento"));
     }
 
     public List<Lancamento> findTodos() {

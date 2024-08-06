@@ -35,21 +35,28 @@ public class Lancamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "TIPO_LANCAMENTO")
+    @Column(name = "TIPO")
     @Enumerated
     private TipoLancamentoEnum tipoLancamento;
 
-    @Column(name = "CATEGORIA_LANCAMENTO")
+    @Column(name = "CATEGORIA")
     @Enumerated
     private CategoriaLancamentoEnum categoriaLancamento;
 
+    @Column(name = "TIPO_PAGAMENTO")
     private TipoPagamentoEnum tipoPagamento;
+
+    @Column(name = "STATUS")
+    private StatusLancamento status;
 
     @Column(name = "VALOR")
     private BigDecimal valor;
 
     @Column(name = "DATA_CRIACAO")
     private LocalDateTime dtCriacao;
+
+    @Column(name = "DATA_STATUS")
+    private LocalDateTime dtAlteracaoStatus;
 
     @Column(name = "PARCELAS")
     private int parcelas;
@@ -60,6 +67,4 @@ public class Lancamento {
     @Column(name = "DESCRICAO")
     private String descricao;
 
-    @Column(name = "QUITADO")
-    private boolean quitado;
 }

@@ -36,6 +36,7 @@ public class LancamentoCreator {
 
     public Lancamento create(LancamentoInput input) {
         log.info("Criando lançamento.");
+
         validator.validarCriacao(input);
 
         Conta conta = contaGetter.getContaByFilter(input.getConta());

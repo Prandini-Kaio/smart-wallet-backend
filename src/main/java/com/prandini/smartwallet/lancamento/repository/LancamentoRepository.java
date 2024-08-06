@@ -22,7 +22,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, L
 
     @Query("SELECT l " +
             "FROM Lancamento l " +
-            "WHERE l.quitado = false ")
+            "WHERE l.status = false ")
     List<Lancamento> findNaoPagos();
 
 }

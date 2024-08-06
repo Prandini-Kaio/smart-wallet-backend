@@ -11,6 +11,8 @@ public class LancamentoExceptionMessages {
 
     private static String DEBITO_COM_PARCELAS = "Um débito não contém parcelas.";
 
+    private static String CONTA_INCORRETA = "Lançamento de %s deve ser registrado apenas na conta de %s.";
+
     public static String entradaComParcelas(){
         return ENTRADA_COM_PARCELAS;
     }
@@ -21,5 +23,9 @@ public class LancamentoExceptionMessages {
 
     public static String debitoComParcelas() {
         return DEBITO_COM_PARCELAS;
+    }
+
+    public static String contaIncorreta(String tipo, String conta) {
+        return String.format(CONTA_INCORRETA, tipo, conta);
     }
 }
