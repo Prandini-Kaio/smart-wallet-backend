@@ -31,8 +31,8 @@ public class ContaCreator {
         validator.validarCriacao(input);
 
         Conta conta = Conta.builder()
-                .banco(input.getBanco())
-                .nome(input.getNome())
+                .banco(input.getBanco().toUpperCase())
+                .nome(input.getNome().toUpperCase())
                 .dtVencimento(input.getDtVencimento())
                 .saldoParcial(BigDecimal.ZERO)
                 .tipoConta(input.getTipoConta())

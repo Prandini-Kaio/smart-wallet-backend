@@ -5,6 +5,7 @@ package com.prandini.smartwallet.lancamento.model;
  * created 4/5/24
  */
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import lombok.Builder;
@@ -36,7 +37,7 @@ public class LancamentoOutput {
 
     private String descricao;
 
-    private boolean quitado;
+    private StatusLancamento status;
 
     private String icone;
 

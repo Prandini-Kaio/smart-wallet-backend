@@ -1,5 +1,6 @@
 package com.prandini.smartwallet.transacao.service;
 
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +55,9 @@ public class TransacaoService {
     public List<TransacaoOutput> findByIdLancamento(Long idLancamento) {
         return getter.findByIdLancamento(idLancamento).stream()
                 .map(TransacaoConverter::toOutput).collect(Collectors.toList());
+    }
+
+    public TotalizadorFinanceiro findTotalizadorFinanceiro(String conta, LocalDate dtInicio, LocalDate dtFim) {
+        return this.getter.getTotalizadorByPeriodo(conta, dtInicio, dtFim);
     }
 }

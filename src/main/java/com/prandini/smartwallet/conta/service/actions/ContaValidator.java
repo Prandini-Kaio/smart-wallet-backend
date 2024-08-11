@@ -20,10 +20,10 @@ public class ContaValidator {
     private ContaGetter getter;
 
     public void validarCriacao(ContaInput input){
-        this.validarContaExistente(input);
+        this.validarExistente(input);
     }
 
-    private void validarContaExistente(ContaInput input){
+    private void validarExistente(ContaInput input){
         if(getter.existsContaByNomeBanco(input)){
             throw new BusinessException(CommonExceptionMessages.jaExistente("Conta"));
         }

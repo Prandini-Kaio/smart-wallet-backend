@@ -8,7 +8,7 @@ package com.prandini.smartwallet.lancamento.controller;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
-import com.prandini.smartwallet.lancamento.model.TotalizadorLancamento;
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,14 +35,29 @@ public class LancamentoController {
     private LancamentoService service;
 
     @GetMapping
+    public ResponseEntity<LancamentoOutput> byId(@RequestParam Long id){
+        return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<List<LancamentoOutput>> searchAll(Pageable pageable){
         return ResponseEntity.ok().body(service.findAll(pageable));
     }
 
     @GetMapping("/totalizador")
     @Operation(description = "Retorna o totalizador dos lançamentos ativos do sistema.")
-    public ResponseEntity<TotalizadorLancamento> getTotalizador(@RequestParam String conta){
+    public ResponseEntity<TotalizadorFinanceiro> getTotalizador(@RequestParam(required = false) String conta){
         return ResponseEntity.ok().body(this.service.getTotalizador(conta));
+    }
+
+    @GetMapping("/totalizador/periodo")
+    @Operation(description = "Consulta o totalizador de lançamentos do sistema por periodo e conta. Retorna o total dos lançamentos do periodo, não das transações.")
+    public ResponseEntity<TotalizadorFinanceiro> getTotalizador(
+            @RequestParam(required = false) String conta,
+            @RequestParam(required = false) LocalDate dtInicio,
+            @RequestParam(required = false) LocalDate dtFim
+    ){
+        return ResponseEntity.ok().body(this.service.getTotalizadorByPeriodo(conta, dtInicio, dtFim));
     }
 
     @GetMapping("/vencimento")

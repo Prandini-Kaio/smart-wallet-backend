@@ -6,6 +6,7 @@ package com.prandini.smartwallet.conta.service;
  */
 
 import com.prandini.smartwallet.common.model.AutcompleteDTO;
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.conta.converter.ContaConverter;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.model.ContaOutput;
@@ -30,19 +31,30 @@ public class ContaService {
     @Resource
     private ContaGetter getter;
 
+    @Resource
+    private ContaConverter converter;
+
     public Page<ContaOutput> getAll(Pageable pageable){
         log.info("Iniciando consulta de contas.");
 
-        return getter.getAll(pageable).map(ContaConverter::toOutput);
+        return getter.getAll(pageable).map(converter::toOutput);
     }
 
     public ContaOutput create(ContaInput input){
         log.info(String.format("Iniciando criação de conta %s.", input.getNome()));
 
-        return ContaConverter.toOutput(creator.criarConta(input));
+        return converter.toOutput(creator.criarConta(input));
     }
 
     public List<AutcompleteDTO> autcompleteContas(String conta) {
         return this.getter.autocompleteContas(conta);
+    }
+
+    public ContaOutput byId(Long id) {
+        return converter.toOutput(getter.byid(id));
+    }
+
+    public TotalizadorFinanceiro getTotalizadorByFilter(String filter) {
+        return getter.getTotalizadorByFilter(filter);
     }
 }

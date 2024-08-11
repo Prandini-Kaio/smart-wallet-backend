@@ -6,21 +6,18 @@ package com.prandini.smartwallet.conta.controller;
  */
 
 import com.prandini.smartwallet.common.model.AutcompleteDTO;
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.model.ContaOutput;
 import com.prandini.smartwallet.conta.service.ContaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +30,12 @@ public class ContaController {
     private ContaService service;
 
     @GetMapping
+    @Operation(summary = "Consulta uma conta pelo id")
+    public ResponseEntity<ContaOutput> byId(@RequestParam Long id){
+        return ResponseEntity.ok().body(this.service.byId(id));
+    }
+
+    @GetMapping("/all")
     @Operation(summary = "Retorna todas as contas.")
     public ResponseEntity<Page<ContaOutput>> findAll(Pageable pageable){
         return ResponseEntity.ok().body(service.getAll(pageable));
@@ -44,9 +47,15 @@ public class ContaController {
         return ResponseEntity.ok().body(this.service.autcompleteContas(conta));
     }
 
+    @GetMapping("/totalizador")
+    @Operation(summary = "Consulta o totalizador financeiro através de um filtro.")
+    public ResponseEntity<TotalizadorFinanceiro> findTotalizador(@RequestParam(required = false) String filter){
+        return ResponseEntity.ok().body(service.getTotalizadorByFilter(filter));
+    }
+
     @PostMapping
     @Operation(summary = "Cria uma conta")
-    public ResponseEntity<ContaOutput> create(@RequestBody ContaInput input){
+    public ResponseEntity<ContaOutput> create(@RequestBody @Valid ContaInput input){
         return ResponseEntity.ok().body(service.create(input));
     }
 }

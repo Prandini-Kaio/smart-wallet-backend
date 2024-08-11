@@ -22,10 +22,7 @@ public class ContaOutput {
 
     private String dtVencimento;
 
-    private BigDecimal saldoParcial;
-
-    private BigDecimal totalLancamentos;
-
     private TipoConta tipoConta;
 
+    private BigDecimal saldoParcial;
 }

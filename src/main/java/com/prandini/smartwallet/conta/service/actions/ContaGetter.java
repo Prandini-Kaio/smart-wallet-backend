@@ -7,16 +7,23 @@ package com.prandini.smartwallet.conta.service.actions;
 
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import com.prandini.smartwallet.common.model.AutcompleteDTO;
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
+import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
+import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @CommonsLog
@@ -24,6 +31,9 @@ public class ContaGetter {
 
     @Resource
     private ContaRepository repository;
+
+    @Resource
+    private LancamentoGetter lancamentoGetter;
 
     public Page<Conta> getAll(Pageable pageable){
         log.info("Buscando todas as contas.");
@@ -43,5 +53,46 @@ public class ContaGetter {
 
     public List<AutcompleteDTO> autocompleteContas(String conta) {
         return this.repository.autcompleteContas(conta);
+    }
+
+    public Conta byid(Long id) {
+        return repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Conta"));
+    }
+
+    public BigDecimal getSaldoParcialConta(Long id){
+        List<Lancamento> lancamentos = lancamentoGetter.getByConta(id);
+
+        BigDecimal saldoParcial = lancamentos.stream()
+                .filter(Objects::nonNull)
+                .map(lancamento -> {
+                    return lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ?
+                            lancamento.getValor() :
+                            lancamento.getValor().negate();
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return saldoParcial;
+    }
+
+    public TotalizadorFinanceiro getTotalizadorByFilter(String filter) {
+        List<Lancamento> lancamentos = lancamentoGetter.getByConta(filter);
+
+        BigDecimal totalSaida = BigDecimal.ZERO;
+        BigDecimal totalEntrada = BigDecimal.ZERO;
+        BigDecimal total = BigDecimal.ZERO;
+
+        totalSaida = lancamentos.stream()
+                .filter(l -> l.getTipoLancamento().equals(TipoLancamentoEnum.SAIDA))
+                .map(Lancamento::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        totalEntrada = lancamentos.stream()
+                .filter(l -> l.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA))
+                .map(Lancamento::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        total = totalEntrada.subtract(totalSaida);
+
+        return new TotalizadorFinanceiro(total, totalEntrada, totalSaida);
     }
 }

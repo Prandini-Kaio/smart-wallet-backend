@@ -6,11 +6,9 @@ package com.prandini.smartwallet.lancamento.service.actions;
  */
 
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
-import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.*;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
-import com.prandini.smartwallet.lancamento.model.TotalizadorLancamento;
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -19,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -59,26 +58,33 @@ public class LancamentoGetter {
         return Arrays.stream(CategoriaLancamentoEnum.values()).map(c -> c.nome).toList();
     }
 
-    public TotalizadorLancamento getTotalizador(String conta) {
-        BigDecimal totalCredito = BigDecimal.ZERO;
-        BigDecimal totalDebito = BigDecimal.ZERO;;
-        BigDecimal total = BigDecimal.ZERO;;
+    public TotalizadorFinanceiro getTotalizador(String conta) {
+        log.info("Calculando totalizador financeiro da conta");
 
+        List<Lancamento> lancamentos = this.getByConta(conta);
 
-        List<Lancamento> lancamentos = repository.findNaoPagos();
+        return TotalizadorFinanceiro.calcularTotalizador(lancamentos);
+    }
 
-        totalCredito = lancamentos.stream()
-                .filter(l -> l.getTipoPagamento().equals(TipoPagamentoEnum.CREDITO))
-                .map(Lancamento::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public TotalizadorFinanceiro getTotalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim){
+        log.info("Calculando totalizador financeiro da conta");
 
-        totalDebito = lancamentos.stream()
-                .filter(l -> l.getTipoPagamento().equals(TipoPagamentoEnum.DEBITO))
-                .map(Lancamento::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        List<Lancamento> lancamentos = repository.getByPeriodo(conta, dtInicio, dtFim);
 
-        total = totalDebito.subtract(totalCredito);
+        return TotalizadorFinanceiro.calcularTotalizador(lancamentos);
+    }
 
-        return new TotalizadorLancamento(total, totalDebito, totalCredito);
+    public List<Lancamento> getByConta(Long id) {
+        log.info(String.format("Consultando conta pelo id %s", id));
+
+        return this.repository.getByConta(id);
+    }
+
+    public List<Lancamento> getByConta(String filter) {
+        log.info(String.format("Consultando conta pelo filtro %s", filter));
+
+        List<Lancamento> lancamentos = this.repository.getByConta(filter).orElseThrow(CommonExceptionSupplier.naoEncontrado("Lançamento"));
+
+        return lancamentos;
     }
 }

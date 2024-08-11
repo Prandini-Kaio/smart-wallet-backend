@@ -6,6 +6,8 @@ package com.prandini.smartwallet.lancamento.domain;
  */
 public enum StatusLancamento {
 
+    EM_ABERTO("Em aberto"),
+
     QUITADO("Quitado");
 
     private final String descricao;

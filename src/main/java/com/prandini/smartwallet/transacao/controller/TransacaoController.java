@@ -1,5 +1,6 @@
 package com.prandini.smartwallet.transacao.controller;
 
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /*
@@ -33,6 +36,12 @@ public class TransacaoController {
     @Resource
     private TransacaoRepository repository;
 
+    @GetMapping
+    @Operation(description = "Retorna as transações com base no id.")
+    public ResponseEntity<List<TransacaoOutput>> findByIdLancamento(@RequestParam Long idLancamento){
+        return ResponseEntity.ok().body(service.findByIdLancamento(idLancamento));
+    }
+
     @GetMapping("/all")
     @Operation(description = "Retorna todas as transações.")
     public ResponseEntity<Page<TransacaoOutput>> searchAll(Pageable pageable){
@@ -41,10 +50,14 @@ public class TransacaoController {
         );
     }
 
-    @GetMapping
-    @Operation(description = "Retorna todas as transações.")
-    public ResponseEntity<List<TransacaoOutput>> findByIdLancamento(@RequestParam Long idLancamento){
-        return ResponseEntity.ok().body(service.findByIdLancamento(idLancamento));
+    @GetMapping("totalizador/periodo")
+    @Operation(description = "Consulta o totalizador de transações do sistema por periodo e conta. Retorna o total das transações do periodo.")
+    public ResponseEntity<TotalizadorFinanceiro> getByTotalizador(
+            @RequestParam(required = false) String conta,
+            @RequestParam(required = false) LocalDate dtInicio,
+            @RequestParam(required = false) LocalDate dtFim
+    ){
+        return ResponseEntity.ok().body(service.findTotalizadorFinanceiro(conta, dtInicio, dtFim));
     }
 
     @PutMapping("/pagar")
@@ -53,16 +66,5 @@ public class TransacaoController {
         return ResponseEntity.ok().body(this.service.pagarTransacao(id));
     }
 
-    @GetMapping("/vencimento")
-    @Operation(description = "Retorna todas as transações com base no mês de vencimento.")
-    public ResponseEntity<Page<TransacaoOutput>> searchByMonth(@RequestParam Integer month){
-        return ResponseEntity.ok().body(this.service.findByMonth(month));
-    }
-
-    @GetMapping("/stringFilter")
-    @Operation(description = "Retorna todas as transações com base em um filtro.")
-    public ResponseEntity<Page<TransacaoOutput>> searchByFilter(@RequestParam String filter){
-        return ResponseEntity.ok().body(this.service.findByStringFilter(filter));
-    }
 
 }

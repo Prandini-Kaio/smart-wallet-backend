@@ -23,6 +23,7 @@ public class LancamentoConverter {
                 .banco(lancamento.getConta().getBanco())
                 .parcelas(lancamento.getParcelas())
                 .descricao(lancamento.getDescricao())
+                .status(lancamento.getStatus())
                 .icone(lancamento.getCategoriaLancamento().icone)
                 .build();
     }

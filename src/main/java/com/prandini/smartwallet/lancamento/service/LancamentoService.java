@@ -10,7 +10,7 @@ import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
-import com.prandini.smartwallet.lancamento.model.TotalizadorLancamento;
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import jakarta.annotation.Resource;
@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -63,7 +64,15 @@ public class LancamentoService {
         return this.getter.getCategorias();
     }
 
-    public TotalizadorLancamento getTotalizador(String conta) {
+    public TotalizadorFinanceiro getTotalizador(String conta) {
         return this.getter.getTotalizador(conta);
+    }
+
+    public TotalizadorFinanceiro getTotalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim) {
+        return this.getter.getTotalizadorByPeriodo(conta, dtInicio, dtFim);
+    }
+
+    public LancamentoOutput findById(Long id) {
+        return LancamentoConverter.toOutput(this.getter.byId(id));
     }
 }

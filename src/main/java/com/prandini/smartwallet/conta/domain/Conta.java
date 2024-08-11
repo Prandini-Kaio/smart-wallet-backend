@@ -42,8 +42,8 @@ public class Conta {
     @Column(name = "NOME")
     private String nome;
 
-    @Column(name = "DATA_VENCIMENTO")
-    private LocalDate dtVencimento;
+    @Column(name = "VENCIMENTO")
+    private String dtVencimento;
 
     @Column(name = "SALDO_PARCIAL")
     private BigDecimal saldoParcial;
