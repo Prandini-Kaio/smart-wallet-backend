@@ -34,10 +34,10 @@ public class ContaService {
     @Resource
     private ContaConverter converter;
 
-    public Page<ContaOutput> getAll(Pageable pageable){
+    public List<ContaOutput> getAll(){
         log.info("Iniciando consulta de contas.");
 
-        return getter.getAll(pageable).map(converter::toOutput);
+        return getter.getAll().stream().map(converter::toOutput).toList();
     }
 
     public ContaOutput create(ContaInput input){

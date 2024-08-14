@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: postgres.dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: smartwallet
+    ports:
+      - "5432:5432"
+
+  spring-app:
+    build:
+      context: .
+      dockerfile: application.dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres

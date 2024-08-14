@@ -35,10 +35,10 @@ public class ContaGetter {
     @Resource
     private LancamentoGetter lancamentoGetter;
 
-    public Page<Conta> getAll(Pageable pageable){
+    public List<Conta> getAll(){
         log.info("Buscando todas as contas.");
 
-        return repository.findAll(pageable);
+        return repository.findAll();
     }
 
     public Conta getContaByFilter(String filter){

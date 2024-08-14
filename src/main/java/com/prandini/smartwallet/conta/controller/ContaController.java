@@ -37,8 +37,8 @@ public class ContaController {
 
     @GetMapping("/all")
     @Operation(summary = "Retorna todas as contas.")
-    public ResponseEntity<Page<ContaOutput>> findAll(Pageable pageable){
-        return ResponseEntity.ok().body(service.getAll(pageable));
+    public ResponseEntity<List<ContaOutput>> findAll(){
+        return ResponseEntity.ok().body(service.getAll());
     }
 
     @GetMapping("/autocomplete")
