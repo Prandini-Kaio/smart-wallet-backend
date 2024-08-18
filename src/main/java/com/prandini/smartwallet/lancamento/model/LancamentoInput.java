@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.lancamento.model;
 
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /*
  * @author prandini
@@ -20,13 +22,19 @@ public class LancamentoInput {
     private TipoLancamentoEnum tipoLancamento;
 
     @NotNull
-    private TipoPagamentoEnum tipoPagamento;
-
-    @NotNull
     private CategoriaLancamentoEnum categoriaLancamento;
 
     @NotNull
+    private TipoPagamentoEnum tipoPagamento;
+
+    private StatusLancamento status;
+
+    @NotNull
     private BigDecimal valor;
+
+    private LocalDateTime dtCriacao;
+
+    private LocalDateTime dtAlteracaoStatus;
 
     @NotNull
     private int parcelas;

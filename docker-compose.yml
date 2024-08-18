@@ -1,25 +1,37 @@
-version: '3'
+version: '3.8'
+
+networks:
+  app_network:
+    driver: bridge
 
 services:
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: springbootdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - app_network
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init-db.sql
+
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
+    container_name: springboot-app
+    networks:
+      - app_network
     ports:
       - "8080:8080"
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/smartwallet
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/smartwallet
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-
-  db:
-    image: postgres:13
-    volumes:
-      - ./Postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5439"
+volumes:
+  pgdata:

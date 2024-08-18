@@ -5,6 +5,7 @@ package com.prandini.smartwallet.lancamento.controller;
  * created 4/16/24
  */
 
+import com.prandini.smartwallet.common.model.ResumoFinanceiro;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
@@ -71,6 +72,7 @@ public class LancamentoController {
     }
 
     @PostMapping
+    @Operation(description = "Criar lançamento com base na data atual.")
     public ResponseEntity<LancamentoOutput> criarLancamento(@RequestBody @Valid LancamentoInput input){
         return ResponseEntity.ok().body(service.criarLancamento(input));
     }

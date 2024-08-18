@@ -53,14 +53,14 @@ public class LancamentoCreator {
                 .tipoLancamento(input.getTipoLancamento())
                 .categoriaLancamento(input.getCategoriaLancamento())
                 .tipoPagamento(input.getTipoPagamento())
+                .status(input.getStatus() != null ? input.getStatus() : StatusLancamento.EM_ABERTO)
                 .valor(input.getValor())
-                .dtCriacao(LocalDateTime.now())
+                .dtCriacao(input.getDtCriacao() != null ? input.getDtCriacao() : LocalDateTime.now())
+                .dtAlteracaoStatus(input.getDtAlteracaoStatus() != null ? input.getDtAlteracaoStatus() : null)
                 .parcelas(input.getParcelas())
                 .conta(conta)
                 .descricao(input.getDescricao())
-                .status(StatusLancamento.EM_ABERTO)
                 .build();
 
     }
-
 }
