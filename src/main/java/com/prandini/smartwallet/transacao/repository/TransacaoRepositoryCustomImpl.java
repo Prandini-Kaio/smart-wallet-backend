@@ -37,6 +37,8 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         Optional.ofNullable(dtInicio).ifPresent(dt -> safeAddParams(params, "dtInicio", dtInicio.atTime(0, 0, 0), sb, " AND t.dtVencimento >= :dtInicio "));
         Optional.ofNullable(dtFim).ifPresent(dt -> safeAddParams(params, "dtFim", dtFim.atTime(23,59, 59), sb, " AND t.dtVencimento <= :dtFim "));
 
+        sb.append(" ORDER BY t.dtVencimento DESC ");
+
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
 

@@ -18,7 +18,8 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, L
     Optional<List<Lancamento>> findByDtCriacao(Integer mes);
 
     @Query("SELECT l " +
-            "FROM Lancamento l ")
+            "FROM Lancamento l " +
+            " ORDER BY l.dtCriacao DESC ")
     List<Lancamento> findTodos();
 
     @Query("SELECT l " +

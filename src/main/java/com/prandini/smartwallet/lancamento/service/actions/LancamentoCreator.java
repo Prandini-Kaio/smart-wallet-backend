@@ -3,6 +3,7 @@ package com.prandini.smartwallet.lancamento.service.actions;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.conta.service.actions.ContaUpdater;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;

@@ -20,8 +20,9 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>, Tra
     @Query("SELECT t FROM Transacao t  WHERE t.status = :status AND MONTH(t.dtVencimento) = :month")
     List<Transacao> findByFilter(TransacaoStatusEnum status, Integer month);
 
-    @Query("SELECT t " +
-            "FROM Transacao t " +
-            "WHERE t.lancamento.id = :idLancamento")
+    @Query(" SELECT t " +
+            " FROM Transacao t " +
+            " WHERE t.lancamento.id = :idLancamento " +
+            " ORDER BY t.dtVencimento ASC ")
     List<Transacao> findByIdLancamento(Long idLancamento);
 }

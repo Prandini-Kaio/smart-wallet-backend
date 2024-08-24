@@ -26,7 +26,9 @@ public enum CategoriaLancamentoEnum {
 
     CACHORRO("Cachorro", "dog-side"),
 
-    OUTROS("Outros", "cube");
+    OUTROS("Outros", "cube"),
+
+    RENDA("Renda", "cash");
 
     public final String nome;
 

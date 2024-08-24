@@ -35,6 +35,8 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
         // Setando os parametros da query, caso o filtro nao seja nulo
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
 
+        sb.append(" ORDER BY l.data DESC ");
+
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
 
@@ -59,6 +61,8 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
         Optional.ofNullable(conta).ifPresent(c -> safeAddParams(params, "conta", conta, sb, " AND (UPPER(c.nome) LIKE CONCAT('%', UPPER(:conta), '%') OR UPPER(c.banco) LIKE CONCAT('%', UPPER(:conta), '%'))"));
         Optional.ofNullable(dtInicio).ifPresent(dt -> safeAddParams(params, "dtInicio", dtInicio.atTime(0, 0, 0), sb, " AND l.dtInicio >= :dtInicio "));
         Optional.ofNullable(dtFim).ifPresent(dt -> safeAddParams(params, "dtFim", dtFim.atTime(23,59, 59), sb, " AND l.dtFim <= dtFim "));
+
+        sb.append(" ORDER BY l.dtCriacao DESC ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
