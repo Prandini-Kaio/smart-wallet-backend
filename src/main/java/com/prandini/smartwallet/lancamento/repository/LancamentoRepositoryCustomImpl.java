@@ -30,12 +30,11 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
 
         // Query
         sb.append("SELECT l FROM Lancamento l ")
+                .append("JOIN l.conta c ")
                 .append("WHERE 1=1 ");
 
         // Setando os parametros da query, caso o filtro nao seja nulo
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
-
-        sb.append(" ORDER BY l.data DESC ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
@@ -58,7 +57,7 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
                 .append(" AND (c.tipoConta <> TipoConta.INVESTIMENTO AND c.tipoConta <> TipoConta.ECONOMIA) ");
 
         // Setando os parametros da query, caso o filtro nao seja nulo
-        Optional.ofNullable(conta).ifPresent(c -> safeAddParams(params, "conta", conta, sb, " AND (UPPER(c.nome) LIKE CONCAT('%', UPPER(:conta), '%') OR UPPER(c.banco) LIKE CONCAT('%', UPPER(:conta), '%'))"));
+        Optional.ofNullable(conta).ifPresent(c -> safeAddParams(params, "conta", conta, sb, " AND (UPPER(c.nome) LIKE CONCAT('%', UPPER(:conta), '%') OR UPPER(c.banco) LIKE CONCAT('%', UPPER(:conta), '%')) "));
         Optional.ofNullable(dtInicio).ifPresent(dt -> safeAddParams(params, "dtInicio", dtInicio.atTime(0, 0, 0), sb, " AND l.dtInicio >= :dtInicio "));
         Optional.ofNullable(dtFim).ifPresent(dt -> safeAddParams(params, "dtFim", dtFim.atTime(23,59, 59), sb, " AND l.dtFim <= dtFim "));
 
@@ -73,8 +72,13 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
     }
 
     private void buildParams(Map<String, Object> params, StringBuilder sb, LancamentoFilter filter){
-        safeAddParams(params, "mes", filter.getMes(), sb, " AND MONTH(l.dtCriacao) = :mes ");
-        safeAddParams(params, "status", filter.getTipoLancamento(), sb, " AND l.tipoLancamento = :status ");
+        safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
+        safeAddParams(params, "categoria", filter.getCategoria(), sb, " AND l.categoriaLancamento = :categoria ");
+        safeAddParams(params, "pagamento", filter.getTipoPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
+        safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status = :status ");
+        safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND l.dtCriacao >= :dtInicio ");
+        safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND l.dtCriacao <= :dtFim ");
+        safeAddParams(params, "conta", filter.getConta(), sb, " AND (UPPER(c.nome) LIKE CONCAT('%', UPPER(:conta), '%') OR UPPER(c.banco) LIKE CONCAT('%', UPPER(:conta), '%')) ");
     }
 
     private static void safeAddParams(Map<String, Object> params, String name, Object value, StringBuilder sb, String queryPart){

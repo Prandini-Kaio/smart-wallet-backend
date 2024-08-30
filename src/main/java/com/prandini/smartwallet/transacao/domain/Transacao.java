@@ -52,7 +52,7 @@ public class Transacao {
 
     @Enumerated
     @Column(name = "STATUS")
-    private TransacaoStatusEnum status;
+    private StatusTransacaoEnum status;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "LANCAMENTO_ID")

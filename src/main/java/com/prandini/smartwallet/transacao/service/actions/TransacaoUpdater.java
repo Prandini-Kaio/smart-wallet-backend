@@ -7,7 +7,7 @@ package com.prandini.smartwallet.transacao.service.actions;
 
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoUpdater;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -38,7 +38,7 @@ public class TransacaoUpdater {
 
         validator.validarPagamento(transacao);
 
-        transacao.setStatus(TransacaoStatusEnum.PAGO);
+        transacao.setStatus(StatusTransacaoEnum.PAGO);
         transacao.setDtPagamento(LocalDateTime.now());
 
         if(transacao.getProxima() == null)

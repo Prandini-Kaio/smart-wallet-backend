@@ -3,6 +3,7 @@ package com.prandini.smartwallet.transacao.service;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
+import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoUpdater;
 import jakarta.annotation.Resource;
@@ -40,24 +41,28 @@ public class TransacaoService {
     public Page<TransacaoOutput> findByMonth(Integer month){
         log.info(String.format("Iniciando consulta a transações do mês %s.", month));
 
-        return new PageImpl<>(getter.findByMonth(month))
+        return new PageImpl<>(getter.byMonth(month))
                 .map(TransacaoConverter::toOutput);
     }
 
     public Page<TransacaoOutput> findByStringFilter(String filter){
         log.info(String.format("Iniciando consulta a transações com filtro %s.", filter));
 
-        return new PageImpl<>(getter.findByStringFilter(filter))
+        return new PageImpl<>(getter.byStringFilter(filter))
                 .map(TransacaoConverter::toOutput);
     }
 
 
     public List<TransacaoOutput> findByIdLancamento(Long idLancamento) {
-        return getter.findByIdLancamento(idLancamento).stream()
+        return getter.byIdLancamento(idLancamento).stream()
                 .map(TransacaoConverter::toOutput).collect(Collectors.toList());
     }
 
     public TotalizadorFinanceiro findTotalizadorFinanceiro(String conta, LocalDate dtInicio, LocalDate dtFim) {
-        return this.getter.getTotalizadorByPeriodo(conta, dtInicio, dtFim);
+        return this.getter.totalizadorByPeriodo(conta, dtInicio, dtFim);
+    }
+
+    public TotalizadorFinanceiro findTotalizadorByFilter(TransacaoFilter filter) {
+        return this.getter.totalizadorByFilter(filter);
     }
 }

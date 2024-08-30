@@ -1,7 +1,7 @@
 package com.prandini.smartwallet.transacao.repository;
 
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,7 +18,7 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>, Tra
     List<Transacao> findByStringFilter(String filter);
 
     @Query("SELECT t FROM Transacao t  WHERE t.status = :status AND MONTH(t.dtVencimento) = :month")
-    List<Transacao> findByFilter(TransacaoStatusEnum status, Integer month);
+    List<Transacao> findByFilter(StatusTransacaoEnum status, Integer month);
 
     @Query(" SELECT t " +
             " FROM Transacao t " +

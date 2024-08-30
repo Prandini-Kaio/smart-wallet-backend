@@ -8,9 +8,8 @@ package com.prandini.smartwallet.transacao.service.actions;
 import com.prandini.smartwallet.common.LocalDateConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
-import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -57,7 +55,7 @@ public class TransacaoCreator {
         return Transacao.builder()
                 .valor(valor)
                 .lancamento(lancamento)
-                .status(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? TransacaoStatusEnum.PAGO : TransacaoStatusEnum.PENDENTE)
+                .status(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? StatusTransacaoEnum.PAGO : StatusTransacaoEnum.PENDENTE)
                 .descricao(" [" + (i+1) + " / " + lancamento.getParcelas() + "]")
                 .dtVencimento(calcularDataVencimento(lancamento.getDtCriacao(), i))
                 .dtPagamento(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? LocalDateTime.now() : null)

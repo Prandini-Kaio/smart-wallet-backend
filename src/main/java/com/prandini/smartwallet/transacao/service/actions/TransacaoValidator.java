@@ -7,9 +7,8 @@ package com.prandini.smartwallet.transacao.service.actions;
 
 import com.prandini.smartwallet.common.exception.BusinessException;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.exceptions.TransacaoExceptionMessages;
-import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +27,11 @@ public class TransacaoValidator {
 
     private void validarSequencia(Transacao transacao) {
 
-        List<Transacao> transacoes = getter.findByIdLancamento(transacao.getLancamento().getId());
+        List<Transacao> transacoes = getter.byIdLancamento(transacao.getLancamento().getId());
 
         boolean hasTransacaoAberta = transacoes.stream()
                 .filter(t -> !transacao.getId().equals(t.getId()))
-                .filter(t -> t.getStatus().equals(TransacaoStatusEnum.PENDENTE))
+                .filter(t -> t.getStatus().equals(StatusTransacaoEnum.PENDENTE))
                 .anyMatch(t -> t.getDtVencimento().isBefore(transacao.getDtVencimento()));
 
         if(hasTransacaoAberta)
@@ -40,10 +39,10 @@ public class TransacaoValidator {
     }
 
     private void validarStatus(Transacao transacao){
-        if(transacao.getStatus().equals(TransacaoStatusEnum.CANCELADO))
+        if(transacao.getStatus().equals(StatusTransacaoEnum.CANCELADO))
             throw new BusinessException(TransacaoExceptionMessages.pagamentoIncorreto());
 
-        if(transacao.getStatus().equals(TransacaoStatusEnum.PAGO))
+        if(transacao.getStatus().equals(StatusTransacaoEnum.PAGO))
             throw new BusinessException(TransacaoExceptionMessages.pagamentoJaEfetuado());
     }
 }

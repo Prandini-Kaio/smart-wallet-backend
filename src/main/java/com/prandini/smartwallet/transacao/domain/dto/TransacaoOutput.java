@@ -5,7 +5,7 @@ package com.prandini.smartwallet.transacao.domain.dto;
  * created 4/5/24
  */
 
-import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,11 +14,12 @@ import java.math.BigDecimal;
 @Builder
 @Data
 public class TransacaoOutput {
+
     private Long id;
 
     private BigDecimal valor;
 
-    private TransacaoStatusEnum status;
+    private StatusTransacaoEnum status;
 
     private String dtVencimento;
 

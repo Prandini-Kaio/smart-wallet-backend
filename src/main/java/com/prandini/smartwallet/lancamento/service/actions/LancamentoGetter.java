@@ -58,12 +58,16 @@ public class LancamentoGetter {
         return Arrays.stream(CategoriaLancamentoEnum.values()).map(c -> c.nome).toList();
     }
 
-    public TotalizadorFinanceiro getTotalizador(String conta) {
+    public TotalizadorFinanceiro getTotalizador(LancamentoFilter filter) {
         log.info("Calculando totalizador financeiro da conta");
 
-        List<Lancamento> lancamentos = this.getByConta(conta);
+        List<Lancamento> lancamentos = this.getByFilter(filter);
 
         return TotalizadorFinanceiro.calcularTotalizador(lancamentos);
+    }
+
+    private List<Lancamento> getByFilter(LancamentoFilter filter) {
+        return this.repository.findByFilter(filter);
     }
 
     public TotalizadorFinanceiro getTotalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim){

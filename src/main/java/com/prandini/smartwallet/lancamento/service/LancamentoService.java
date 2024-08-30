@@ -64,8 +64,8 @@ public class LancamentoService {
         return this.getter.getCategorias();
     }
 
-    public TotalizadorFinanceiro getTotalizador(String conta) {
-        return this.getter.getTotalizador(conta);
+    public TotalizadorFinanceiro getTotalizador(LancamentoFilter filter) {
+        return this.getter.getTotalizador(filter);
     }
 
     public TotalizadorFinanceiro getTotalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim) {

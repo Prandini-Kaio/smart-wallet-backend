@@ -45,10 +45,15 @@ public class LancamentoController {
         return ResponseEntity.ok().body(service.findAll(pageable));
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<LancamentoOutput>> getByFilter(LancamentoFilter filter){
+        return ResponseEntity.ok().body(service.findByFilter(filter));
+    }
+
     @GetMapping("/totalizador")
     @Operation(description = "Retorna o totalizador dos lançamentos ativos do sistema.")
-    public ResponseEntity<TotalizadorFinanceiro> getTotalizador(@RequestParam(required = false) String conta){
-        return ResponseEntity.ok().body(this.service.getTotalizador(conta));
+    public ResponseEntity<TotalizadorFinanceiro> getTotalizador(LancamentoFilter filter){
+        return ResponseEntity.ok().body(this.service.getTotalizador(filter));
     }
 
     @GetMapping("/totalizador/periodo")
@@ -59,16 +64,6 @@ public class LancamentoController {
             @RequestParam(required = false) LocalDate dtFim
     ){
         return ResponseEntity.ok().body(this.service.getTotalizadorByPeriodo(conta, dtInicio, dtFim));
-    }
-
-    @GetMapping("/vencimento")
-    public ResponseEntity<List<LancamentoOutput>> searchByMes(@RequestParam Integer mes){
-        return ResponseEntity.ok().body(service.findByVencimento(mes));
-    }
-
-    @GetMapping("/filter")
-    public ResponseEntity<List<LancamentoOutput>> searchByMes(LancamentoFilter filter){
-        return ResponseEntity.ok().body(service.findByFilter(filter));
     }
 
     @PostMapping

@@ -5,7 +5,7 @@ package com.prandini.smartwallet.transacao.controller;
  * created 5/4/24
  */
 
-import com.prandini.smartwallet.transacao.domain.TransacaoStatusEnum;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import java.util.List;
 public class StatusTransacaoController {
 
     @GetMapping
-    public ResponseEntity<List<TransacaoStatusEnum>> getStatus(){
-        return ResponseEntity.ok().body(List.of(TransacaoStatusEnum.values()));
+    public ResponseEntity<List<StatusTransacaoEnum>> getStatus(){
+        return ResponseEntity.ok().body(List.of(StatusTransacaoEnum.values()));
     }
 }
