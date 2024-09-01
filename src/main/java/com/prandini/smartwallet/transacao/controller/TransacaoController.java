@@ -46,6 +46,13 @@ public class TransacaoController {
         );
     }
 
+    @GetMapping
+    public ResponseEntity<List<TransacaoOutput>> findByFilter(
+            TransacaoFilter filter
+    ){
+        return ResponseEntity.ok().body(this.service.findByFilter(filter));
+    }
+
     @GetMapping("totalizador")
     @Operation
     public ResponseEntity<TotalizadorFinanceiro> searchTotalizador(TransacaoFilter filter){

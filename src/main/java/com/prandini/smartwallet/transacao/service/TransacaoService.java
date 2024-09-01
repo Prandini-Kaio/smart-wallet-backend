@@ -65,4 +65,8 @@ public class TransacaoService {
     public TotalizadorFinanceiro findTotalizadorByFilter(TransacaoFilter filter) {
         return this.getter.totalizadorByFilter(filter);
     }
+
+    public List<TransacaoOutput> findByFilter(TransacaoFilter filter) {
+        return this.getter.byFilter(filter).stream().map(TransacaoConverter::toOutput).toList();
+    }
 }
