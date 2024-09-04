@@ -33,9 +33,10 @@ public class TransacaoController {
     private TransacaoRepository repository;
 
     @GetMapping
-    @Operation(description = "Retorna as transações com base no id.")
-    public ResponseEntity<List<TransacaoOutput>> findByIdLancamento(@RequestParam Long idLancamento){
-        return ResponseEntity.ok().body(service.findByIdLancamento(idLancamento));
+    public ResponseEntity<List<TransacaoOutput>> findByFilter(
+            TransacaoFilter filter
+    ){
+        return ResponseEntity.ok().body(this.service.findByFilter(filter));
     }
 
     @GetMapping("/all")
@@ -44,13 +45,6 @@ public class TransacaoController {
         return ResponseEntity.ok().body(
                 repository.findAll(pageable).map(TransacaoConverter::toOutput)
         );
-    }
-
-    @GetMapping
-    public ResponseEntity<List<TransacaoOutput>> findByFilter(
-            TransacaoFilter filter
-    ){
-        return ResponseEntity.ok().body(this.service.findByFilter(filter));
     }
 
     @GetMapping("totalizador")

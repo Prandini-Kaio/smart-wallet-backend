@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 @Builder
 public class TransacaoFilter {
 
+    private Long id;
+
     private CategoriaLancamentoEnum categoria;
 
     private TipoLancamentoEnum tipo;
