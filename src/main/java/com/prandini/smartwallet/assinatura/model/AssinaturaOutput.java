@@ -1,36 +1,26 @@
-package com.prandini.smartwallet.assinatura.domain;
+package com.prandini.smartwallet.assinatura.model;
 
-import com.prandini.smartwallet.conta.domain.Conta;
-import jakarta.persistence.*;
+/*
+ * @author prandini
+ * created 9/4/24
+ */
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
-/**
- * @author kaiooliveira
- * created 04/09/2024
- */
-
 @Data
-@Entity
 @Builder
 @NoArgsConstructor @AllArgsConstructor
-@Table(name = "ASSINATURA")
-public class Assinatura {
+public class AssinaturaOutput {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Conta conta;
+    private String conta;
 
     private BigDecimal valor;
 

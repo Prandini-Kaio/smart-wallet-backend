@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface AssinaturaRepository extends JpaRepository<Long, Assinatura> {
+public interface AssinaturaRepository extends JpaRepository<Assinatura, Long> {
 }
