@@ -13,7 +13,7 @@
         steps {
         script {
         // Construir e rodar os containers usando Docker Compose
-        sh 'docker compose --build -d'
+        sh 'docker-compose --build -d'
         }
         }
         }
@@ -27,7 +27,7 @@
 
         failure {
         // Se algo falhar, exibe os logs dos containers
-        sh 'docker compose logs'
+        sh 'docker-compose logs'
         }
         }
     }
