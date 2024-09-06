@@ -6,7 +6,10 @@ import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +19,8 @@ import java.time.LocalDateTime;
  * created 4/16/24
  */
 @Getter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class LancamentoInput {
 
     @NotNull

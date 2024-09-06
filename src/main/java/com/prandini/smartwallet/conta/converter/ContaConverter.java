@@ -2,6 +2,7 @@ package com.prandini.smartwallet.conta.converter;
 
 
 
+import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaOutput;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
@@ -10,6 +11,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /*
  * @author prandini
@@ -24,6 +26,7 @@ public class ContaConverter {
 
     public ContaOutput toOutput(Conta conta){
 
+        LocalDate now = LocalDate.now();
         BigDecimal saldoParcial = getter.getSaldoParcialConta(conta.getId());
 
         return ContaOutput.builder()
@@ -31,7 +34,7 @@ public class ContaConverter {
                 .banco(conta.getBanco())
                 .nome(conta.getNome())
                 .saldoParcial(saldoParcial)
-                .dtVencimento(conta.getDtVencimento())
+                .dtVencimento(DateUtils.toBrazilianDateString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaVencimento())))
                 .tipoConta(conta.getTipoConta())
                 .build();
     }

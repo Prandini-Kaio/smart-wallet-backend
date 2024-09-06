@@ -5,32 +5,30 @@ package com.prandini.smartwallet.assinatura.model;
  * created 9/4/24
  */
 
-import com.prandini.smartwallet.conta.domain.Conta;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class AssinaturaInput {
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+public class AssinaturaFilter {
 
     private Long id;
 
-    @NotNull
     private String conta;
 
-    @NotNull
     private BigDecimal valor;
 
     private LocalDate dtInicio;
 
     private LocalDate dtFim;
 
-    private boolean ativa = true;
+    private boolean ativa;
 
-    @NotNull
     private String descricao;
 }

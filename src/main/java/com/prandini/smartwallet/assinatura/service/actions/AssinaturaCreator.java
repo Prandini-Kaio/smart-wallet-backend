@@ -6,8 +6,7 @@ import com.prandini.smartwallet.assinatura.repository.AssinaturaRepository;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.sql.init.dependency.DatabaseInitializationDependencyConfigurer;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,6 +17,7 @@ import java.time.LocalDate;
  */
 
 @Component
+@CommonsLog
 public class AssinaturaCreator {
 
     @Resource
@@ -25,10 +25,10 @@ public class AssinaturaCreator {
 
     @Resource
     private ContaGetter contaGetter;
-    @Autowired
-    private DatabaseInitializationDependencyConfigurer databaseInitializationDependencyConfigurer;
 
     public Assinatura create(AssinaturaInput input) {
+
+        log.info(String.format("Criando assinatura para %s", input.getDescricao()));
 
         Conta conta = contaGetter.getContaByFilter(input.getConta());
 

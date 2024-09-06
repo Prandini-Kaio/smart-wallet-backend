@@ -2,7 +2,7 @@ package com.prandini.smartwallet.transacao.converter;
 
 
 
-import com.prandini.smartwallet.common.LocalDateConverter;
+import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 
@@ -20,9 +20,9 @@ public class TransacaoConverter {
 
     public static TransacaoOutput toOutput(Transacao transacao){
 
-        String dtVencimento = LocalDateConverter.toBrazilianDateString(transacao.getDtVencimento().toLocalDate());
+        String dtVencimento = DateUtils.toBrazilianDateString(transacao.getDtVencimento().toLocalDate());
         String dtPagamento = transacao.getDtPagamento() != null
-                ? LocalDateConverter.toBrazilianDateString(transacao.getDtPagamento().toLocalDate())
+                ? DateUtils.toBrazilianDateString(transacao.getDtPagamento().toLocalDate())
                 : null;
 
         return TransacaoOutput.builder()
