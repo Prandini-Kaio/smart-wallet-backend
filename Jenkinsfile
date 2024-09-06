@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Construir e rodar os containers usando Docker Compose
-                    sh 'docker-compose up --build -d'
+                    sh 'docker compose up --build -d'
                 }
             }
         }
@@ -27,7 +27,7 @@ pipeline {
 
         failure {
             // Se algo falhar, exibe os logs dos containers
-            sh 'docker-compose logs'
+            sh 'docker compose logs'
         }
     }
 }
