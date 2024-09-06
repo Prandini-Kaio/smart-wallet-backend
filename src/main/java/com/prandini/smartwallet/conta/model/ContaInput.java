@@ -29,7 +29,7 @@ public class ContaInput {
     @Schema(example = "ECONOMIA")
     private TipoConta tipoConta;
 
-    @Pattern(regexp = "^(0[1-9]|[12][0-9]|30)/(0[1-9]|1[0-2])|31/(0[13578]|1[02])$\n")
-    @Schema(example = "01/12")
-    private String dtVencimento;
+    @NotNull
+    @Schema(example = "12")
+    private String diaVencimento;
 }

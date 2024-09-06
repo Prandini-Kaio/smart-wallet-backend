@@ -5,10 +5,9 @@ package com.prandini.smartwallet.transacao.service.actions;
  * created 4/16/24
  */
 
-import com.prandini.smartwallet.common.LocalDateConverter;
+import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
-import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
@@ -32,7 +31,7 @@ public class TransacaoCreator {
 
     public List<Transacao> create(Lancamento lancamento){
 
-        log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.", lancamento.getParcelas(), lancamento.getId(), LocalDateConverter.toBrazilianDateTimeString(lancamento.getDtCriacao())));
+        log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.", lancamento.getParcelas(), lancamento.getId(), DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao())));
 
         List<Transacao> transacoes = IntStream
                 .range(0, lancamento.getParcelas())
@@ -58,12 +57,13 @@ public class TransacaoCreator {
                 .lancamento(lancamento)
                 .status(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? StatusTransacaoEnum.PAGO : StatusTransacaoEnum.PENDENTE)
                 .descricao(" [" + (i+1) + " / " + lancamento.getParcelas() + "]")
-                .dtVencimento(lancamento.getTipoLancamento() == TipoLancamentoEnum.ENTRADA ? LocalDateTime.now() : calcularDataVencimento(lancamento.getDtCriacao(), i))
+                .dtVencimento(calcularDataVencimento(lancamento.getConta().getDiaVencimento(), lancamento.getDtCriacao(), i))
                 .dtPagamento(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? LocalDateTime.now() : null)
                 .build();
     }
 
-    private LocalDateTime calcularDataVencimento(LocalDateTime dtCriacao, int indiceParcela) {
-        return LocalDateTime.now().plusMonths(indiceParcela + 1);
+    private LocalDateTime calcularDataVencimento(int diaVencimento, LocalDateTime dtCriacao, int indiceParcela) {
+        LocalDateTime now = LocalDateTime.now();
+        return LocalDateTime.of(now.getYear(), now.plusMonths(indiceParcela + 1).getMonthValue(), diaVencimento, 0, 0, 0);
     }
 }

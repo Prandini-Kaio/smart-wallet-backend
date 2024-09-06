@@ -28,7 +28,9 @@ public enum CategoriaLancamentoEnum {
 
     OUTROS("Outros", "cube"),
 
-    RENDA("Renda", "cash");
+    RENDA("Renda", "cash"),
+
+    ASSINATURA("Assinatura", "draw-pen");
 
     public final String nome;
 

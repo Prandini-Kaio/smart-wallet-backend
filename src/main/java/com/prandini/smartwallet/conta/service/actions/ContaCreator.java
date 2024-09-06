@@ -33,7 +33,7 @@ public class ContaCreator {
         Conta conta = Conta.builder()
                 .banco(input.getBanco().toUpperCase())
                 .nome(input.getNome().toUpperCase())
-                .dtVencimento(input.getDtVencimento())
+                .diaVencimento(Integer.parseInt(input.getDiaVencimento()))
                 .saldoParcial(BigDecimal.ZERO)
                 .tipoConta(input.getTipoConta())
                 .build();

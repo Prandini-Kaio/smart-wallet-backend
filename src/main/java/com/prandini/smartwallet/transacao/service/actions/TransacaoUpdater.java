@@ -5,9 +5,11 @@ package com.prandini.smartwallet.transacao.service.actions;
  * created 4/29/24
  */
 
+import com.prandini.smartwallet.common.exception.BusinessException;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoUpdater;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
+import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -45,5 +47,22 @@ public class TransacaoUpdater {
             lancamentoUpdater.quitarLancamento(transacao.getLancamento().getId());
 
         return repository.save(transacao);
+    }
+
+    public Transacao update(Transacao transacao) {
+
+        Transacao t = repository.findById(transacao.getId()).orElse(null);
+
+        if(t == null)
+            throw new BusinessException("Transacao inexistente");
+
+        t.setValor(transacao.getValor());
+        t.setLancamento(t.getLancamento());
+        t.setDescricao(transacao.getDescricao());
+        t.setStatus(transacao.getStatus());
+        t.setDtVencimento(transacao.getDtVencimento());
+        t.setDtPagamento(transacao.getDtPagamento());
+
+        return this.repository.save(t);
     }
 }

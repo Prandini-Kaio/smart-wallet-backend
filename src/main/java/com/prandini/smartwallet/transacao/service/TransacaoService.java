@@ -2,6 +2,7 @@ package com.prandini.smartwallet.transacao.service;
 
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
+import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
@@ -38,6 +39,10 @@ public class TransacaoService {
         return TransacaoConverter.toOutput(updater.pagar(id));
     }
 
+    public TransacaoOutput update(Transacao transacao) {
+        return TransacaoConverter.toOutput(this.updater.update(transacao));
+    }
+
     public Page<TransacaoOutput> findByMonth(Integer month){
         log.info(String.format("Iniciando consulta a transações do mês %s.", month));
 
@@ -51,7 +56,6 @@ public class TransacaoService {
         return new PageImpl<>(getter.byStringFilter(filter))
                 .map(TransacaoConverter::toOutput);
     }
-
 
     public List<TransacaoOutput> findByIdLancamento(Long idLancamento) {
         return getter.byIdLancamento(idLancamento).stream()

@@ -1,7 +1,7 @@
 package com.prandini.smartwallet.lancamento.converter;
 
 
-import com.prandini.smartwallet.common.LocalDateConverter;
+import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 
@@ -18,7 +18,7 @@ public class LancamentoConverter {
                 .categoriaLancamento(lancamento.getCategoriaLancamento())
                 .tipoPagamento(lancamento.getTipoPagamento())
                 .valor(lancamento.getValor())
-                .dtCriacao(LocalDateConverter.toBrazilianDateTimeString(lancamento.getDtCriacao()))
+                .dtCriacao(DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao()))
                 .conta(lancamento.getConta().getNome())
                 .banco(lancamento.getConta().getBanco())
                 .parcelas(lancamento.getParcelas())

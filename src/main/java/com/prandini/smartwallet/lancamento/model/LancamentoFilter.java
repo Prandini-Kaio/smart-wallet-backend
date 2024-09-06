@@ -4,8 +4,7 @@ import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,7 +14,9 @@ import java.time.LocalDateTime;
  * created 4/29/24
  */
 
-@Getter @Setter
+@Data
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class LancamentoFilter {
 
     private TipoLancamentoEnum tipo;
