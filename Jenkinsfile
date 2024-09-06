@@ -1,6 +1,6 @@
     pipeline {
         agent any
-        
+
         stages {
         stage('Checkout') {
         steps {
@@ -13,12 +13,12 @@
         steps {
         script {
         // Construir e rodar os containers usando Docker Compose
-        sh 'docker-compose --build -d'
+        sh 'docker compose --build -d'
         }
         }
         }
         }
-        
+
         post {
         always {
         // Exibe os containers em execução após o build
@@ -27,7 +27,7 @@
 
         failure {
         // Se algo falhar, exibe os logs dos containers
-        sh 'docker-compose logs'
+        sh 'docker compose logs'
         }
         }
     }
