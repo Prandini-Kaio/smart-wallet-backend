@@ -1,4 +1,4 @@
--- tst
+-- t
 
 DO $$
 BEGIN
