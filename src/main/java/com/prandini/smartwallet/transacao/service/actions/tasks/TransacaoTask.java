@@ -30,7 +30,6 @@ public class TransacaoTask {
     private TransacaoUpdater updater;
 
     @Scheduled(cron = "59 59 23 * * *")
-    @Scheduled(fixedRate = 10000)
     public void atualizarStatus(){
         log.info("Iniciando atualização de status para transações.");
 
