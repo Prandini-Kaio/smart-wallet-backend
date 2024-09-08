@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 @CommonsLog
 public class LancamentoTask {
 
-
     @Resource
     private LancamentoGetter getter;
 
