@@ -7,7 +7,7 @@ networks:
 services:
   db:
     image: postgres:15
-    container_name: db
+    container_name: postgres-db
     environment:
       POSTGRES_DB: smartwallet
       POSTGRES_USER: postgres
@@ -22,7 +22,7 @@ services:
 
   app:
     build: .
-    container_name: app
+    container_name: springboot-app
     networks:
       - app_network
     ports:
