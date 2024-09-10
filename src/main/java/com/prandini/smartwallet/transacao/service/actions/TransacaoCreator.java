@@ -64,6 +64,6 @@ public class TransacaoCreator {
 
     private LocalDateTime calcularDataVencimento(int diaVencimento, LocalDateTime dtCriacao, int indiceParcela) {
         LocalDateTime now = LocalDateTime.now();
-        return LocalDateTime.of(now.getYear(), now.plusMonths(indiceParcela + 1).getMonthValue(), diaVencimento, 0, 0, 0);
+        return LocalDateTime.of(now.getYear(), now.plusMonths(indiceParcela).getMonthValue(), diaVencimento, 0, 0, 0);
     }
 }
