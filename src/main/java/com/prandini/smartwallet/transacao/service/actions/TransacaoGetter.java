@@ -62,4 +62,8 @@ public class TransacaoGetter {
 
         return TotalizadorFinanceiro.calcularTransacao(transacoes);
     }
+
+    public boolean hasTransacaoVencida(Long idLancamento){
+        return this.repository.hasTransacaoVencida(idLancamento);
+    }
 }

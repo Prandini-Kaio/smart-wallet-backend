@@ -25,4 +25,11 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>, Tra
             " WHERE t.lancamento.id = :idLancamento " +
             " ORDER BY t.dtVencimento ASC ")
     List<Transacao> findByIdLancamento(Long idLancamento);
+
+    @Query("SELECT COUNT(t) > 0 " +
+            "FROM Transacao t " +
+            "JOIN t.lancamento l " +
+            "WHERE l.id = :idLancamento " +
+            "AND t.dtVencimento < CURRENT_DATE")
+    boolean hasTransacaoVencida(Long idLancamento);
 }

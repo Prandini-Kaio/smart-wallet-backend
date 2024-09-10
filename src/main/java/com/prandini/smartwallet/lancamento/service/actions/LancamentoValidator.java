@@ -6,12 +6,14 @@ import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.TipoConta;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.exceptions.LancamentoException;
 import com.prandini.smartwallet.lancamento.exceptions.LancamentoExceptionMessages;
 import jakarta.annotation.Resource;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 /*
@@ -20,11 +22,16 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@CommonsLog
 public class LancamentoValidator {
 
 
     @Resource
     private ContaGetter contaGetter;
+
+    public void validarUpdate(Lancamento lancamento) {
+        log.info("Implementar validacao de update do lancamento");
+    }
 
     public void validarCriacao(LancamentoInput input) {
         this.validarInput(input);

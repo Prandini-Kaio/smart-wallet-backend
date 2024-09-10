@@ -7,12 +7,18 @@ package com.prandini.smartwallet.lancamento.service;
 
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
+import com.prandini.smartwallet.lancamento.service.actions.LancamentoUpdater;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
+import com.prandini.smartwallet.transacao.domain.Transacao;
+import com.prandini.smartwallet.transacao.service.TransacaoService;
+import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +37,15 @@ public class LancamentoService {
 
     @Resource
     private LancamentoGetter getter;
+
+    @Resource
+    private LancamentoUpdater updater;
+
+    @Resource
+    private TransacaoService transacaoService;
+
+    @Resource
+    private TransacaoGetter transacaoGetter;
 
 
     public List<LancamentoOutput> findAll(Pageable pageable){
@@ -74,5 +89,31 @@ public class LancamentoService {
 
     public LancamentoOutput findById(Long id) {
         return LancamentoConverter.toOutput(this.getter.byId(id));
+    }
+
+    @Transactional
+    public void updateStatus(Lancamento lancamento){
+
+        transacaoService.updateStatus();
+
+        log.info("Iniciando atualização de status dos lançamentos");
+
+        List<Transacao> transacoes = transacaoGetter.byIdLancamento(lancamento.getId());
+
+        boolean todasQuitadas = transacoes.stream().allMatch(t -> t.getStatus().equals(StatusTransacaoEnum.PAGO));
+        boolean algumaVencida = transacoes.stream().anyMatch(t -> t.getStatus().equals(StatusTransacaoEnum.ATRASADO));
+        boolean todasCanceladas = transacoes.stream().anyMatch(t -> t.getStatus().equals(StatusTransacaoEnum.CANCELADO));
+        boolean emAberto = transacoes.stream().allMatch(t -> t.getStatus().equals(StatusTransacaoEnum.PENDENTE));
+
+        if(emAberto)
+            lancamento.setStatus(StatusLancamento.EM_ABERTO);
+        if(todasQuitadas)
+            lancamento.setStatus(StatusLancamento.QUITADO);
+        if(algumaVencida)
+            lancamento.setStatus(StatusLancamento.VENCIDO);
+        if(todasCanceladas)
+            lancamento.setStatus(StatusLancamento.CANCELADO);
+
+        this.updater.update(lancamento);
     }
 }
