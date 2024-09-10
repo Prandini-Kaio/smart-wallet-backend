@@ -23,6 +23,8 @@ public class TransacaoFilter {
 
     private Long id;
 
+    private Long idLancamento;
+
     private CategoriaLancamentoEnum categoria;
 
     private TipoLancamentoEnum tipo;

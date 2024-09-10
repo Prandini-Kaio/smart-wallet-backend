@@ -80,6 +80,7 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
 
     private void buildParams(Map<String, Object> params, StringBuilder sb, TransacaoFilter filter){
         safeAddParams(params, "id", filter.getId(), sb, " AND l.id = :id ");
+        safeAddParams(params, "idLancamento", filter.getIdLancamento(), sb, " AND t.id = :idLancamento ");
         safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
         safeAddParams(params, "categoria", filter.getCategoria(), sb, " AND l.categoriaLancamento = :categoria ");
         safeAddParams(params, "pagamento", filter.getPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
