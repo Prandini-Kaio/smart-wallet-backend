@@ -94,7 +94,7 @@ public class LancamentoService {
     @Transactional
     public void updateStatus(Lancamento lancamento){
 
-        transacaoService.updateStatus();
+        transacaoService.updateStatus(lancamento);
 
         log.info("Iniciando atualização de status dos lançamentos");
 
@@ -103,14 +103,15 @@ public class LancamentoService {
         boolean todasQuitadas = transacoes.stream().allMatch(t -> t.getStatus().equals(StatusTransacaoEnum.PAGO));
         boolean algumaVencida = transacoes.stream().anyMatch(t -> t.getStatus().equals(StatusTransacaoEnum.ATRASADO));
         boolean todasCanceladas = transacoes.stream().anyMatch(t -> t.getStatus().equals(StatusTransacaoEnum.CANCELADO));
-        boolean emAberto = transacoes.stream().allMatch(t -> t.getStatus().equals(StatusTransacaoEnum.PENDENTE));
+        boolean algumaEmAberto = transacoes.stream().allMatch(t -> t.getStatus().equals(StatusTransacaoEnum.PENDENTE));
 
-        if(emAberto)
+        if(algumaEmAberto)
             lancamento.setStatus(StatusLancamento.EM_ABERTO);
-        if(todasQuitadas)
-            lancamento.setStatus(StatusLancamento.QUITADO);
         if(algumaVencida)
             lancamento.setStatus(StatusLancamento.VENCIDO);
+        if(todasQuitadas) {
+            lancamento.setStatus(StatusLancamento.QUITADO);
+        }
         if(todasCanceladas)
             lancamento.setStatus(StatusLancamento.CANCELADO);
 
