@@ -47,7 +47,7 @@ public class TransacaoController {
         );
     }
 
-    @GetMapping("totalizador")
+    @GetMapping("/totalizador")
     @Operation
     public ResponseEntity<TotalizadorFinanceiro> searchTotalizador(TransacaoFilter filter){
         return ResponseEntity.ok().body(this.service.findTotalizadorByFilter(filter));
