@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copia o arquivo JAR para o contêiner
-COPY target/smart-wallet-backend-0.0.1-SNAPSHOT.jar app.jar
+COPY target/*.jar app.jar
 
 # Expõe a porta 8080
 EXPOSE 8080
