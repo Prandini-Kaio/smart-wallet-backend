@@ -4,7 +4,7 @@ FROM openjdk:17-jdk-slim
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copia o arquivo JAR para o contêiner
+# Copia o arquivo JAR para o contêinerr
 COPY target/*.jar app.jar
 
 # Expõe a porta 8080

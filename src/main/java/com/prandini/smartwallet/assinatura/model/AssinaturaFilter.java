@@ -28,7 +28,7 @@ public class AssinaturaFilter {
 
     private LocalDate dtFim;
 
-    private boolean ativa;
+    private boolean ativa = true;
 
     private String descricao;
 }

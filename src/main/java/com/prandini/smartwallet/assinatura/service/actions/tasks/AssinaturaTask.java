@@ -36,7 +36,7 @@ public class AssinaturaTask {
     public void cadastrarLancamento(){
         log.info("Renovando assinaturas");
 
-        List<Assinatura> assinaturas = getter.streamByFilter(AssinaturaFilter.builder().ativa(true).build());
+        List<Assinatura> assinaturas = getter.byFilter(AssinaturaFilter.builder().ativa(true).build());
 
         if (!assinaturas.isEmpty()) {
             assinaturas.forEach(a -> {

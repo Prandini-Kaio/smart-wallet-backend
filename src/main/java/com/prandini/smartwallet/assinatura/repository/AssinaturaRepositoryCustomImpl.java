@@ -21,7 +21,7 @@ public class AssinaturaRepositoryCustomImpl implements AssinaturaRepositoryCusto
     private EntityManager entityManager;
 
     @Override
-    public List<Assinatura> streamByFilter(AssinaturaFilter filter) {
+    public List<Assinatura> byFilter(AssinaturaFilter filter) {
         StringBuilder sb = new StringBuilder();
 
         Map<String, Object> params = new HashMap<>();
@@ -31,7 +31,7 @@ public class AssinaturaRepositoryCustomImpl implements AssinaturaRepositoryCusto
                 .append(" JOIN a.conta c ")
                 .append("WHERE 1=1 ");
 
-        safeAddParams(params, "conta", filter.getConta(), sb, " AND c.banco LIKE CONCAT('%', :conta, '%') OR c.nome LIKE CONCAT('%', :conta, '%') ");
+        safeAddParams(params, "conta", filter.getConta().toLowerCase(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', :conta, '%') OR LOWER(c.nome) LIKE CONCAT('%', :conta, '%') ");
         safeAddParams(params, "valor", filter.getValor(), sb, " AND a.valor = :valor ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND a.dtInicio >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND a.dtFim <= :dtFim ");
