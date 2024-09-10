@@ -13,10 +13,11 @@ public class AssinaturaConverter {
                 .id(assinatura.getId())
                 .conta(assinatura.getConta().getNome())
                 .valor(assinatura.getValor())
-                .ativa(assinatura.isAtiva())
                 .dtInicio(assinatura.getDtInicio())
                 .dtFim(assinatura.getDtFim())
                 .descricao(assinatura.getDescricao())
+                .lancamento(assinatura.isLancamento())
+                .ativa(assinatura.isAtiva())
                 .build();
     }
 }

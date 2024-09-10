@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.lancamento.service.tasks;
 
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import jakarta.annotation.Resource;
@@ -34,5 +35,4 @@ public class LancamentoTask {
 
         lancamentos.forEach(service::updateStatus);
     }
-
 }

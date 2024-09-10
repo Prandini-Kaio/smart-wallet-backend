@@ -32,13 +32,21 @@ public class Assinatura {
     @ManyToOne
     private Conta conta;
 
+    @Column(name = "VALOR")
     private BigDecimal valor;
 
+    @Column(name = "DATA_INICIO")
     private LocalDate dtInicio;
 
+    @Column(name = "DATA_FIM")
     private LocalDate dtFim;
 
+    @Column(name = "DESCRICAO")
+    private String descricao;
+
+    @Column(name = "ATIVA")
     private boolean ativa;
 
-    private String descricao;
+    @Column(name = "IS_LANCAMENTO")
+    private boolean isLancamento;
 }

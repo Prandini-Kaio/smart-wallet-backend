@@ -5,6 +5,8 @@ package com.prandini.smartwallet.lancamento.service;
  * created 4/16/24
  */
 
+import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
@@ -46,6 +48,9 @@ public class LancamentoService {
 
     @Resource
     private TransacaoGetter transacaoGetter;
+
+    @Resource
+    private ContaGetter contaGetter;
 
 
     public List<LancamentoOutput> findAll(Pageable pageable){
@@ -89,6 +94,16 @@ public class LancamentoService {
 
     public LancamentoOutput findById(Long id) {
         return LancamentoConverter.toOutput(this.getter.byId(id));
+    }
+
+    public void lancamentosFixos(){
+        List<Conta> contas = contaGetter.getAll();
+
+        for(Conta conta : contas){
+            if(LocalDate.now().getDayOfMonth() == conta.getDiaVencimento()){
+                // Realizar o
+            }
+        }
     }
 
     @Transactional

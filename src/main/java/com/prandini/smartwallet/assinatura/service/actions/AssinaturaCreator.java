@@ -38,6 +38,7 @@ public class AssinaturaCreator {
                 .dtInicio(input.getDtInicio() != null ? input.getDtInicio() : LocalDate.now())
                 .dtFim(input.getDtFim() != null ? input.getDtFim() : null)
                 .descricao(input.getDescricao())
+                .isLancamento(input.isLancamento())
                 .ativa(input.isAtiva())
                 .build();
 

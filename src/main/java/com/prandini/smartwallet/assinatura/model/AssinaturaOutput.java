@@ -31,4 +31,6 @@ public class AssinaturaOutput {
     private boolean ativa;
 
     private String descricao;
+
+    private boolean lancamento;
 }

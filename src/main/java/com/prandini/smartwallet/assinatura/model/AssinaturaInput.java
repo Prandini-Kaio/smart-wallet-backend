@@ -29,6 +29,8 @@ public class AssinaturaInput {
 
     private LocalDate dtFim;
 
+    private boolean isLancamento = false;
+
     private boolean ativa = true;
 
     @NotNull
