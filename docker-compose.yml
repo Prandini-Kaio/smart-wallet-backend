@@ -1,7 +1,7 @@
 version: '3.8'
 
 networks:
-  app_network:
+  sw_network:
     driver: bridge
 
 services:
@@ -13,7 +13,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     networks:
-      - app_network
+      - sw_network
     ports:
       - "5432:5432"
     volumes:
@@ -22,13 +22,14 @@ services:
 
   app:
     build: .
-    container_name: springboot-app
+    container_name: smartwallet-app
+    image: smartwallet:latest
     networks:
-      - app_network
+      - sw_network
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - postgres-db
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/smartwallet
       SPRING_DATASOURCE_USERNAME: postgres
