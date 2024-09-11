@@ -33,14 +33,15 @@ public class TransacaoController {
     private TransacaoRepository repository;
 
     @GetMapping
-    public ResponseEntity<List<TransacaoOutput>> findByFilter(
-            TransacaoFilter filter
-    ){
+    public ResponseEntity<List<TransacaoOutput>> findByFilter(TransacaoFilter filter){
         return ResponseEntity.ok().body(this.service.findByFilter(filter));
     }
 
     @GetMapping("/all")
-    @Operation(description = "Retorna todas as transações.")
+    @Operation(
+            summary = "Consulta todas as transações.",
+            description = "Consulta todas as transações cadastradas no sistema."
+    )
     public ResponseEntity<Page<TransacaoOutput>> searchAll(Pageable pageable){
         return ResponseEntity.ok().body(
                 repository.findAll(pageable).map(TransacaoConverter::toOutput)
@@ -48,13 +49,19 @@ public class TransacaoController {
     }
 
     @GetMapping("totalizador")
-    @Operation
+    @Operation(
+            summary = "Consulta o totalizador das transações.",
+            description = "Consulta o totalizador das transações com base em um filtro."
+    )
     public ResponseEntity<TotalizadorFinanceiro> searchTotalizador(TransacaoFilter filter){
         return ResponseEntity.ok().body(this.service.findTotalizadorByFilter(filter));
     }
 
     @GetMapping("totalizador/periodo")
-    @Operation(description = "Consulta o totalizador de transações do sistema por periodo e conta. Retorna o total das transações do periodo.")
+    @Operation(
+            summary = "Consulta o totalizador por periodo das transações.",
+            description = "Consulta o totalizador de transações do sistema por periodo e conta. Retorna o total das transações do periodo."
+    )
     public ResponseEntity<TotalizadorFinanceiro> getTotalizadorByPeriodo(
             @RequestParam(required = false) String conta,
             @RequestParam(required = false) LocalDate dtInicio,
@@ -64,9 +71,21 @@ public class TransacaoController {
     }
 
     @PutMapping("/pagar")
-    @Operation(description = "Paga uma transação em aberto.")
+    @Operation(
+            summary = "Paga uma transação em aberto.",
+            description = "Altera o status de uma transação de PENDENTE, para PAGO."
+    )
     public ResponseEntity<TransacaoOutput> pagarTransacao(@RequestParam Long id){
         return ResponseEntity.ok().body(this.service.pagarTransacao(id));
+    }
+
+    @PutMapping("/pagar-todos")
+    @Operation(
+            summary = "Pagar todas as transações.",
+            description = "Altera o status de uma transação de PENDENTE, para PAGO de todas as transações com base em um filtro."
+    )
+    public ResponseEntity<List<TransacaoOutput>> pagarTodasTransacoes(@RequestBody TransacaoFilter filter){
+        return ResponseEntity.ok().body(this.service.pagarTodasTransacoes(filter));
     }
 
 

@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*
  * @author prandini
@@ -41,6 +42,19 @@ public class TransacaoService {
         log.info(String.format("Iniciando pagamento da transação %s.", id));
 
         return TransacaoConverter.toOutput(updater.pagar(id));
+    }
+
+    public List<TransacaoOutput> pagarTodasTransacoes(TransacaoFilter filter) {
+        List<Transacao> transacoes = getter.byFilter(filter);
+
+        transacoes = transacoes.stream()
+                .filter(t -> !t.getStatus().equals(StatusTransacaoEnum.PAGO)).toList();
+
+        transacoes.stream()
+                .map(Transacao::getId)
+                .forEach(this::pagarTransacao);
+
+        return transacoes.stream().map(TransacaoConverter::toOutput).toList();
     }
 
     public TransacaoOutput update(Transacao transacao) {
