@@ -35,6 +35,7 @@ public class ContaConverter {
                 .nome(conta.getNome())
                 .saldoParcial(saldoParcial)
                 .dtVencimento(DateUtils.toBrazilianDateString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaVencimento())))
+                .diaVencimento(conta.getDiaVencimento() != null ? conta.getDiaVencimento() : 0)
                 .tipoConta(conta.getTipoConta())
                 .build();
     }

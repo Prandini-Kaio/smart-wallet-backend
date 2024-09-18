@@ -22,6 +22,8 @@ public class ContaOutput {
 
     private String dtVencimento;
 
+    private Integer diaVencimento;
+
     private TipoConta tipoConta;
 
     private BigDecimal saldoParcial;

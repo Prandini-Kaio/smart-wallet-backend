@@ -10,7 +10,7 @@ public class TransacaoExceptionMessages {
 
     private static String PAGAMENTO_JA_EFETUADO = "A transação já foi paga.";
 
-    private static String SEQUENCIA_INVALIDA = "hÁ Uma transação em aberto com vencimento anterior a esta.";
+    private static String SEQUENCIA_INVALIDA = "Há uma transação em aberto com vencimento anterior a esta.";
 
 
     public static String pagamentoIncorreto(){
