@@ -61,7 +61,7 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
 
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
 
-        sb.append(" ORDER BY l.dtCriacao DESC ");
+        sb.append(" ORDER BY t.dtVencimento DESC ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
