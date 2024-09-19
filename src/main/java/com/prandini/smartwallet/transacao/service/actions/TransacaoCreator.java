@@ -58,7 +58,7 @@ public class TransacaoCreator {
                 .lancamento(lancamento)
                 .status(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? StatusTransacaoEnum.PAGO : StatusTransacaoEnum.PENDENTE)
                 .descricao(" [" + (i+1) + " / " + lancamento.getParcelas() + "]")
-                .dtVencimento(lancamento.getTipoPagamento().equals(TipoPagamentoEnum.DEBITO) ? LocalDateTime.now() : calcularDataVencimento(lancamento.getConta().getDiaVencimento(), lancamento.getDtCriacao(), i))
+                .dtVencimento(lancamento.getTipoPagamento().equals(TipoPagamentoEnum.DEBITO) ? LocalDateTime.now() : calcularDataVencimento(lancamento.getConta().getDiaVencimento(), lancamento.getDtCriacao(), i+1))
                 .dtPagamento(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? LocalDateTime.now() : null)
                 .build();
     }
