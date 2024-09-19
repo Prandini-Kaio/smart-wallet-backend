@@ -8,6 +8,7 @@ package com.prandini.smartwallet.transacao.service.actions;
 import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
@@ -57,7 +58,7 @@ public class TransacaoCreator {
                 .lancamento(lancamento)
                 .status(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? StatusTransacaoEnum.PAGO : StatusTransacaoEnum.PENDENTE)
                 .descricao(" [" + (i+1) + " / " + lancamento.getParcelas() + "]")
-                .dtVencimento(calcularDataVencimento(lancamento.getConta().getDiaVencimento(), lancamento.getDtCriacao(), i))
+                .dtVencimento(lancamento.getTipoPagamento().equals(TipoPagamentoEnum.DEBITO) ? LocalDateTime.now() : calcularDataVencimento(lancamento.getConta().getDiaVencimento(), lancamento.getDtCriacao(), i))
                 .dtPagamento(lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? LocalDateTime.now() : null)
                 .build();
     }
