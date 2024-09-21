@@ -51,7 +51,7 @@ public class TransacaoCreator {
 
     private Transacao buildTransacao(Lancamento lancamento, int i){
         BigDecimal valor = lancamento.getValor()
-                .divide(BigDecimal.valueOf(lancamento.getParcelas()), RoundingMode.CEILING);
+                .divide(BigDecimal.valueOf(lancamento.getParcelas()), 2, RoundingMode.FLOOR);
 
         return Transacao.builder()
                 .valor(valor)
