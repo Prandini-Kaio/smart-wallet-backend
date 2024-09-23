@@ -16,4 +16,8 @@ public class CommonExceptionSupplier {
         return () -> new BusinessException(CommonExceptionMessages.naoEncontrado(nome));
     }
 
+    public Supplier<BusinessException> naoEncontrado(String nome, String valor){
+        return () -> new BusinessException(CommonExceptionMessages.naoEncontrado(nome, valor));
+    }
+
 }

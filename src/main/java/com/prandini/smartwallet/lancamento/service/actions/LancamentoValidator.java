@@ -61,7 +61,7 @@ public class LancamentoValidator {
 
     private void validarLancamentoEconomia(LancamentoInput input){
         if(input.getCategoriaLancamento().equals(CategoriaLancamentoEnum.ECONOMIA)){
-            Conta conta = contaGetter.getContaByFilter(input.getConta());
+            Conta conta = contaGetter.byNome(input.getConta());
 
             if(!conta.getTipoConta().equals(TipoConta.ECONOMIA)){
                 throw new BusinessException(LancamentoExceptionMessages.contaIncorreta("economia", "Economias"));
@@ -71,7 +71,7 @@ public class LancamentoValidator {
 
     private void validarLancamentoInvestimento(LancamentoInput input){
         if(input.getCategoriaLancamento().equals(CategoriaLancamentoEnum.INVESTIMENTO)){
-            Conta conta = contaGetter.getContaByFilter(input.getConta());
+            Conta conta = contaGetter.byNome(input.getConta());
 
             if(!conta.getTipoConta().equals(TipoConta.INVESTIMENTO)){
                 throw new BusinessException(LancamentoExceptionMessages.contaIncorreta("investimento", "Investimentos"));

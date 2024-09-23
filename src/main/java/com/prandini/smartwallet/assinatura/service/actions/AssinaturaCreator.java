@@ -30,7 +30,7 @@ public class AssinaturaCreator {
 
         log.info(String.format("Criando assinatura para %s", input.getDescricao()));
 
-        Conta conta = contaGetter.getContaByFilter(input.getConta());
+        Conta conta = contaGetter.byNome(input.getConta());
 
         Assinatura assinatura = Assinatura.builder()
                 .conta(conta)

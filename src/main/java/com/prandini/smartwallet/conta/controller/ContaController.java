@@ -7,6 +7,7 @@ package com.prandini.smartwallet.conta.controller;
 
 import com.prandini.smartwallet.common.model.AutcompleteDTO;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.model.ContaOutput;
 import com.prandini.smartwallet.conta.service.ContaService;
@@ -30,15 +31,9 @@ public class ContaController {
     private ContaService service;
 
     @GetMapping
-    @Operation(summary = "Consulta uma conta pelo id")
-    public ResponseEntity<ContaOutput> byId(@RequestParam Long id){
-        return ResponseEntity.ok().body(this.service.byId(id));
-    }
-
-    @GetMapping("/all")
     @Operation(summary = "Retorna todas as contas.")
-    public ResponseEntity<List<ContaOutput>> findAll(){
-        return ResponseEntity.ok().body(service.getAll());
+    public ResponseEntity<List<ContaOutput>> findAll(ContaFilter filter){
+        return ResponseEntity.ok().body(service.getByFilter(filter));
     }
 
     @GetMapping("/autocomplete")
@@ -49,7 +44,7 @@ public class ContaController {
 
     @GetMapping("/totalizador")
     @Operation(summary = "Consulta o totalizador financeiro através de um filtro.")
-    public ResponseEntity<TotalizadorFinanceiro> findTotalizador(@RequestParam(required = false) String filter){
+    public ResponseEntity<TotalizadorFinanceiro> findTotalizador(ContaFilter filter){
         return ResponseEntity.ok().body(service.getTotalizadorByFilter(filter));
     }
 

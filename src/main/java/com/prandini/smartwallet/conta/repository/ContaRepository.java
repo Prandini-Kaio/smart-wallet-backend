@@ -15,7 +15,7 @@ import java.util.Optional;
  * created 4/5/24
  */
 @Repository
-public interface ContaRepository extends JpaRepository<Conta, Long> {
+public interface ContaRepository extends JpaRepository<Conta, Long>, ContaRepositoryCustom {
 
     @Query("SELECT c " +
             "FROM Conta c " +
