@@ -36,6 +36,7 @@ public class ContaConverter {
                 .saldoParcial(saldoParcial)
                 .dtVencimento(DateUtils.toBrazilianDateString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaVencimento())))
                 .tipoConta(conta.getTipoConta())
+                .color(conta.getColor())
                 .build();
     }
 }

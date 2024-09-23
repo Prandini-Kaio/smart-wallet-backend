@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,5 +95,12 @@ public class TransacaoService {
                 }
             }
         });
+    }
+
+    public List<TransacaoOutput> pagarTransacoes(TransacaoFilter filter) {
+        log.info("Iniciando pagamento de transações a partir de um filtro");
+        List<Transacao> transacoes = getter.byFilter(filter)
+                .stream().sorted(Comparator.comparing(Transacao::getDtVencimento)).toList();
+        return this.updater.pagarTodos(transacoes).stream().map(TransacaoConverter::toOutput).collect(Collectors.toList());
     }
 }

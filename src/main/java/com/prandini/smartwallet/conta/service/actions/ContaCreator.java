@@ -36,8 +36,20 @@ public class ContaCreator {
                 .diaVencimento(Integer.parseInt(input.getDiaVencimento()))
                 .saldoParcial(BigDecimal.ZERO)
                 .tipoConta(input.getTipoConta())
+                .color(randomColor())
                 .build();
 
         return repository.save(conta);
     }
+
+    private String randomColor() {
+        // Gera valores aleatórios para cada componente de cor
+        int red = (int) (Math.random() * 256);
+        int green = (int) (Math.random() * 256);
+        int blue = (int) (Math.random() * 256);
+
+        // Formata a cor no formato hexadecimal
+        return String.format("#%02X%02X%02X", red, green, blue);
+    }
+
 }

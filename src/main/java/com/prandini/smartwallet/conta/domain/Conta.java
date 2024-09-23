@@ -51,4 +51,7 @@ public class Conta {
     @Column(name = "TIPO_CONTA")
     @Enumerated
     private TipoConta tipoConta;
+
+    @Column(name = "COLOR")
+    private String color;
 }

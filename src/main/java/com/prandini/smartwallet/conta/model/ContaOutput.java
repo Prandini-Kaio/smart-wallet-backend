@@ -25,4 +25,6 @@ public class ContaOutput {
     private TipoConta tipoConta;
 
     private BigDecimal saldoParcial;
+
+    private String color;
 }

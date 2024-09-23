@@ -32,4 +32,7 @@ public class ContaInput {
     @NotNull
     @Schema(example = "12")
     private String diaVencimento;
+
+    @Schema(example = "#FFFFF")
+    private String color;
 }

@@ -69,5 +69,11 @@ public class TransacaoController {
         return ResponseEntity.ok().body(this.service.pagarTransacao(id));
     }
 
+    @PutMapping("/pagar-todos")
+    @Operation(description = "Paga uma transação em aberto.")
+    public ResponseEntity<List<TransacaoOutput>> pagarTodosTransacao(TransacaoFilter filter){
+        return ResponseEntity.ok().body(this.service.pagarTransacoes(filter));
+    }
+
 
 }

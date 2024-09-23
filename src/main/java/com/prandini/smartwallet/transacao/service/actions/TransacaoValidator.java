@@ -43,6 +43,6 @@ public class TransacaoValidator {
             throw new BusinessException(TransacaoExceptionMessages.pagamentoIncorreto());
 
         if(transacao.getStatus().equals(StatusTransacaoEnum.PAGO))
-            throw new BusinessException(TransacaoExceptionMessages.pagamentoJaEfetuado());
+            throw new BusinessException(TransacaoExceptionMessages.pagamentoJaEfetuado(transacao.getDescricao()));
     }
 }

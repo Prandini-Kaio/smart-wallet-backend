@@ -16,6 +16,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @CommonsLog
@@ -64,5 +65,16 @@ public class TransacaoUpdater {
         t.setDtPagamento(transacao.getDtPagamento());
 
         return this.repository.save(t);
+    }
+
+    public List<Transacao> pagarTodos(List<Transacao> transacoes) {
+        log.info("Pagando transações com base em um filtro");
+        transacoes.forEach(t -> {
+            this.validator.validarPagamento(t);
+            this.pagar(t.getId());
+        });
+        transacoes.forEach(t -> this.pagar(t.getId()));
+        log.info("Todas as transações foram pagas com sucesso!");
+        return transacoes;
     }
 }
