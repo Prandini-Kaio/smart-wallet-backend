@@ -36,34 +36,19 @@ public class LancamentoController {
     private LancamentoService service;
 
     @GetMapping
-    public ResponseEntity<LancamentoOutput> byId(@RequestParam Long id){
-        return ResponseEntity.ok().body(service.findById(id));
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<LancamentoOutput>> searchAll(Pageable pageable){
-        return ResponseEntity.ok().body(service.findAll(pageable));
-    }
-
-    @GetMapping("/filter")
     public ResponseEntity<List<LancamentoOutput>> getByFilter(LancamentoFilter filter){
         return ResponseEntity.ok().body(service.findByFilter(filter));
+    }
+
+    @GetMapping("/id")
+    public ResponseEntity<LancamentoOutput> byId(@RequestParam Long id){
+        return ResponseEntity.ok().body(service.findById(id));
     }
 
     @GetMapping("/totalizador")
     @Operation(description = "Retorna o totalizador dos lançamentos ativos do sistema.")
     public ResponseEntity<TotalizadorFinanceiro> getTotalizador(LancamentoFilter filter){
         return ResponseEntity.ok().body(this.service.getTotalizador(filter));
-    }
-
-    @GetMapping("/totalizador/periodo")
-    @Operation(description = "Consulta o totalizador de lançamentos do sistema por periodo e conta. Retorna o total dos lançamentos do periodo, não das transações.")
-    public ResponseEntity<TotalizadorFinanceiro> getTotalizador(
-            @RequestParam(required = false) String conta,
-            @RequestParam(required = false) LocalDate dtInicio,
-            @RequestParam(required = false) LocalDate dtFim
-    ){
-        return ResponseEntity.ok().body(this.service.getTotalizadorByPeriodo(conta, dtInicio, dtFim));
     }
 
     @PostMapping

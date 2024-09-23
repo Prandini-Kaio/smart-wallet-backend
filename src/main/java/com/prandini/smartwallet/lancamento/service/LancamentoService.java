@@ -47,26 +47,11 @@ public class LancamentoService {
     @Resource
     private TransacaoGetter transacaoGetter;
 
-
-    public List<LancamentoOutput> findAll(Pageable pageable){
-        log.info("Iniciando busca de todos os lancamentos.");
-
-        List<Lancamento> lancamentos = getter.findTodos();
-
-        return lancamentos.stream().map(LancamentoConverter::toOutput).toList();
-    }
-
     @Transactional
     public LancamentoOutput criarLancamento(LancamentoInput input) {
         log.info("Iniciando criação de lancamento.");
 
         return LancamentoConverter.toOutput(creator.create(input));
-    }
-
-    public List<LancamentoOutput> findByVencimento(Integer mes) {
-        log.info(String.format("Iniciando busca de lancamentos por mês %s.", mes ));
-
-        return getter.findByDtCriacao(mes).stream().map(LancamentoConverter::toOutput).toList();
     }
 
     public List<LancamentoOutput> findByFilter(LancamentoFilter filter) {
@@ -75,16 +60,8 @@ public class LancamentoService {
         return getter.findByFilter(filter).stream().map(LancamentoConverter::toOutput).toList();
     }
 
-    public List<String> getCategorias() {
-        return this.getter.getCategorias();
-    }
-
     public TotalizadorFinanceiro getTotalizador(LancamentoFilter filter) {
         return this.getter.getTotalizador(filter);
-    }
-
-    public TotalizadorFinanceiro getTotalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim) {
-        return this.getter.getTotalizadorByPeriodo(conta, dtInicio, dtFim);
     }
 
     public LancamentoOutput findById(Long id) {

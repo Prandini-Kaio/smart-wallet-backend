@@ -29,12 +29,6 @@ public class LancamentoGetter {
     @Resource
     private LancamentoRepository repository;
 
-    public Page<Lancamento> getAll(Pageable pageable) {
-        log.info("Consultando todos os lançamentos");
-
-        return repository.findAll(pageable);
-    }
-
     public Lancamento byId(Long id){
         return repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Lançamento"));
     }
@@ -45,17 +39,8 @@ public class LancamentoGetter {
         return repository.findTodos();
     }
 
-    public List<Lancamento> findByDtCriacao(Integer mes) {
-        return repository.findByDtCriacao(mes)
-                .orElseThrow(CommonExceptionSupplier.naoEncontrado("Lançamento"));
-    }
-
     public List<Lancamento> findByFilter(LancamentoFilter filter) {
         return repository.findByFilter(filter);
-    }
-
-    public List<String> getCategorias() {
-        return Arrays.stream(CategoriaLancamentoEnum.values()).map(c -> c.nome).toList();
     }
 
     public TotalizadorFinanceiro getTotalizador(LancamentoFilter filter) {
@@ -70,25 +55,9 @@ public class LancamentoGetter {
         return this.repository.findByFilter(filter);
     }
 
-    public TotalizadorFinanceiro getTotalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim){
-        log.info("Calculando totalizador financeiro da conta");
-
-        List<Lancamento> lancamentos = repository.getByPeriodo(conta, dtInicio, dtFim);
-
-        return TotalizadorFinanceiro.calcularTotalizador(lancamentos);
-    }
-
     public List<Lancamento> getByConta(Long id) {
         log.info(String.format("Consultando conta pelo id %s", id));
 
         return this.repository.getByConta(id);
-    }
-
-    public List<Lancamento> getByConta(String filter) {
-        log.info(String.format("Consultando conta pelo filtro %s", filter));
-
-        List<Lancamento> lancamentos = this.repository.getByConta(filter).orElseThrow(CommonExceptionSupplier.naoEncontrado("Lançamento"));
-
-        return lancamentos;
     }
 }
