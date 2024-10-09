@@ -49,14 +49,6 @@ public class TransacaoGetter {
         return this.repository.getTransacoesByFilter(filter);
     }
 
-    public TotalizadorFinanceiro totalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim) {
-        log.info(String.format("Consultando transações no periodo [%s] até [%s] da conta [%s].", dtInicio, dtFim, conta));
-
-        List<Transacao> transacoes = repository.getByPeriodo(conta, dtInicio, dtFim);
-
-        return TotalizadorFinanceiro.calcularTransacao(transacoes);
-    }
-
     public TotalizadorFinanceiro totalizadorByFilter(TransacaoFilter filter) {
         List<Transacao> transacoes = this.byFilter(filter);
 

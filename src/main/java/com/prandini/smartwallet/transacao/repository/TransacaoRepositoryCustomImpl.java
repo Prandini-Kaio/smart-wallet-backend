@@ -22,32 +22,6 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
     private EntityManager entityManager;
 
     @Override
-    public List<Transacao> getByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim) {
-        StringBuilder sb = new StringBuilder();
-
-        Map<String, Object> params = new HashMap<>();
-
-        // Query
-        sb.append("SELECT t FROM Transacao t ")
-                .append(" JOIN t.lancamento l ")
-                .append(" JOIN l.conta c ")
-                .append("WHERE 1=1 ");
-
-        Optional.ofNullable(conta).ifPresent(c -> safeAddParams(params, "conta", conta, sb, " AND (UPPER(c.nome) LIKE CONCAT('%', UPPER(:conta), '%') OR UPPER(c.banco) LIKE CONCAT('%', UPPER(:conta), '%'))"));
-        Optional.ofNullable(dtInicio).ifPresent(dt -> safeAddParams(params, "dtInicio", dtInicio.atTime(0, 0, 0), sb, " AND t.dtVencimento >= :dtInicio "));
-        Optional.ofNullable(dtFim).ifPresent(dt -> safeAddParams(params, "dtFim", dtFim.atTime(23,59, 59), sb, " AND t.dtVencimento <= :dtFim "));
-
-        sb.append(" ORDER BY t.dtVencimento DESC ");
-
-        // Criando a query com base no StringBuilder
-        Query query = this.entityManager.createQuery(sb.toString());
-
-        params.forEach(query::setParameter);
-
-        return query.getResultList();
-    }
-
-    @Override
     public List<Transacao> getTransacoesByFilter(TransacaoFilter filter) {
         StringBuilder sb = new StringBuilder();
 
@@ -61,7 +35,7 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
 
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
 
-        sb.append(" ORDER BY t.dtVencimento ASC ");
+        sb.append(" ORDER BY t.dtVencimento ASC, l.dtCriacao ASC ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
