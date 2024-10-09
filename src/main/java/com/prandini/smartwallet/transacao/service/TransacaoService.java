@@ -67,10 +67,6 @@ public class TransacaoService {
                 .map(TransacaoConverter::toOutput).collect(Collectors.toList());
     }
 
-    public TotalizadorFinanceiro findTotalizadorFinanceiro(String conta, LocalDate dtInicio, LocalDate dtFim) {
-        return this.getter.totalizadorByPeriodo(conta, dtInicio, dtFim);
-    }
-
     public TotalizadorFinanceiro findTotalizadorByFilter(TransacaoFilter filter) {
         return this.getter.totalizadorByFilter(filter);
     }

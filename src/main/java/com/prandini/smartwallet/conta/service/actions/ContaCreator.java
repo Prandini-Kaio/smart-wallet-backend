@@ -36,7 +36,7 @@ public class ContaCreator {
                 .diaVencimento(Integer.parseInt(input.getDiaVencimento()))
                 .saldoParcial(BigDecimal.ZERO)
                 .tipoConta(input.getTipoConta())
-                .color(randomColor())
+                .color(input.getColor() != null ? input.getColor() : randomColor())
                 .build();
 
         return repository.save(conta);

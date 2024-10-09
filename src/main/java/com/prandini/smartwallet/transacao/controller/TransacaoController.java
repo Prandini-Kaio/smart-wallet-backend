@@ -53,16 +53,6 @@ public class TransacaoController {
         return ResponseEntity.ok().body(this.service.findTotalizadorByFilter(filter));
     }
 
-    @GetMapping("totalizador/periodo")
-    @Operation(description = "Consulta o totalizador de transações do sistema por periodo e conta. Retorna o total das transações do periodo.")
-    public ResponseEntity<TotalizadorFinanceiro> getTotalizadorByPeriodo(
-            @RequestParam(required = false) String conta,
-            @RequestParam(required = false) LocalDate dtInicio,
-            @RequestParam(required = false) LocalDate dtFim
-    ){
-        return ResponseEntity.ok().body(service.findTotalizadorFinanceiro(conta, dtInicio, dtFim));
-    }
-
     @PutMapping("/pagar")
     @Operation(description = "Paga uma transação em aberto.")
     public ResponseEntity<TransacaoOutput> pagarTransacao(@RequestParam Long id){

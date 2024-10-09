@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TransacaoRepositoryCustom {
 
-    List<Transacao> getByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim);
+
 
     List<Transacao> getTransacoesByFilter(TransacaoFilter filter);
 }
