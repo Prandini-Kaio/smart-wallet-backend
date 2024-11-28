@@ -31,12 +31,6 @@ public class TransacaoGetter {
         return repository.findByVencimento(month);
     }
 
-    public List<Transacao> byStringFilter(String filter){
-        log.info(String.format("Consulta a transações com filtro %s.", filter));
-
-        return repository.findByStringFilter(filter);
-    }
-
     public List<Transacao> byIdLancamento(Long idLancamento) {
         return repository.findByIdLancamento(idLancamento);
     }
@@ -46,6 +40,8 @@ public class TransacaoGetter {
     }
 
     public List<Transacao> byFilter(TransacaoFilter filter){
+        log.info("Consultando transações por filtro.");
+
         return this.repository.getTransacoesByFilter(filter);
     }
 

@@ -4,6 +4,7 @@ package com.prandini.smartwallet.lancamento.converter;
 import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
+import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
 
 /*
  * @author prandini
@@ -14,17 +15,18 @@ public class LancamentoConverter {
     public static LancamentoOutput toOutput(Lancamento lancamento){
         return LancamentoOutput.builder()
                 .id(lancamento.getId())
-                .tipoLancamento(lancamento.getTipoLancamento())
-                .categoriaLancamento(lancamento.getCategoriaLancamento())
-                .tipoPagamento(lancamento.getTipoPagamento())
+                .tipoLancamento(lancamento.getTipoLancamento().getDescricao())
+                .categoriaLancamento(lancamento.getCategoriaLancamento().getNome())
+                .tipoPagamento(lancamento.getTipoPagamento().getDescricao())
                 .valor(lancamento.getValor())
                 .dtCriacao(DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao()))
                 .conta(lancamento.getConta().getBanco())
                 .banco(lancamento.getConta().getBanco())
                 .parcelas(lancamento.getParcelas())
                 .descricao(lancamento.getDescricao())
-                .status(lancamento.getStatus())
+                .status(lancamento.getStatus().getDescricao())
                 .icone(lancamento.getCategoriaLancamento().icone)
-                .build();
+                .transacoes(TransacaoConverter.toListOutputs(lancamento.getTransacoes()))
+                    .build();
     }
 }

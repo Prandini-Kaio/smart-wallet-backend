@@ -6,8 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +45,7 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
     private void buildParams(Map<String, Object> params, StringBuilder sb, LancamentoFilter filter){
         safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
         safeAddParams(params, "categoria", filter.getCategoria(), sb, " AND l.categoriaLancamento = :categoria ");
-        safeAddParams(params, "pagamento", filter.getTipoPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
+        safeAddParams(params, "pagamento", filter.getPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
         safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status = :status ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND l.dtCriacao >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND l.dtCriacao <= :dtFim ");

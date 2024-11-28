@@ -30,10 +30,10 @@ public class TransacaoConverter {
                 .id(transacao.getId())
                 .status(transacao.getStatus())
                 .valor(transacao.getValor())
-                .lancamento(LancamentoConverter.toOutput(transacao.getLancamento()))
                 .dtVencimento(dtVencimento)
                 .dtPagamento(dtPagamento)
                 .descricao(transacao.getDescricao())
+                .descricaoLancamento(transacao.getLancamento().getDescricao())
                 .build();
     }
 }

@@ -36,7 +36,7 @@ public class TransacaoCreator {
 
         ajustarTransacoesEncadeadas(transacoes);
 
-        return repository.saveAll(transacoes);
+        return transacoes;
     }
 
     private List<Transacao> gerarTransacoes(Lancamento lancamento, List<BigDecimal> parcelas) {

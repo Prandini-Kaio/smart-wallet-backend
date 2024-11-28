@@ -18,8 +18,6 @@ public class TransacaoOutput {
 
     private Long id;
 
-    private LancamentoOutput lancamento;
-
     private BigDecimal valor;
 
     private StatusTransacaoEnum status;
@@ -29,4 +27,6 @@ public class TransacaoOutput {
     private String dtPagamento;
 
     private String descricao;
+
+    private String descricaoLancamento;
 }

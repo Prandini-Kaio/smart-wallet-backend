@@ -41,6 +41,10 @@ public enum CategoriaLancamentoEnum {
         this.icone = icone;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     @Override
     public String toString(){
         return this.nome;

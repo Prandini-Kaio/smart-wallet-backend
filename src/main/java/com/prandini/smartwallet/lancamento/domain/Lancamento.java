@@ -6,14 +6,8 @@ package com.prandini.smartwallet.lancamento.domain;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.prandini.smartwallet.transacao.domain.Transacao;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +17,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "LANCAMENTO")
@@ -60,6 +55,9 @@ public class Lancamento {
 
     @Column(name = "PARCELAS")
     private int parcelas;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lancamento")
+    private List<Transacao> transacoes;
 
     @ManyToOne
     private Conta conta;

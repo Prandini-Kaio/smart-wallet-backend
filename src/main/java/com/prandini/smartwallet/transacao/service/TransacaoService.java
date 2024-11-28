@@ -55,13 +55,6 @@ public class TransacaoService {
                 .map(TransacaoConverter::toOutput);
     }
 
-    public Page<TransacaoOutput> findByStringFilter(String filter){
-        log.info(String.format("Iniciando consulta a transações com filtro %s.", filter));
-
-        return new PageImpl<>(getter.byStringFilter(filter))
-                .map(TransacaoConverter::toOutput);
-    }
-
     public List<TransacaoOutput> findByIdLancamento(Long idLancamento) {
         return getter.byIdLancamento(idLancamento).stream()
                 .map(TransacaoConverter::toOutput).collect(Collectors.toList());
@@ -72,6 +65,8 @@ public class TransacaoService {
     }
 
     public List<TransacaoOutput> findByFilter(TransacaoFilter filter) {
+        log.info("Iniciando consulta por filtro de transações.");
+
         return this.getter.byFilter(filter).stream().map(TransacaoConverter::toOutput).toList();
     }
 

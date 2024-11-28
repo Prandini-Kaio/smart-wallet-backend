@@ -6,7 +6,6 @@ import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /*
@@ -23,7 +22,7 @@ public class LancamentoFilter {
 
     private CategoriaLancamentoEnum categoria;
 
-    private TipoPagamentoEnum tipoPagamento;
+    private TipoPagamentoEnum pagamento;
 
     private StatusLancamento status;
 

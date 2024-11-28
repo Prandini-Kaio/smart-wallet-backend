@@ -6,12 +6,14 @@ import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
+import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoCreator;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /*
  * @author prandini
@@ -41,10 +43,11 @@ public class LancamentoCreator {
 
         Conta conta = contaGetter.byNome(input.getConta());
 
-        Lancamento lancamento = repository.save(buildLancamento(input, conta));
-        transacaoCreator.create(lancamento);
+        Lancamento lancamento = buildLancamento(input, conta);
+        List<Transacao> transacoes = transacaoCreator.create(lancamento);
+        lancamento.setTransacoes(transacoes);
 
-        return lancamento;
+        return this.repository.save(lancamento);
     }
 
     private Lancamento buildLancamento(LancamentoInput input, Conta conta){
