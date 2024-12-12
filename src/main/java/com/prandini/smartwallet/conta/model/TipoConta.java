@@ -1,6 +1,12 @@
 package com.prandini.smartwallet.conta.model;
 
 import jakarta.persistence.Enumerated;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author kaiooliveira
@@ -19,5 +25,19 @@ public enum TipoConta {
 
     TipoConta(String descricao){
         this.descricao = descricao;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public static List<TipoC> getTiposC(){
+        List<TipoC> tipos = new ArrayList<>();
+
+        for (TipoConta tipoConta : TipoConta.values()) {
+            tipos.add(new TipoC(tipoConta.name(), tipoConta.getDescricao()));
+        }
+
+        return tipos;
     }
 }

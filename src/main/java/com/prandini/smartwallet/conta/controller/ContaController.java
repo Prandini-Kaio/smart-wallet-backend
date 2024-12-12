@@ -7,9 +7,7 @@ package com.prandini.smartwallet.conta.controller;
 
 import com.prandini.smartwallet.common.model.AutcompleteDTO;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
-import com.prandini.smartwallet.conta.model.ContaFilter;
-import com.prandini.smartwallet.conta.model.ContaInput;
-import com.prandini.smartwallet.conta.model.ContaOutput;
+import com.prandini.smartwallet.conta.model.*;
 import com.prandini.smartwallet.conta.service.ContaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,7 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/conta")
@@ -52,5 +53,11 @@ public class ContaController {
     @Operation(summary = "Cria uma conta")
     public ResponseEntity<ContaOutput> create(@RequestBody @Valid ContaInput input){
         return ResponseEntity.ok().body(service.create(input));
+    }
+
+    @GetMapping("/tipo")
+    @Operation()
+    public ResponseEntity<List<TipoC>> getTipoConta(){
+        return ResponseEntity.ok().body(TipoConta.getTiposC());
     }
 }
