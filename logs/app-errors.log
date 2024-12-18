@@ -1,0 +1,225 @@
+2024-12-17 20:40:55 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 20:40:59 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 20:41:01 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 20:41:02 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 20:47:42 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 20:47:56 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 20:48:08 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 20:59:53 - o.h.e.jdbc.spi.SqlExceptionHelper - Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-12-17 20:59:53 - o.h.e.jdbc.spi.SqlExceptionHelper - Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-12-17 22:00:15 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:00:15 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:00:15 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:00:15 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:00:15 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:00:34 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:00:34 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:00:34 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:00:34 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:00:34 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:01:03 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:01:03 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:01:03 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:01:03 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:01:03 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:02:33 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:02:33 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:02:33 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:02:33 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:02:33 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@1b59283c
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@67ab7e3d
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:03:02 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:03:02 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:03:02 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:03:02 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:03:02 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@3d3d8ddb]
+2024-12-17 22:03:02 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:03:02 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:03:08 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors", parameters={}
+2024-12-17 22:03:08 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#getErrorLog()
+2024-12-17 22:03:08 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:03:08 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ErrorLogOutput(id=1, errorMessage=/ by zero, stackTrace=/ by zero, timestamp=2024-12-17T22:03:02.86 (truncated)...]
+2024-12-17 22:03:08 - o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-12-17 22:03:14 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:03:14 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:03:14 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:03:14 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:03:14 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:03:14 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@3b0a17d7]
+2024-12-17 22:03:14 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:03:14 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:03:20 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:03:47 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:03:50 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:03:51 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:03:51 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:03:53 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@d321f69]
+2024-12-17 22:03:53 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:03:54 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:03:59 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors", parameters={}
+2024-12-17 22:04:00 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#getErrorLog()
+2024-12-17 22:04:00 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:04:00 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ErrorLogOutput(id=1, errorMessage=/ by zero, stackTrace=/ by zero, timestamp=2024-12-17T22:03:02.86 (truncated)...]
+2024-12-17 22:04:01 - o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-12-17 22:04:04 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors", parameters={}
+2024-12-17 22:04:05 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#getErrorLog()
+2024-12-17 22:04:05 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:04:06 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ErrorLogOutput(id=1, errorMessage=/ by zero, stackTrace=/ by zero, timestamp=2024-12-17T22:03:02.86 (truncated)...]
+2024-12-17 22:04:06 - o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-12-17 22:04:16 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors", parameters={}
+2024-12-17 22:04:16 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#getErrorLog()
+2024-12-17 22:04:16 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:04:16 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ErrorLogOutput(id=1, errorMessage=/ by zero, stackTrace=/ by zero, timestamp=2024-12-17T22:03:02.86 (truncated)...]
+2024-12-17 22:04:16 - o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-12-17 22:04:18 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:04:18 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:04:18 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:04:18 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:04:18 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:04:18 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@7e7cccca]
+2024-12-17 22:04:18 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:04:18 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:04:22 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:04:22 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:04:22 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:04:22 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:04:55 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:04:55 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@58b69f4a]
+2024-12-17 22:04:55 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:04:55 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:04:57 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:04:57 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:04:57 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:04:57 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:05:35 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:05:35 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@24610820]
+2024-12-17 22:05:35 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:05:35 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:05:35 - o.h.e.jdbc.spi.SqlExceptionHelper - Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-12-17 22:05:35 - o.h.e.jdbc.spi.SqlExceptionHelper - Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-12-17 22:05:43 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:05:43 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:05:43 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:05:43 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:05:43 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@3ab86cfb
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@488fd568
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-12-17 22:05:45 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:05:45 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:05:45 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:05:45 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:05:55 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:05:55 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@62d2a514]
+2024-12-17 22:05:55 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:05:55 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:07:32 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:07:32 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:07:32 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:07:32 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:07:32 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:07:35 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:07:35 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:07:35 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:07:35 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:07:35 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:08:59 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:08:59 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:08:59 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:08:59 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:08:59 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:09:02 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:09:02 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:09:02 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:09:02 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:09:02 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:09:21 - o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@7d0332e1
+2024-12-17 22:09:25 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:09:25 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:09:26 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:09:26 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:09:26 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:09:26 - o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@7d0332e1, started on Tue Dec 17 22:09:21 BRT 2024
+2024-12-17 22:09:42 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Multiple @RequestMapping annotations found on public void com.prandini.smartwallet.common.rest.controller.ErrorLogController.teste(), but only the first will be used: [@org.springframework.web.bind.annotation.RequestMapping(consumes={}, headers={}, method={}, name="", params={}, path={"/tst"}, produces={}, value={"/tst"}), @org.springframework.web.bind.annotation.GetMapping(consumes={}, headers={}, name="", params={}, path={}, produces={}, value={})]
+2024-12-17 22:09:42 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - 27 mappings in 'requestMappingHandlerMapping'
+2024-12-17 22:09:42 - o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-12-17 22:09:42 - o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-12-17 22:09:42 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@52727ac7
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@5a69336
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2024-12-17 22:09:57 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors/tst", parameters={}
+2024-12-17 22:09:57 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#teste()
+2024-12-17 22:09:57 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.prandini.smartwallet.common.rest.GlobalErrorHandler#handleRuntimeException(RuntimeException, WebRequest)
+2024-12-17 22:09:57 - c.p.s.common.rest.GlobalErrorHandler - / by zero
+2024-12-17 22:10:00 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:10:00 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [com.prandini.smartwallet.common.rest.model.ErrorResponseOutput@5a2a4c47]
+2024-12-17 22:10:00 - o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.ArithmeticException: / by zero]
+2024-12-17 22:10:00 - o.s.web.servlet.DispatcherServlet - Completed 500 INTERNAL_SERVER_ERROR
+2024-12-17 22:10:03 - o.s.web.servlet.DispatcherServlet - GET "/api/v1/errors", parameters={}
+2024-12-17 22:10:03 - o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.prandini.smartwallet.common.rest.controller.ErrorLogController#getErrorLog()
+2024-12-17 22:10:03 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-12-17 22:10:03 - o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ErrorLogOutput(id=1, errorMessage=/ by zero, stackTrace=/ by zero, timestamp=2024-12-17T22:09:59.89 (truncated)...]
+2024-12-17 22:10:03 - o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-12-17 23:20:09 - o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'errorLogAppender' defined in class path resource [com/prandini/smartwallet/config/LogbackAppenderConfig.class]: Failed to instantiate [com.prandini.smartwallet.common.rest.appender.ErrorLogAppender]: Factory method 'errorLogAppender' threw exception with message: loader constraint violation: when resolving method 'void com.prandini.smartwallet.common.rest.appender.ErrorLogAppender.setService(com.prandini.smartwallet.common.rest.service.ErrorLogService)' the class loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @72cdb2c0 of the current class, com/prandini/smartwallet/config/LogbackAppenderConfig, and the class loader 'app' for the method's defining class, com/prandini/smartwallet/common/rest/appender/ErrorLogAppender, have different Class objects for the type com/prandini/smartwallet/common/rest/service/ErrorLogService used in the signature (com.prandini.smartwallet.config.LogbackAppenderConfig is in unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @72cdb2c0, parent loader 'app'; com.prandini.smartwallet.common.rest.appender.ErrorLogAppender is in unnamed module of loader 'app')
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:648)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1337)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1167)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.prandini.smartwallet.SmartWalletBackendApplicationRunner.main(SmartWalletBackendApplicationRunner.java:11)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.prandini.smartwallet.common.rest.appender.ErrorLogAppender]: Factory method 'errorLogAppender' threw exception with message: loader constraint violation: when resolving method 'void com.prandini.smartwallet.common.rest.appender.ErrorLogAppender.setService(com.prandini.smartwallet.common.rest.service.ErrorLogService)' the class loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @72cdb2c0 of the current class, com/prandini/smartwallet/config/LogbackAppenderConfig, and the class loader 'app' for the method's defining class, com/prandini/smartwallet/common/rest/appender/ErrorLogAppender, have different Class objects for the type com/prandini/smartwallet/common/rest/service/ErrorLogService used in the signature (com.prandini.smartwallet.config.LogbackAppenderConfig is in unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @72cdb2c0, parent loader 'app'; com.prandini.smartwallet.common.rest.appender.ErrorLogAppender is in unnamed module of loader 'app')
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:177)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644)
+	... 24 common frames omitted
+Caused by: java.lang.LinkageError: loader constraint violation: when resolving method 'void com.prandini.smartwallet.common.rest.appender.ErrorLogAppender.setService(com.prandini.smartwallet.common.rest.service.ErrorLogService)' the class loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @72cdb2c0 of the current class, com/prandini/smartwallet/config/LogbackAppenderConfig, and the class loader 'app' for the method's defining class, com/prandini/smartwallet/common/rest/appender/ErrorLogAppender, have different Class objects for the type com/prandini/smartwallet/common/rest/service/ErrorLogService used in the signature (com.prandini.smartwallet.config.LogbackAppenderConfig is in unnamed module of loader org.springframework.boot.devtools.restart.classloader.RestartClassLoader @72cdb2c0, parent loader 'app'; com.prandini.smartwallet.common.rest.appender.ErrorLogAppender is in unnamed module of loader 'app')
+	at com.prandini.smartwallet.config.LogbackAppenderConfig.errorLogAppender(LogbackAppenderConfig.java:19)
+	at com.prandini.smartwallet.config.LogbackAppenderConfig$$SpringCGLIB$$0.CGLIB$errorLogAppender$0(<generated>)
+	at com.prandini.smartwallet.config.LogbackAppenderConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:348)
+	at com.prandini.smartwallet.config.LogbackAppenderConfig$$SpringCGLIB$$0.errorLogAppender(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:140)
+	... 25 common frames omitted
