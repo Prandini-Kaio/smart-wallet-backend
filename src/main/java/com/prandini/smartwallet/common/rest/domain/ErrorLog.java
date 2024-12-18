@@ -24,9 +24,18 @@ public class ErrorLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "OPERADOR", nullable = false)
+    private String operador;
+
+    @Column(name = "ERROR_MESSAGE", nullable = false)
     private String errorMessage;
 
+    @Column(name = "STACKTRACE")
     private String stackTrace;
 
+    @Column(name = "URI")
+    private String uri;
+
+    @Column(name = "TIMESTAMP", nullable = false)
     private LocalDateTime timestamp;
 }

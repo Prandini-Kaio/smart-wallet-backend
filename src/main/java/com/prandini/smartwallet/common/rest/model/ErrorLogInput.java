@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 @NoArgsConstructor @AllArgsConstructor
@@ -21,5 +23,7 @@ public class ErrorLogInput {
 
     private String stackTrace;
 
-    private long timestamp;
+    private String operador;
+
+    private LocalDateTime timestamp;
 }

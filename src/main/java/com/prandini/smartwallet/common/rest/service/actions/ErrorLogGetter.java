@@ -11,6 +11,8 @@ import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.List;
 
 @Component
@@ -22,6 +24,22 @@ public class ErrorLogGetter {
 
     public List<ErrorLog> findAll(){
         log.info("Buscando todos os logs de erro do sistema.");
-        return this.repository.findAll();
+
+        List<ErrorLog> logs = this.repository.findAll();
+
+        logs.forEach(l -> {
+            l.setStackTrace(readStackTrace(l.getUri()));
+        });
+
+        return logs;
+    }
+
+    private String readStackTrace(String uri){
+        try(BufferedReader br = new BufferedReader(new FileReader(uri))){
+            return br.lines().reduce("", (a, b) -> a + b);
+        } catch (Exception e){
+            log.error("Erro ao ler arquivo de log.", e);
+            return null;
+        }
     }
 }

@@ -7,8 +7,9 @@ package com.prandini.smartwallet.common.rest;
 
 import com.prandini.smartwallet.common.exception.BusinessException;
 import com.prandini.smartwallet.common.rest.domain.ErrorLog;
+import com.prandini.smartwallet.common.rest.model.ErrorLogInput;
 import com.prandini.smartwallet.common.rest.model.ErrorResponseOutput;
-import com.prandini.smartwallet.common.rest.repository.ErrorLogRepository;
+import com.prandini.smartwallet.common.rest.service.actions.ErrorLogCreator;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
@@ -24,9 +25,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,7 +39,7 @@ public class GlobalErrorHandler {
     final String CAMPOS_INVALIDOS_MSG = "Campos inválidos.";
 
     @Resource
-    private ErrorLogRepository repository;
+    private ErrorLogCreator creator;
 
     @ExceptionHandler({
             NoSuchElementException.class,
@@ -72,6 +72,9 @@ public class GlobalErrorHandler {
             ValidationException.class
     })
     public ResponseEntity<ErrorResponseOutput> handleValidationException(Exception ex, WebRequest request) {
+
+        createLogError(ex);
+
         return this.handleError(ex.getCause().getMessage(), request);
     }
 
@@ -84,13 +87,6 @@ public class GlobalErrorHandler {
         log.error(exMessage);
         List<String> errors = new ArrayList<>();
         errors.add(exMessage);
-
-        repository.save(ErrorLog.builder()
-                .errorMessage(exMessage)
-                .timestamp(LocalDateTime.now())
-                .stackTrace(exMessage)
-                .build());
-
         return this.getErrorResponse(request, errors);
     }
 
@@ -146,12 +142,7 @@ public class GlobalErrorHandler {
 
         log.error(ex.getMessage());
 
-        this.repository.save(ErrorLog.builder()
-                .errorMessage(ex.getMessage())
-                .stackTrace(ex.getCause() != null ? ex.getCause().getMessage() : ex.getLocalizedMessage())
-                .timestamp(LocalDateTime.now())
-                .build()
-        );
+        createLogError(ex);
 
         return this.getErrorResponse(status, ex.getMessage(), request);
     }
@@ -171,14 +162,19 @@ public class GlobalErrorHandler {
     }
 
     private String getStackTraceAsString(Throwable ex) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        return sw.toString();
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement element : ex.getStackTrace()) {
+            sb.append(element.toString()).append("\n");
+        }
+        return sb.toString();
     }
 
-    private String getStackTraceAsString(MethodArgumentNotValidException ex) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        return sw.toString();
+    private void createLogError(Throwable ex) {
+        this.creator.create(ErrorLogInput.builder()
+                .errorMessage(ex.getMessage())
+                .stackTrace(getStackTraceAsString(ex))
+                .operador("DEFAULT")
+                .timestamp(LocalDateTime.now())
+                .build());
     }
 }

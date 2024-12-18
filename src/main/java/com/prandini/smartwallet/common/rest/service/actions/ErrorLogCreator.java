@@ -12,9 +12,14 @@ import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
-import java.time.Clock;
-import java.time.Instant;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Component
 @CommonsLog
@@ -26,15 +31,37 @@ public class ErrorLogCreator {
     public ErrorLog create(ErrorLogInput input){
         log.info("Criando log de erro.");
 
-        // Converte o timestamp em localdatetime
-        LocalDateTime timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(input.getTimestamp()), Clock.systemDefaultZone().getZone());
+       try {
+           ErrorLog errorLog = ErrorLog.builder()
+                   .errorMessage(input.getErrorMessage())
+                   .timestamp(input.getTimestamp())
+                   .uri(saveStacktraceToFile(input.getStackTrace()))
+                   .operador(input.getOperador())
+                   .build();
 
-        ErrorLog errorLog = ErrorLog.builder()
-                .errorMessage(input.getErrorMessage())
-                .timestamp(timestamp)
-                .stackTrace(input.getStackTrace())
-                .build();
+           return this.repository.save(errorLog);
+       }catch (IOException e) {
+           log.error("Erro ao salvar stacktrace em arquivo.", e);
+           return null;
+       }
+    }
 
-        return this.repository.save(errorLog);
+    private String saveStacktraceToFile(String stacktrace) throws IOException {
+
+        String logDir = "logs/stacktraces";
+        Path dir = Paths.get(logDir);
+
+        if (!Files.exists(dir)) {
+            Files.createDirectories(dir);
+        }
+
+        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS")) + ".log";
+        Path filePath = dir.resolve(fileName);
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()))) {
+            writer.write(stacktrace);
+        }
+
+        return filePath.toString();
     }
 }

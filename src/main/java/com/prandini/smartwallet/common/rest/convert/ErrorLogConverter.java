@@ -16,7 +16,8 @@ public class ErrorLogConverter {
         return ErrorLogOutput.builder()
                 .id(errorLog.getId())
                 .errorMessage(errorLog.getErrorMessage())
-                .stackTrace(errorLog.getStackTrace())
+                .stacktrace(errorLog.getStackTrace())
+                .operador(errorLog.getOperador())
                 .timestamp(errorLog.getTimestamp())
                 .build();
     }

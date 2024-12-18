@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 @CommonsLog
 public class ErrorLogService {
 

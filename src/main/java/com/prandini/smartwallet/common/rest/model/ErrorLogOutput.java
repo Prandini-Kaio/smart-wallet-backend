@@ -21,7 +21,9 @@ public class ErrorLogOutput {
 
     private String errorMessage;
 
-    private String stackTrace;
+    private String stacktrace;
+
+    private String operador;
 
     private LocalDateTime timestamp;
 
