@@ -56,7 +56,7 @@ public class LancamentoCreator {
                 .categoriaLancamento(input.getCategoriaLancamento())
                 .tipoPagamento(input.getTipoPagamento())
                 .status(input.getStatus() != null ? input.getStatus() : StatusLancamento.EM_ABERTO)
-                .valor(input.getValor())
+                .valorBruto(input.getValor())
                 .dtCriacao(input.getDtCriacao() != null ? input.getDtCriacao() : LocalDateTime.now())
                 .dtAlteracaoStatus(input.getDtAlteracaoStatus() != null ? input.getDtAlteracaoStatus() : null)
                 .parcelas(input.getParcelas())

@@ -33,12 +33,12 @@ public class TotalizadorFinanceiro {
 
         totalSaida = lancamentos.stream()
                 .filter(l -> l.getTipoLancamento().equals(TipoLancamentoEnum.SAIDA))
-                .map(Lancamento::getValor)
+                .map(Lancamento::getValorBruto)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         totalEntrada = lancamentos.stream()
                 .filter(l -> l.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA))
-                .map(Lancamento::getValor)
+                .map(Lancamento::getValorBruto)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         total = totalEntrada.subtract(totalSaida);

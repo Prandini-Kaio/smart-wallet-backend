@@ -10,7 +10,10 @@ import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.lancamento.model.SaldoProjetadoOutput;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
+import com.prandini.smartwallet.lancamento.service.SaldoProjetadoService;
+import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -35,6 +38,9 @@ public class LancamentoController {
     @Resource
     private LancamentoService service;
 
+    @Resource
+    private SaldoProjetadoService saldoProjetadoService;
+
     @GetMapping
     public ResponseEntity<List<LancamentoOutput>> getByFilter(LancamentoFilter filter){
         return ResponseEntity.ok().body(service.findByFilter(filter));
@@ -49,6 +55,18 @@ public class LancamentoController {
     @Operation(description = "Retorna o totalizador dos lançamentos ativos do sistema.")
     public ResponseEntity<TotalizadorFinanceiro> getTotalizador(LancamentoFilter filter){
         return ResponseEntity.ok().body(this.service.getTotalizador(filter));
+    }
+
+    @GetMapping("/saldo-projetado/lancamento")
+    @Operation(description = "Calcula o saldo projetado com base em um filtro.")
+    public ResponseEntity<List<SaldoProjetadoOutput>> getSaldoProjetado(LancamentoFilter filter){
+        return ResponseEntity.ok().body(this.saldoProjetadoService.getSaldoProjetado(filter));
+    }
+
+    @GetMapping("/saldo-projetado/transacao")
+    @Operation(description = "Calcula o saldo projetado com base em um filtro.")
+    public ResponseEntity<List<SaldoProjetadoOutput>> getSaldoProjetado(TransacaoFilter filter){
+        return ResponseEntity.ok().body(this.saldoProjetadoService.getSaldoProjetado(filter));
     }
 
     @PostMapping

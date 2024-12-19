@@ -44,8 +44,8 @@ public class Lancamento {
     @Column(name = "STATUS")
     private StatusLancamento status;
 
-    @Column(name = "VALOR")
-    private BigDecimal valor;
+    @Column(name = "VALOR_BRUTO")
+    private BigDecimal valorBruto;
 
     @Column(name = "DATA_CRIACAO")
     private LocalDateTime dtCriacao;
@@ -64,5 +64,9 @@ public class Lancamento {
 
     @Column(name = "DESCRICAO")
     private String descricao;
+
+    public boolean isEntrada() {
+        return tipoLancamento == TipoLancamentoEnum.ENTRADA;
+    }
 
 }

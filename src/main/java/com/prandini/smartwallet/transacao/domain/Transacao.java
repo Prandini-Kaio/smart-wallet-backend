@@ -60,4 +60,11 @@ public class Transacao {
 
     @Column(name = "DESCRICAO")
     private String descricao;
+
+    public boolean isProjetavel(){
+        if(status.equals(StatusTransacaoEnum.PAGO) || status.equals(StatusTransacaoEnum.CANCELADO))
+            return false;
+
+        return true;
+    }
 }

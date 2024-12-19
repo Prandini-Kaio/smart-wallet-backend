@@ -18,7 +18,7 @@ public class LancamentoConverter {
                 .tipoLancamento(lancamento.getTipoLancamento().getDescricao())
                 .categoriaLancamento(lancamento.getCategoriaLancamento().getNome())
                 .tipoPagamento(lancamento.getTipoPagamento().getDescricao())
-                .valor(lancamento.getValor())
+                .valor(lancamento.getValorBruto())
                 .dtCriacao(DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao()))
                 .conta(lancamento.getConta().getBanco())
                 .banco(lancamento.getConta().getBanco())

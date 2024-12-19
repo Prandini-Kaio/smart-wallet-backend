@@ -2,7 +2,6 @@ package com.prandini.smartwallet.lancamento.service.actions;
 
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
-import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -52,7 +51,7 @@ public class LancamentoUpdater {
         origin.setCategoriaLancamento(lancamento.getCategoriaLancamento());
         origin.setTipoPagamento(lancamento.getTipoPagamento());
         origin.setStatus(lancamento.getStatus());
-        origin.setValor(lancamento.getValor());
+        origin.setValorBruto(lancamento.getValorBruto());
         origin.setDtCriacao(lancamento.getDtCriacao());
         origin.setParcelas(lancamento.getParcelas());
         origin.setConta(lancamento.getConta());

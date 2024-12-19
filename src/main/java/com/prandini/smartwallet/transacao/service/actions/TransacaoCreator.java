@@ -30,7 +30,7 @@ public class TransacaoCreator {
         log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.",
                 lancamento.getParcelas(), lancamento.getId(), DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao())));
 
-        List<BigDecimal> parcelas = calcularParcelas(lancamento.getValor(), lancamento.getParcelas());
+        List<BigDecimal> parcelas = calcularParcelas(lancamento.getValorBruto(), lancamento.getParcelas());
 
         List<Transacao> transacoes = gerarTransacoes(lancamento, parcelas);
 

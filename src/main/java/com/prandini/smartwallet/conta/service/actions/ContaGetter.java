@@ -70,8 +70,8 @@ public class ContaGetter {
                 .filter(Objects::nonNull)
                 .map(lancamento -> {
                     return lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ?
-                            lancamento.getValor() :
-                            lancamento.getValor().negate();
+                            lancamento.getValorBruto() :
+                            lancamento.getValorBruto().negate();
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
