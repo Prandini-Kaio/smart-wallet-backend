@@ -44,7 +44,7 @@ public class Lancamento {
     @Column(name = "STATUS")
     private StatusLancamento status;
 
-    @Column(name = "VALOR_BRUTO")
+    @Column(name = "VALOR")
     private BigDecimal valorBruto;
 
     @Column(name = "DATA_CRIACAO")

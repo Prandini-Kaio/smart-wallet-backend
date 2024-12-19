@@ -69,7 +69,7 @@ public class ContaGetter {
         BigDecimal saldoParcial = lancamentos.stream()
                 .filter(Objects::nonNull)
                 .map(lancamento -> {
-                    return lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ?
+                    return lancamento.isEntrada() ?
                             lancamento.getValorBruto() :
                             lancamento.getValorBruto().negate();
                 })
