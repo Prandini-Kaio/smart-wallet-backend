@@ -11,20 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 
 @Configuration
-public class CorsConfig {
+public class CorsConfig implements WebMvcConfigurer {
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080")
-                        .allowedOrigins("http://192.168.1.16:8080")
-                        .allowedOrigins("http://0.0.0.0:8080")
-                        .allowedOrigins("http://popcorn.internal:8080")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE");
-            }
-        };
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        WebMvcConfigurer.super.addCorsMappings(registry);
+        registry.addMapping("/**");
     }
 }
