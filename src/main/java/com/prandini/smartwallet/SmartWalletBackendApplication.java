@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(scanBasePackages = {"com.prandini.smartwallet"})
 @EnableJpaRepositories(basePackages = "com.prandini.smartwallet", repositoryImplementationPostfix = "CustomImpl")
 @EnableScheduling
-@Profile("db-local")
 public class SmartWalletBackendApplication {
 
     public static void main(String[] args) {
