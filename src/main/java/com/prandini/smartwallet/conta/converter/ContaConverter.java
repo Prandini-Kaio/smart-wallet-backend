@@ -4,6 +4,7 @@ package com.prandini.smartwallet.conta.converter;
 
 import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.model.ContaOutput;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
@@ -36,6 +37,16 @@ public class ContaConverter {
                 .saldoParcial(saldoParcial)
                 .dtVencimento(DateUtils.toBrazilianDateString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaVencimento())))
                 .tipoConta(conta.getTipoConta())
+                .color(conta.getColor())
+                .build();
+    }
+
+    public ContaInput toInput(Conta conta){
+        return ContaInput.builder()
+                .banco(conta.getBanco())
+                .nome(conta.getNome())
+                .tipoConta(conta.getTipoConta())
+                .diaVencimento(String.valueOf(conta.getDiaVencimento()))
                 .color(conta.getColor())
                 .build();
     }

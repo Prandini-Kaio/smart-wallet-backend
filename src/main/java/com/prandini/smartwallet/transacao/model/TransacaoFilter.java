@@ -5,6 +5,7 @@ package com.prandini.smartwallet.transacao.model;
  * created 8/26/24
  */
 
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
@@ -33,7 +34,7 @@ public class TransacaoFilter {
 
     private StatusTransacaoEnum status;
 
-    private String conta;
+    private ContaFilter conta;
 
     private LocalDateTime dtInicio;
 

@@ -37,12 +37,6 @@ public class ContaController {
         return ResponseEntity.ok().body(service.getByFilter(filter));
     }
 
-    @GetMapping("/autocomplete")
-    @Operation(summary = "Autocomplete de contas")
-    public ResponseEntity<List<AutcompleteDTO>> autocompleteContas(@RequestParam String conta){
-        return ResponseEntity.ok().body(this.service.autcompleteContas(conta));
-    }
-
     @GetMapping("/totalizador")
     @Operation(summary = "Consulta o totalizador financeiro através de um filtro.")
     public ResponseEntity<TotalizadorFinanceiro> findTotalizador(ContaFilter filter){

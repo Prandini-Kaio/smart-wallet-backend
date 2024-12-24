@@ -46,6 +46,8 @@ public class TransacaoGetter {
     }
 
     public TotalizadorFinanceiro totalizadorByFilter(TransacaoFilter filter) {
+        log.info(String.format("Consultando de totalizadores a partir do filtro %s.", filter));
+
         List<Transacao> transacoes = this.byFilter(filter);
 
         return TotalizadorFinanceiro.calcularTransacao(transacoes);

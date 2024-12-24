@@ -5,6 +5,7 @@ import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
 
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
 
-        sb.append(" ORDER BY t.dtVencimento ASC, l.dtCriacao ASC ");
+        sb.append(" ORDER BY t.dtVencimento DESC, l.dtCriacao DESC ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
@@ -61,6 +62,11 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         safeAddParams(params, "status", filter.getStatus(), sb, " AND t.status = :status ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND t.dtVencimento >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND t.dtVencimento <= :dtFim ");
-        safeAddParams(params, "conta", filter.getConta(), sb, " AND (UPPER(c.nome) LIKE CONCAT('%', UPPER(:conta), '%') OR UPPER(c.banco) LIKE CONCAT('%', UPPER(:conta), '%')) ");
+
+        if(filter.getConta() != null){
+            safeAddParams(params, "banco", filter.getConta().getBanco(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
+            safeAddParams(params, "nome", filter.getConta().getNome(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
+        }
+
     }
 }

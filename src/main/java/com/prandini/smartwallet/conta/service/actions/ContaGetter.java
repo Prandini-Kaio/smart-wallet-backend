@@ -13,7 +13,6 @@ import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @CommonsLog
@@ -33,30 +33,18 @@ public class ContaGetter {
     @Resource
     private LancamentoGetter lancamentoGetter;
 
-    public List<Conta> getAll(){
-        log.info("Buscando todas as contas.");
-
-        return repository.findAll();
-    }
-
-    public Conta byNome(String nome){
-        log.info(String.format("Buscando contas por nome %s.", nome));
-
-        return repository.getContaByFilter(nome).orElseThrow(CommonExceptionSupplier.naoEncontrado("Conta", nome));
-    }
-
     public List<Conta> byFilter(ContaFilter filter){
-        log.info("Buscando contas por um filtro.");
+        log.info(String.format("Buscando contas por filtro %s.", filter));
 
         return repository.byFilter(filter);
     }
 
-    public boolean existsContaByNomeBanco(ContaInput input) {
-        return repository.existsContaByNomeBanco(input.getNome(), input.getBanco());
+    public Conta findByFilter(ContaFilter filter){
+        return repository.optionalByFilter(filter).orElseThrow(CommonExceptionSupplier.naoEncontrado("Conta", filter.getNome()));
     }
 
-    public List<AutcompleteDTO> autocompleteContas(String conta) {
-        return this.repository.autcompleteContas(conta);
+    public boolean existsContaByNomeBanco(ContaInput input) {
+        return repository.existsContaByNomeBanco(input.getNome(), input.getBanco());
     }
 
     public Conta byid(Long id) {

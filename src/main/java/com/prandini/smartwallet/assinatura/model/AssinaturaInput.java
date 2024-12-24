@@ -20,7 +20,10 @@ public class AssinaturaInput {
     private Long id;
 
     @NotNull
-    private String conta;
+    private String nomeConta;
+
+    @NotNull
+    private String bancoConta;
 
     @NotNull
     private BigDecimal valor;

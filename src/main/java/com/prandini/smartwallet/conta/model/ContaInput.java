@@ -8,11 +8,14 @@ package com.prandini.smartwallet.conta.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Getter
+@Data
+@Builder
 public class ContaInput {
 
     private Long id;
@@ -25,11 +28,9 @@ public class ContaInput {
     @Schema(example = "CORRENTE")
     private String nome;
 
-    @NotNull
     @Schema(example = "ECONOMIA")
     private TipoConta tipoConta;
 
-    @NotNull
     @Schema(example = "12")
     private String diaVencimento;
 

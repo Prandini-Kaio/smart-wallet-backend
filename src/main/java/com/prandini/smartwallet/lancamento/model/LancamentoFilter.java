@@ -1,5 +1,6 @@
 package com.prandini.smartwallet.lancamento.model;
 
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -30,5 +31,5 @@ public class LancamentoFilter {
 
     private LocalDateTime dtFim;
 
-    private String conta;
+    private ContaFilter conta;
 }

@@ -3,6 +3,7 @@ package com.prandini.smartwallet.lancamento.service.actions;
 import com.prandini.smartwallet.common.exception.BusinessException;
 import com.prandini.smartwallet.common.exception.CommonExceptionMessages;
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.model.TipoConta;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
@@ -61,7 +62,10 @@ public class LancamentoValidator {
 
     private void validarLancamentoEconomia(LancamentoInput input){
         if(input.getCategoriaLancamento().equals(CategoriaLancamentoEnum.ECONOMIA)){
-            Conta conta = contaGetter.byNome(input.getConta());
+            Conta conta = contaGetter.findByFilter(ContaFilter.builder()
+                    .banco(input.getConta().getBanco())
+                    .nome(input.getConta().getNome()).build()
+            );
 
             if(!conta.getTipoConta().equals(TipoConta.ECONOMIA)){
                 throw new BusinessException(LancamentoExceptionMessages.contaIncorreta("economia", "Economias"));
@@ -71,7 +75,10 @@ public class LancamentoValidator {
 
     private void validarLancamentoInvestimento(LancamentoInput input){
         if(input.getCategoriaLancamento().equals(CategoriaLancamentoEnum.INVESTIMENTO)){
-            Conta conta = contaGetter.byNome(input.getConta());
+            Conta conta = contaGetter.findByFilter(ContaFilter.builder()
+                    .banco(input.getConta().getBanco())
+                    .nome(input.getConta().getNome()).build()
+            );
 
             if(!conta.getTipoConta().equals(TipoConta.INVESTIMENTO)){
                 throw new BusinessException(LancamentoExceptionMessages.contaIncorreta("investimento", "Investimentos"));

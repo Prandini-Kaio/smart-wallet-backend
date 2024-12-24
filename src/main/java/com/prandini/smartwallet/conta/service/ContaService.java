@@ -41,10 +41,6 @@ public class ContaService {
         return converter.toOutput(creator.criarConta(input));
     }
 
-    public List<AutcompleteDTO> autcompleteContas(String conta) {
-        return this.getter.autocompleteContas(conta);
-    }
-
     public TotalizadorFinanceiro getTotalizadorByFilter(ContaFilter filter) {
         return getter.getTotalizadorByFilter(filter);
     }

@@ -4,12 +4,14 @@ import com.prandini.smartwallet.assinatura.domain.Assinatura;
 import com.prandini.smartwallet.assinatura.model.AssinaturaInput;
 import com.prandini.smartwallet.assinatura.repository.AssinaturaRepository;
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 /*
  * @author prandini
@@ -30,7 +32,11 @@ public class AssinaturaCreator {
 
         log.info(String.format("Criando assinatura para %s", input.getDescricao()));
 
-        Conta conta = contaGetter.byNome(input.getConta());
+        Conta conta = contaGetter.findByFilter(ContaFilter.builder()
+                .banco(input.getBancoConta())
+                .nome(input.getNomeConta())
+                .build()
+        );
 
         Assinatura assinatura = Assinatura.builder()
                 .conta(conta)

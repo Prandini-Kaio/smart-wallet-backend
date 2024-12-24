@@ -33,7 +33,8 @@ public class ContaRepositoryCustomImpl implements ContaRepositoryCustom{
         sb.append("SELECT c FROM Conta c ")
                 .append("WHERE 1=1 ");
 
-        safeAddParams(params, "nome", filter.getNome(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') OR LOWER(c.banco) LIKE CONCAT('%', LOWER(:nome), '%') ");
+        safeAddParams(params, "nome", filter.getNome(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
+        safeAddParams(params, "banco", filter.getBanco(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
         safeAddParams(params, "tipoConta", filter.getTipoConta(), sb, " AND c.tipoConta = :tipoConta ");
         safeAddParams(params, "diaVencimento", filter.getDiaVencimento(), sb, " AND c.diaVencimento = :diaVencimento ");
 
@@ -45,6 +46,31 @@ public class ContaRepositoryCustomImpl implements ContaRepositoryCustom{
         params.forEach(query::setParameter);
 
         return query.getResultList();
+    }
+
+    @Override
+    public Optional<Conta> optionalByFilter(ContaFilter filter) {
+        StringBuilder sb = new StringBuilder();
+
+        Map<String, Object> params = new HashMap<>();
+
+        // Query
+        sb.append("SELECT c FROM Conta c ")
+                .append("WHERE 1=1 ");
+
+        safeAddParams(params, "nome", filter.getNome(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
+        safeAddParams(params, "banco", filter.getBanco(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
+        safeAddParams(params, "tipoConta", filter.getTipoConta(), sb, " AND c.tipoConta = :tipoConta ");
+        safeAddParams(params, "diaVencimento", filter.getDiaVencimento(), sb, " AND c.diaVencimento = :diaVencimento ");
+
+        sb.append(" ORDER BY c.saldoParcial DESC ");
+
+        // Criando a query com base no StringBuilder
+        Query query = this.entityManager.createQuery(sb.toString());
+
+        params.forEach(query::setParameter);
+
+        return Optional.ofNullable((Conta) query.getSingleResult());
     }
 
     @Override
@@ -61,7 +87,7 @@ public class ContaRepositoryCustomImpl implements ContaRepositoryCustom{
                 .append("JOIN l.conta c ")
                 .append("WHERE 1=1 ");
 
-        safeAddParams(params, "nome", filter.getNome(), sb, " AND (LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') OR LOWER(c.banco) LIKE CONCAT('%', LOWER(:nome), '%')) ");
+        safeAddParams(params, "nome", filter.getNome(), sb, "  AND LOWER(CONCAT(c.banco, ' ', c.nome)) LIKE CONCAT('%', LOWER(:nome), '%') ");
         safeAddParams(params, "tipoConta", filter.getTipoConta(), sb, " AND c.tipoConta = :tipoConta ");
         safeAddParams(params, "diaVencimento", filter.getDiaVencimento(), sb, " AND c.diaVencimento = :diaVencimento ");
 

@@ -31,10 +31,10 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
                 .append("JOIN l.conta c ")
                 .append("WHERE 1=1 ");
 
-        // Setando os parametros da query, caso o filtro nao seja nulo
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
 
-        // Criando a query com base no StringBuilder
+        sb.append(" ORDER BY l.dtCriacao DESC ");
+
         Query query = this.entityManager.createQuery(sb.toString());
 
         params.forEach(query::setParameter);
@@ -49,7 +49,11 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
         safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status = :status ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND l.dtCriacao >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND l.dtCriacao <= :dtFim ");
-        safeAddParams(params, "conta", filter.getConta(), sb, " AND (UPPER(c.nome) LIKE CONCAT('%', UPPER(:conta), '%') OR UPPER(c.banco) LIKE CONCAT('%', UPPER(:conta), '%')) ");
+
+        if(filter.getConta() != null){
+            safeAddParams(params, "banco", filter.getConta().getBanco(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
+            safeAddParams(params, "nome", filter.getConta().getNome(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
+        }
     }
 
     private static void safeAddParams(Map<String, Object> params, String name, Object value, StringBuilder sb, String queryPart){

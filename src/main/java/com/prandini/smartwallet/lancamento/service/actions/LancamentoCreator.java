@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.lancamento.service.actions;
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
@@ -41,7 +42,11 @@ public class LancamentoCreator {
 
         validator.validarCriacao(input);
 
-        Conta conta = contaGetter.byNome(input.getConta());
+        Conta conta = contaGetter.findByFilter(ContaFilter.builder()
+                .nome(input.getConta().getNome())
+                .banco(input.getConta().getBanco())
+                .build()
+        );
 
         Lancamento lancamento = buildLancamento(input, conta);
         List<Transacao> transacoes = transacaoCreator.create(lancamento);

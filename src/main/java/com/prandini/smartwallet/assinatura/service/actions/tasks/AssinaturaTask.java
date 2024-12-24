@@ -8,6 +8,8 @@ package com.prandini.smartwallet.assinatura.service.actions.tasks;
 import com.prandini.smartwallet.assinatura.domain.Assinatura;
 import com.prandini.smartwallet.assinatura.model.AssinaturaFilter;
 import com.prandini.smartwallet.assinatura.service.actions.AssinaturaGetter;
+import com.prandini.smartwallet.conta.converter.ContaConverter;
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -32,6 +34,9 @@ public class AssinaturaTask {
     @Resource
     private LancamentoService lancamentoService;
 
+    @Resource
+    private ContaConverter contaConverter;
+
     @Scheduled(cron = "0 0 0 1 * ?")
     public void cadastrarLancamento(){
         log.info("Renovando assinaturas");
@@ -49,7 +54,7 @@ public class AssinaturaTask {
                         .valor(a.getValor())
                         .dtCriacao(LocalDateTime.now())
                         .parcelas(1)
-                        .conta(a.getConta().getBanco())
+                        .conta(ContaFilter.builder().banco(a.getConta().getBanco()).nome(a.getConta().getNome()).build())
                         .descricao(a.getDescricao())
                         .build();
 

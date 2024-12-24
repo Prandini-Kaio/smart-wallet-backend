@@ -1,5 +1,7 @@
 package com.prandini.smartwallet.lancamento.model;
 
+import com.prandini.smartwallet.conta.model.ContaFilter;
+import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -44,8 +46,7 @@ public class LancamentoInput {
     @NotNull
     private int parcelas;
 
-    @NotEmpty
-    private String conta;
+    private ContaFilter conta;
 
     private String descricao;
 }

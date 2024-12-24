@@ -61,6 +61,7 @@ public class TransacaoService {
     }
 
     public TotalizadorFinanceiro findTotalizadorByFilter(TransacaoFilter filter) {
+        log.info(String.format("Iniciando consulta de totalizadores a partir do filtro %s.", filter));
         return this.getter.totalizadorByFilter(filter);
     }
 

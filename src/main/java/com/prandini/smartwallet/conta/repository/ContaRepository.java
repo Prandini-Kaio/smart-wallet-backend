@@ -17,22 +17,16 @@ import java.util.Optional;
 @Repository
 public interface ContaRepository extends JpaRepository<Conta, Long>, ContaRepositoryCustom {
 
-    @Query("SELECT c " +
-            "FROM Conta c " +
-            "WHERE lower(c.nome) LIKE CONCAT('%', LOWER(:filter), '%') " +
-            "OR lower(c.banco) LIKE CONCAT('%', LOWER(:filter),'%')")
-    Optional<Conta> getContaByFilter(String filter);
-
-    @Query("SELECT COUNT(c) > 0 " +
-            "FROM Conta c " +
-            "WHERE LOWER(c.nome) = LOWER(:nome) " +
-            "AND LOWER(c.banco) = LOWER(:banco) ")
+    @Query(" SELECT COUNT(c) > 0 " +
+            " FROM Conta c " +
+            " WHERE LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') " +
+            " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ")
     boolean existsContaByNomeBanco(String nome, String banco);
 
 
     @Query("SELECT new com.prandini.smartwallet.common.model.AutcompleteDTO(c.id, CONCAT(c.banco, ' - ', c.nome) )" +
             "FROM Conta c " +
-            "WHERE LOWER(c.nome) LIKE CONCAT('%', LOWER(:conta), '%') " +
-            "OR LOWER(c.banco) LIKE CONCAT('%', LOWER(:conta), '%')")
-    List<AutcompleteDTO> autcompleteContas(String conta);
+            "WHERE LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') " +
+            " OR LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ")
+    List<AutcompleteDTO> autcompleteContas(String nome, String banco);
 }

@@ -7,10 +7,18 @@ package com.prandini.smartwallet.common.rest.convert;
 
 import com.prandini.smartwallet.common.rest.domain.ErrorLog;
 import com.prandini.smartwallet.common.rest.model.ErrorLogOutput;
+import com.prandini.smartwallet.common.utils.DateUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.View;
 
 @Component
 public class ErrorLogConverter {
+
+    private final View error;
+
+    public ErrorLogConverter(View error) {
+        this.error = error;
+    }
 
     public ErrorLogOutput toOutput(ErrorLog errorLog){
         return ErrorLogOutput.builder()
@@ -18,7 +26,7 @@ public class ErrorLogConverter {
                 .errorMessage(errorLog.getErrorMessage())
                 .stacktrace(errorLog.getStackTrace())
                 .operador(errorLog.getOperador())
-                .timestamp(errorLog.getTimestamp())
+                .timestamp(DateUtils.toBrazilianDateTimeString(errorLog.getTimestamp()))
                 .build();
     }
 }

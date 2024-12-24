@@ -29,10 +29,4 @@ public class ErrorLogController {
     public ResponseEntity<List<ErrorLogOutput>> getErrorLog() {
         return ResponseEntity.ok().body(service.findAll());
     }
-
-    @GetMapping
-    @RequestMapping("/tst")
-    public void teste(){
-        int s = 1/0;
-    }
 }

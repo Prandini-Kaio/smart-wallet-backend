@@ -25,6 +25,6 @@ public class ErrorLogOutput {
 
     private String operador;
 
-    private LocalDateTime timestamp;
+    private String timestamp;
 
 }
