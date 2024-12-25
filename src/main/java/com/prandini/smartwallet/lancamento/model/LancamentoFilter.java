@@ -32,4 +32,8 @@ public class LancamentoFilter {
     private LocalDateTime dtFim;
 
     private ContaFilter conta;
+
+    private String nomeConta;
+
+    private String bancoConta;
 }

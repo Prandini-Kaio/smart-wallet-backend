@@ -34,7 +34,9 @@ public class TransacaoFilter {
 
     private StatusTransacaoEnum status;
 
-    private ContaFilter conta;
+    private String nomeConta;
+
+    private String bancoConta;
 
     private LocalDateTime dtInicio;
 
