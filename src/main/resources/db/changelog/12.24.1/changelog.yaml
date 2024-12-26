@@ -1,0 +1,255 @@
+databaseChangeLog:
+    - changeSet:
+          id: 1735239326381-1
+          author: kaiooliveira (generated)
+          changes:
+              - createTable:
+                    columns:
+                        - column:
+                              autoIncrement: true
+                              constraints:
+                                  nullable: false
+                                  primaryKey: true
+                                  primaryKeyName: conta_pkey
+                              name: id
+                              type: BIGINT
+                        - column:
+                              name: banco
+                              type: VARCHAR(255)
+                        - column:
+                              name: color
+                              type: VARCHAR(255)
+                        - column:
+                              name: dia_vencimento
+                              type: INTEGER
+                        - column:
+                              name: nome
+                              type: VARCHAR(255)
+                        - column:
+                              name: saldo_parcial
+                              type: numeric(38, 2)
+                        - column:
+                              name: tipo_conta
+                              type: SMALLINT
+                    tableName: conta
+    - changeSet:
+          id: 1735239326381-2
+          author: kaiooliveira (generated)
+          changes:
+              - createTable:
+                    columns:
+                        - column:
+                              autoIncrement: true
+                              constraints:
+                                  nullable: false
+                                  primaryKey: true
+                                  primaryKeyName: lancamento_pkey
+                              name: id
+                              type: BIGINT
+                        - column:
+                              name: categoria
+                              type: SMALLINT
+                        - column:
+                              name: descricao
+                              type: VARCHAR(255)
+                        - column:
+                              name: data_status
+                              type: TIMESTAMP WITHOUT TIME ZONE
+                        - column:
+                              name: data_criacao
+                              type: TIMESTAMP WITHOUT TIME ZONE
+                        - column:
+                              name: parcelas
+                              type: INTEGER
+                        - column:
+                              name: status
+                              type: SMALLINT
+                        - column:
+                              name: tipo
+                              type: SMALLINT
+                        - column:
+                              name: tipo_pagamento
+                              type: SMALLINT
+                        - column:
+                              name: valor
+                              type: numeric(38, 2)
+                        - column:
+                              name: conta_id
+                              type: BIGINT
+                    tableName: lancamento
+    - changeSet:
+          id: 1735239326381-3
+          author: kaiooliveira (generated)
+          changes:
+              - createTable:
+                    columns:
+                        - column:
+                              autoIncrement: true
+                              constraints:
+                                  nullable: false
+                                  primaryKey: true
+                                  primaryKeyName: transacao_pkey
+                              name: id
+                              type: BIGINT
+                        - column:
+                              name: descricao
+                              type: VARCHAR(255)
+                        - column:
+                              name: data_pagamento
+                              type: TIMESTAMP WITHOUT TIME ZONE
+                        - column:
+                              name: data_vencimento
+                              type: TIMESTAMP WITHOUT TIME ZONE
+                        - column:
+                              name: status
+                              type: SMALLINT
+                        - column:
+                              name: valor
+                              type: numeric(38, 2)
+                        - column:
+                              name: lancamento_id
+                              type: BIGINT
+                        - column:
+                              name: proxima_id
+                              type: BIGINT
+                    tableName: transacao
+    - changeSet:
+          id: 1735239326381-4
+          author: kaiooliveira (generated)
+          changes:
+              - addUniqueConstraint:
+                    columnNames: proxima_id
+                    constraintName: ukq3pixvutpsgsbngssagcso56f
+                    tableName: transacao
+    - changeSet:
+          id: 1735239326381-5
+          author: kaiooliveira (generated)
+          changes:
+              - createTable:
+                    columns:
+                        - column:
+                              autoIncrement: true
+                              constraints:
+                                  nullable: false
+                                  primaryKey: true
+                                  primaryKeyName: assinatura_pkey
+                              name: id
+                              type: BIGINT
+                        - column:
+                              constraints:
+                                  nullable: false
+                              name: ativa
+                              type: BOOLEAN
+                        - column:
+                              name: descricao
+                              type: VARCHAR(255)
+                        - column:
+                              name: dt_fim
+                              type: date
+                        - column:
+                              name: dt_inicio
+                              type: date
+                        - column:
+                              name: valor
+                              type: numeric(38, 2)
+                        - column:
+                              name: conta_id
+                              type: BIGINT
+                    tableName: assinatura
+    - changeSet:
+          id: 1735239326381-6
+          author: kaiooliveira (generated)
+          changes:
+              - createTable:
+                    columns:
+                        - column:
+                              autoIncrement: true
+                              constraints:
+                                  nullable: false
+                                  primaryKey: true
+                                  primaryKeyName: error_log_pkey
+                              name: id
+                              type: BIGINT
+                        - column:
+                              constraints:
+                                  nullable: false
+                              name: error_message
+                              type: VARCHAR(255)
+                        - column:
+                              constraints:
+                                  nullable: false
+                              name: operador
+                              type: VARCHAR(255)
+                        - column:
+                              name: stacktrace
+                              type: VARCHAR(255)
+                        - column:
+                              constraints:
+                                  nullable: false
+                              name: timestamp
+                              type: TIMESTAMP WITHOUT TIME ZONE
+                        - column:
+                              name: uri
+                              type: VARCHAR(255)
+                    tableName: error_log
+    - changeSet:
+          id: 1735239326381-7
+          author: kaiooliveira (generated)
+          changes:
+              - addForeignKeyConstraint:
+                    baseColumnNames: lancamento_id
+                    baseTableName: transacao
+                    constraintName: fk25b873fmjr41lq9mfolxsbb09
+                    deferrable: false
+                    initiallyDeferred: false
+                    onDelete: NO ACTION
+                    onUpdate: NO ACTION
+                    referencedColumnNames: id
+                    referencedTableName: lancamento
+                    validate: true
+    - changeSet:
+          id: 1735239326381-8
+          author: kaiooliveira (generated)
+          changes:
+              - addForeignKeyConstraint:
+                    baseColumnNames: conta_id
+                    baseTableName: lancamento
+                    constraintName: fkckkr40nkms4ysmvwgdyjhojcw
+                    deferrable: false
+                    initiallyDeferred: false
+                    onDelete: NO ACTION
+                    onUpdate: NO ACTION
+                    referencedColumnNames: id
+                    referencedTableName: conta
+                    validate: true
+    - changeSet:
+          id: 1735239326381-9
+          author: kaiooliveira (generated)
+          changes:
+              - addForeignKeyConstraint:
+                    baseColumnNames: proxima_id
+                    baseTableName: transacao
+                    constraintName: fkmaitdvua664fgdab8fvwdw523
+                    deferrable: false
+                    initiallyDeferred: false
+                    onDelete: NO ACTION
+                    onUpdate: NO ACTION
+                    referencedColumnNames: id
+                    referencedTableName: transacao
+                    validate: true
+    - changeSet:
+          id: 1735239326381-10
+          author: kaiooliveira (generated)
+          changes:
+              - addForeignKeyConstraint:
+                    baseColumnNames: conta_id
+                    baseTableName: assinatura
+                    constraintName: fkq6xop54nqn0t6pykhf56pid6w
+                    deferrable: false
+                    initiallyDeferred: false
+                    onDelete: NO ACTION
+                    onUpdate: NO ACTION
+                    referencedColumnNames: id
+                    referencedTableName: conta
+                    validate: true
+

@@ -92,6 +92,13 @@
             <version>1.18.30</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.30.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -108,6 +115,34 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.30.0</version>
+                <configuration>
+<!--                    <propertyFile>src/test/resources/application-db-local.properties</propertyFile>-->
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
+                    <url>jdbc:postgresql://127.0.0.1:5432/smartwallet</url>
+                    <username>postgres</username>
+                    <password>postgres</password>
+                    <driver>org.postgresql.Driver</driver>
+                    <referenceDriver>org.h2.Driver</referenceDriver>
+<!--                    <referenceUrl>jdbc:h2:mem:tests</referenceUrl>-->
+                    <referenceUrl>hibernate:spring:com.prandini.smartwallet?dialect=org.hibernate.dialect.PostgreSQLDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <diffChangeLogFile>src/main/resources/db/changelog/diff.yaml</diffChangeLogFile>
+                    <outputChangeLogFile>src/main/resources/db/changelog/changelog.yaml</outputChangeLogFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
