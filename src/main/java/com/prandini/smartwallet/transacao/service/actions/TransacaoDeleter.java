@@ -19,6 +19,7 @@ public class TransacaoDeleter {
 
     public void byLancamento(Long lancamentoID){
         log.info(String.format("deletando todas as transações do lancamento com id %s.", lancamentoID));
+        this.repository.deleteProximaByLancamento(lancamentoID);
         this.repository.deleteByLancamento(lancamentoID);
     }
 }
