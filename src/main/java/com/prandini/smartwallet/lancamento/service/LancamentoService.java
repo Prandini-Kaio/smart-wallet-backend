@@ -15,6 +15,7 @@ import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.model.SaldoProjetadoOutput;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
+import com.prandini.smartwallet.lancamento.service.actions.LancamentoDeleter;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoUpdater;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
@@ -22,6 +23,7 @@ import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.service.TransacaoService;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -49,22 +51,28 @@ public class LancamentoService {
     private LancamentoUpdater updater;
 
     @Resource
+    private LancamentoDeleter deleter;
+
+    @Resource
     private TransacaoService transacaoService;
 
     @Resource
     private TransacaoGetter transacaoGetter;
 
+    @Resource
+    private LancamentoConverter converter;
+
     @Transactional
     public LancamentoOutput criarLancamento(LancamentoInput input) {
         log.info("Iniciando criação de lancamento.");
 
-        return LancamentoConverter.toOutput(creator.create(input));
+        return converter.toOutput(creator.create(input));
     }
 
     public List<LancamentoOutput> findByFilter(LancamentoFilter filter) {
         log.info(String.format("Iniciando busca de lancamentos por filtro %s.", filter));
 
-        return getter.findByFilter(filter).stream().map(LancamentoConverter::toOutput).toList();
+        return getter.findByFilter(filter).stream().map(converter::toOutput).toList();
     }
 
     public TotalizadorFinanceiro getTotalizador(LancamentoFilter filter) {
@@ -72,7 +80,7 @@ public class LancamentoService {
     }
 
     public LancamentoOutput findById(Long id) {
-        return LancamentoConverter.toOutput(this.getter.byId(id));
+        return converter.toOutput(this.getter.byId(id));
     }
 
     @Transactional
@@ -100,5 +108,16 @@ public class LancamentoService {
             lancamento.setStatus(StatusLancamento.CANCELADO);
 
         this.updater.update(lancamento);
+    }
+
+    @Transactional
+    public LancamentoOutput editar(@Valid LancamentoInput input) {
+        return converter.toOutput(this.updater.fromInput(input));
+    }
+
+    @Transactional
+    public void delete(Long id){
+        log.info(String.format("Iniciando delete de lancamento por id %s.", id));
+        this.deleter.delete(id);
     }
 }

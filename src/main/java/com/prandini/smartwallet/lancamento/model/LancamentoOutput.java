@@ -4,6 +4,7 @@ package com.prandini.smartwallet.lancamento.model;
  * @author prandini
  * created 4/5/24
  */
+import com.prandini.smartwallet.conta.model.ContaOutput;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -29,9 +30,7 @@ public class LancamentoOutput {
 
     private BigDecimal valor;
 
-    private String conta;
-
-    private String banco;
+    private ContaOutput conta;
 
     private String dtCriacao;
 

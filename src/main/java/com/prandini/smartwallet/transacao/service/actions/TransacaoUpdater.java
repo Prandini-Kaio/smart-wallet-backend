@@ -34,22 +34,6 @@ public class TransacaoUpdater {
     @Resource
     private LancamentoUpdater lancamentoUpdater;
 
-    public Transacao pagar(Long id) {
-        log.info(String.format("Pagando transação %s.", id));
-
-        Transacao transacao = getter.byId(id);
-
-        validator.validarPagamento(transacao);
-
-        transacao.setStatus(StatusTransacaoEnum.PAGO);
-        transacao.setDtPagamento(LocalDateTime.now());
-
-        if(transacao.getProxima() == null)
-            lancamentoUpdater.quitarLancamento(transacao.getLancamento().getId());
-
-        return repository.save(transacao);
-    }
-
     public Transacao update(Transacao transacao) {
 
         Transacao t = repository.findById(transacao.getId()).orElse(null);
@@ -65,6 +49,22 @@ public class TransacaoUpdater {
         t.setDtPagamento(transacao.getDtPagamento());
 
         return this.repository.save(t);
+    }
+
+    public Transacao pagar(Long id) {
+        log.info(String.format("Pagando transação %s.", id));
+
+        Transacao transacao = getter.byId(id);
+
+        validator.validarPagamento(transacao);
+
+        transacao.setStatus(StatusTransacaoEnum.PAGO);
+        transacao.setDtPagamento(LocalDateTime.now());
+
+        if(transacao.getProxima() == null)
+            lancamentoUpdater.quitarLancamento(transacao.getLancamento().getId());
+
+        return repository.save(transacao);
     }
 
     public List<Transacao> pagarTodos(List<Transacao> transacoes) {

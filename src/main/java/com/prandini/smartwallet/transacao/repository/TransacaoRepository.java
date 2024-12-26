@@ -3,6 +3,7 @@ package com.prandini.smartwallet.transacao.repository;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +33,9 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>, Tra
             "WHERE l.id = :idLancamento " +
             "AND t.dtVencimento < CURRENT_DATE")
     boolean hasTransacaoVencida(Long idLancamento);
+
+    @Query(" DELETE FROM Transacao t " +
+            " WHERE t.lancamento.id IN :lancamentoID")
+    @Modifying
+    public void deleteByLancamento(Long lancamentoID);
 }

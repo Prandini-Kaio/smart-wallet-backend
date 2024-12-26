@@ -30,7 +30,14 @@ public class LancamentoValidator {
     @Resource
     private ContaGetter contaGetter;
 
+    @Resource
+    private LancamentoGetter getter;
+
     public void validarUpdate(Lancamento lancamento) {
+        log.info("Implementar validacao de update do lancamento");
+    }
+
+    public void validarUpdate(LancamentoInput input) {
         log.info("Implementar validacao de update do lancamento");
     }
 
@@ -100,5 +107,13 @@ public class LancamentoValidator {
 
         if(input.getTipoPagamento().equals(TipoPagamentoEnum.CREDITO))
             throw new LancamentoException(LancamentoExceptionMessages.entradaCreditoInvalida());
+    }
+
+    public void validaDelete(Long id) {
+        Lancamento lancamento = getter.byId(id);
+
+        if(!lancamento.canDelete()){
+            throw new BusinessException(LancamentoExceptionMessages.naoPossibelDeletar());
+        }
     }
 }

@@ -1,13 +1,22 @@
 package com.prandini.smartwallet.lancamento.service.actions;
 
+import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
+import com.prandini.smartwallet.transacao.domain.Transacao;
+import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
+import com.prandini.smartwallet.transacao.service.actions.TransacaoCreator;
+import com.prandini.smartwallet.transacao.service.actions.TransacaoDeleter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kaiooliveira
@@ -25,7 +34,16 @@ public class LancamentoUpdater {
     private LancamentoGetter getter;
 
     @Resource
+    private TransacaoCreator transacaoCreator;
+
+    @Resource
+    private TransacaoDeleter transacaoDeleter;
+
+    @Resource
     private LancamentoValidator validator;
+
+    @Resource
+    private ContaGetter contaGetter;
 
     public Lancamento quitarLancamento(Long id){
 
@@ -58,5 +76,29 @@ public class LancamentoUpdater {
         origin.setDescricao(lancamento.getDescricao());
 
         return repository.save(origin);
+    }
+
+    public Lancamento fromInput(LancamentoInput input){
+        Conta conta = contaGetter.findByFilter(input.getConta());
+
+        Lancamento lancamento = getter.byId(input.getId());
+
+        List<Transacao> transacoes = transacaoCreator.fromInput(input);
+        transacoes.forEach(transacao -> transacao.setLancamento(lancamento));
+
+        this.transacaoDeleter.byLancamento(lancamento.getId());
+
+        lancamento.setValorBruto(input.getValor());
+        lancamento.setCategoriaLancamento(input.getCategoriaLancamento());
+        lancamento.setTipoLancamento(input.getTipoLancamento());
+        lancamento.setTipoPagamento(input.getTipoPagamento());
+        lancamento.setStatus(input.getStatus());
+        lancamento.setDtCriacao(input.getDtCriacao());
+        lancamento.setParcelas(input.getParcelas());
+        lancamento.setConta(conta);
+        lancamento.setDescricao(input.getDescricao());
+        lancamento.setTransacoes(new ArrayList<>(transacoes));
+
+        return this.repository.save(lancamento);
     }
 }

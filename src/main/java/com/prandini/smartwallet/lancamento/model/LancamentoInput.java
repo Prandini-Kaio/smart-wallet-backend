@@ -25,6 +25,8 @@ import java.time.LocalDateTime;
 @Builder
 public class LancamentoInput {
 
+    private Long id;
+
     @NotNull
     private TipoLancamentoEnum tipoLancamento;
 

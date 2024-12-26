@@ -1,11 +1,14 @@
 package com.prandini.smartwallet.transacao.service.actions;
 
 import com.prandini.smartwallet.common.utils.DateUtils;
+import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
-import com.prandini.smartwallet.transacao.domain.Transacao;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
+import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -26,6 +29,20 @@ public class TransacaoCreator {
     @Resource
     private TransacaoRepository repository;
 
+    @Resource
+    private ContaGetter contaGetter;
+
+    public List<Transacao> fromInput(LancamentoInput input) {
+        List<BigDecimal> valorParcelas = calcularParcelas(input.getValor(), input.getParcelas());
+
+        Conta conta = contaGetter.findByFilter(input.getConta());
+        List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
+                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaVencimento(), i))
+                .toList();
+
+        return this.repository.saveAll(transacoes);
+    }
+
     public List<Transacao> create(Lancamento lancamento) {
         log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.",
                 lancamento.getParcelas(), lancamento.getId(), DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao())));
@@ -41,7 +58,7 @@ public class TransacaoCreator {
 
     private List<Transacao> gerarTransacoes(Lancamento lancamento, List<BigDecimal> parcelas) {
         return IntStream.range(0, lancamento.getParcelas())
-                .mapToObj(i -> buildTransacao(lancamento, parcelas.get(i), i))
+                .mapToObj(i -> buildTransacao(lancamento, parcelas.get(i), lancamento.getConta().getDiaVencimento(), i))
                 .collect(Collectors.toList());
     }
 
@@ -53,16 +70,23 @@ public class TransacaoCreator {
         }
     }
 
-    private Transacao buildTransacao(Lancamento lancamento, BigDecimal valorParcela, int indice) {
-        boolean isEntrada = lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA);
-        boolean isDebito = lancamento.getTipoPagamento().equals(TipoPagamentoEnum.DEBITO);
+    private Transacao buildTransacao(LancamentoInput input, BigDecimal valorParcela, int diaVencimento, int indice) {
+        return this.buildTransacao(input.getTipoLancamento(), input.getTipoPagamento(), input.getParcelas(), diaVencimento, input.getDtCriacao(), valorParcela, indice);
+    }
+
+    private Transacao buildTransacao(Lancamento lancamento, BigDecimal valorParcela, int diaVencimento, int indice) {
+        return this.buildTransacao(lancamento.getTipoLancamento(), lancamento.getTipoPagamento(), lancamento.getParcelas(), diaVencimento, lancamento.getDtCriacao(), valorParcela, indice);
+    }
+
+    private Transacao buildTransacao(TipoLancamentoEnum tipo, TipoPagamentoEnum tipoPagamento, int parcelas, int diaVencimento, LocalDateTime dtCriacao, BigDecimal valorParcela, int indice) {
+        boolean isEntrada = tipo.equals(TipoLancamentoEnum.ENTRADA);
+        boolean isDebito = tipoPagamento.equals(TipoPagamentoEnum.DEBITO);
 
         return Transacao.builder()
                 .valor(valorParcela)
-                .lancamento(lancamento)
                 .status(isEntrada ? StatusTransacaoEnum.PAGO : StatusTransacaoEnum.PENDENTE)
-                .descricao(String.format(" [%d / %d]", indice + 1, lancamento.getParcelas()))
-                .dtVencimento(isDebito ? LocalDateTime.now() : calcularDataVencimento(lancamento.getConta().getDiaVencimento(), lancamento.getDtCriacao(), indice + 1))
+                .descricao(String.format(" [%d / %d]", indice + 1, parcelas))
+                .dtVencimento(isDebito ? LocalDateTime.now() : calcularDataVencimento(diaVencimento, dtCriacao, indice + 1))
                 .dtPagamento(isEntrada ? LocalDateTime.now() : null)
                 .build();
     }

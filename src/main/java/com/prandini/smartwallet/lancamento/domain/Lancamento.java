@@ -6,6 +6,7 @@ package com.prandini.smartwallet.lancamento.domain;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -67,6 +68,10 @@ public class Lancamento {
 
     public boolean isEntrada() {
         return tipoLancamento == TipoLancamentoEnum.ENTRADA;
+    }
+
+    public boolean canDelete(){
+        return !transacoes.stream().anyMatch(transacao -> transacao.getStatus().equals(StatusTransacaoEnum.PAGO) && !getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA));
     }
 
 }

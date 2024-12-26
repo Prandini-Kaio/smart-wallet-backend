@@ -20,12 +20,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -73,5 +68,18 @@ public class LancamentoController {
     @Operation(description = "Criar lançamento com base na data atual.")
     public ResponseEntity<LancamentoOutput> criarLancamento(@RequestBody @Valid LancamentoInput input){
         return ResponseEntity.ok().body(service.criarLancamento(input));
+    }
+
+    @PutMapping
+    @Operation(description = "Editar um lançamento existente")
+    public ResponseEntity<LancamentoOutput> editar(@RequestBody @Valid LancamentoInput input){
+        return ResponseEntity.ok().body(this.service.editar(input));
+    }
+
+    @DeleteMapping
+    @Operation(description = "Apaga um lançamento e suas transações.")
+    public ResponseEntity<Void> delete(@RequestParam Long id){
+        this.service.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

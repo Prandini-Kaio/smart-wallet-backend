@@ -50,6 +50,7 @@ public class LancamentoCreator {
 
         Lancamento lancamento = buildLancamento(input, conta);
         List<Transacao> transacoes = transacaoCreator.create(lancamento);
+        transacoes.forEach(transacao -> transacao.setLancamento(lancamento));
         lancamento.setTransacoes(transacoes);
 
         return this.repository.save(lancamento);
