@@ -8,6 +8,7 @@ import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /*
  * @author prandini
@@ -31,7 +32,7 @@ public class LancamentoFilter {
 
     private LocalDateTime dtFim;
 
-    private ContaFilter conta;
+    private List<Long> contaIds;
 
     private String nomeConta;
 

@@ -70,6 +70,12 @@ public class LancamentoController {
         return ResponseEntity.ok().body(service.criarLancamento(input));
     }
 
+    @PostMapping("/byFilter")
+    @Operation(description = "Criar lançamento com base na data atual.")
+    public ResponseEntity<List<LancamentoOutput>> byFilter(@RequestBody @Valid LancamentoFilter filter){
+        return ResponseEntity.ok().body(service.findByFilter(filter));
+    }
+
     @PutMapping
     @Operation(description = "Editar um lançamento existente")
     public ResponseEntity<LancamentoOutput> editar(@RequestBody @Valid LancamentoInput input){

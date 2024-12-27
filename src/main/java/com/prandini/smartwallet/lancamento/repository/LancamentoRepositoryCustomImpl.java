@@ -51,6 +51,7 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND l.dtCriacao <= :dtFim ");
         safeAddParams(params, "banco", filter.getBancoConta(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
         safeAddParams(params, "nome", filter.getNomeConta(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
+        safeAddParams(params, "contaIds", filter.getContaIds(), sb, " AND c.id IN :contaIds ");
     }
 
     private static void safeAddParams(Map<String, Object> params, String name, Object value, StringBuilder sb, String queryPart){
