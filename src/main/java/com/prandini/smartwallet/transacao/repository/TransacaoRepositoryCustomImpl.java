@@ -62,8 +62,9 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         safeAddParams(params, "status", filter.getStatus(), sb, " AND t.status = :status ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND t.dtVencimento >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND t.dtVencimento <= :dtFim ");
-        safeAddParams(params, "banco", filter.getBancoConta(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
-        safeAddParams(params, "nome", filter.getNomeConta(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
 
+        if(filter.getContaIds() != null && !filter.getContaIds().isEmpty() && filter.getContaIds().get(0) != 0){
+            safeAddParams(params, "contaIds", filter.getContaIds(), sb, " AND c.id IN :contaIds ");
+        }
     }
 }
