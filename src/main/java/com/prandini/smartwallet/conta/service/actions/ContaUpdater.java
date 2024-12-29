@@ -6,14 +6,11 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
 
 @Component
 @CommonsLog
@@ -22,7 +19,26 @@ public class ContaUpdater {
     @Resource
     private ContaRepository repository;
 
-    public void atualizaLancamento(Long id, Lancamento lancamento){
-        log.info("Atualizando lançamentos.");
+    @Resource
+    private ContaGetter getter;
+
+    @Resource
+    private ContaValidator validator;
+
+    public Conta atualizar(ContaInput input){
+
+        log.info(String.format("Atualizando conta com id %s", input.getId()));
+
+        this.validator.validarUpdate(input);
+
+        Conta origin = getter.byid(input.getId());
+
+        origin.setBanco(input.getBanco());
+        origin.setNome(input.getNome());
+        origin.setTipoConta(input.getTipoConta());
+        origin.setDiaVencimento(Integer.parseInt(input.getDiaVencimento()));
+        origin.setColor(input.getColor());
+
+        return this.repository.save(origin);
     }
 }

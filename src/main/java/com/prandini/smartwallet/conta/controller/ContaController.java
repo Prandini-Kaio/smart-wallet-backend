@@ -44,9 +44,22 @@ public class ContaController {
     }
 
     @PostMapping
-    @Operation(summary = "Cria uma conta")
+    @Operation(summary = "Cria uma conta.")
     public ResponseEntity<ContaOutput> create(@RequestBody @Valid ContaInput input){
         return ResponseEntity.ok().body(service.create(input));
+    }
+
+    @PutMapping
+    @Operation(summary = "Atualiza uma conta.", description = "Atualiza uma conta existente.")
+    public ResponseEntity<ContaOutput> update(@RequestBody @Valid ContaInput input){
+        return ResponseEntity.ok().body(this.service.update(input));
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Apaga uma conta.", description = "Apaga uma conta e todo seu historico")
+    public ResponseEntity<Void> delete(@RequestParam Long id){
+        this.service.deletar(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/tipo")

@@ -28,4 +28,8 @@ public class ContaValidator {
             throw new BusinessException(CommonExceptionMessages.jaExistente("Conta"));
         }
     }
+
+    public void validarUpdate(ContaInput input) {
+        log.warn("IMPLEMENTAR VALIDACAO DE UPDATE CONTA");
+    }
 }
