@@ -22,4 +22,8 @@ public class TransacaoDeleter {
         this.repository.deleteProximaByLancamento(lancamentoID);
         this.repository.deleteByLancamento(lancamentoID);
     }
+
+    public void byConta(Long contaId) {
+        this.repository.deleteByConta(contaId);
+    }
 }

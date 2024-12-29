@@ -28,7 +28,7 @@ public class ContaConverter {
     public ContaOutput toOutput(Conta conta){
 
         LocalDate now = LocalDate.now();
-        BigDecimal saldoParcial = getter.getSaldoParcialConta(conta.getId());
+        BigDecimal saldoParcial = getter.getSaldoParcialConta(conta);
 
         return ContaOutput.builder()
                 .id(conta.getId())

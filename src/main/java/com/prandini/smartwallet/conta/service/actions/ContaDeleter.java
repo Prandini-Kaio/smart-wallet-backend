@@ -6,6 +6,7 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.conta.repository.ContaRepository;
+import com.prandini.smartwallet.lancamento.service.actions.LancamentoDeleter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,12 @@ public class ContaDeleter {
     @Resource
     private ContaValidator validator;
 
+    @Resource
+    private LancamentoDeleter lancamentoDeleter;
+
     public void deletar(Long id){
-        log.info(String.format("Deletando conta com id %s"));
+        log.info(String.format("Deletando conta com id %s", id));
+        this.lancamentoDeleter.deleteByConta(id);
         this.repository.deleteById(id);
     }
 }

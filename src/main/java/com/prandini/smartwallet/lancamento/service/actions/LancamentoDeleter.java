@@ -11,6 +11,8 @@ import com.prandini.smartwallet.transacao.service.actions.TransacaoDeleter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @CommonsLog
@@ -36,5 +38,13 @@ public class LancamentoDeleter {
 //        transacaoDeleter.byLancamento(id);
 
         this.repository.deleteById(id);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void deleteByConta(Long id) {
+        log.info(String.format("Deletando lancamento por conta %s.", id));
+        this.validator.validaDelete(id);
+        this.transacaoDeleter.byConta(id);
+        this.repository.deleteByConta(id);
     }
 }

@@ -27,19 +27,15 @@ public class TransacaoFilter {
 
     private Long idLancamento;
 
-    private CategoriaLancamentoEnum categoria;
+    private List<CategoriaLancamentoEnum> categorias;
 
     private TipoLancamentoEnum tipo;
 
     private TipoPagamentoEnum pagamento;
 
-    private StatusTransacaoEnum status;
+    private List<StatusTransacaoEnum> status;
 
     private List<Long> contaIds;
-
-    private String nomeConta;
-
-    private String bancoConta;
 
     private LocalDateTime dtInicio;
 

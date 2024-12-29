@@ -22,11 +22,11 @@ public class LancamentoFilter {
 
     private TipoLancamentoEnum tipo;
 
-    private CategoriaLancamentoEnum categoria;
+    private List<CategoriaLancamentoEnum> categorias;
 
     private TipoPagamentoEnum pagamento;
 
-    private StatusLancamento status;
+    private List<StatusLancamento> status;
 
     private LocalDateTime dtInicio;
 

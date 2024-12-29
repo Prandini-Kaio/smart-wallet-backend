@@ -57,11 +57,17 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         safeAddParams(params, "id", filter.getId(), sb, " AND l.id = :id ");
         safeAddParams(params, "idLancamento", filter.getIdLancamento(), sb, " AND l.id = :idLancamento ");
         safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
-        safeAddParams(params, "categoria", filter.getCategoria(), sb, " AND l.categoriaLancamento = :categoria ");
         safeAddParams(params, "pagamento", filter.getPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
-        safeAddParams(params, "status", filter.getStatus(), sb, " AND t.status = :status ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND t.dtVencimento >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND t.dtVencimento <= :dtFim ");
+
+        if(filter.getCategorias() != null && !filter.getCategorias().isEmpty()){
+            safeAddParams(params, "categoria", filter.getCategorias(), sb, " AND l.categoriaLancamento IN :categoria ");
+        }
+
+        if(filter.getStatus() != null && !filter.getStatus().isEmpty()){
+            safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status IN :status ");
+        }
 
         if(filter.getContaIds() != null && !filter.getContaIds().isEmpty() && filter.getContaIds().get(0) != 0){
             safeAddParams(params, "contaIds", filter.getContaIds(), sb, " AND c.id IN :contaIds ");

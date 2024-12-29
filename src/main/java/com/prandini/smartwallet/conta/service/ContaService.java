@@ -18,6 +18,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,20 +48,24 @@ public class ContaService {
     }
 
     public TotalizadorFinanceiro getTotalizadorByFilter(ContaFilter filter) {
+        log.info(String.format("Iniciando busca de totalizadores por filtro %s.", filter));
         return getter.getTotalizadorByFilter(filter);
     }
 
     public List<ContaOutput> getByFilter(ContaFilter filter) {
+        log.info(String.format("Iniciando busca de contas por filtro %s.", filter));
         return this.getter.byFilter(filter).stream().map(converter::toOutput).toList();
     }
 
+    @Transactional
     public ContaOutput update(@Valid ContaInput input) {
         log.info(String.format("Iniciando atualização de conta com id %s", input.getId()));
         return converter.toOutput(this.updater.atualizar(input));
     }
 
+    @Transactional
     public void deletar(Long id) {
-        log.info(String.format("Iniciando deleção de conta com id %s", id));
+        log.info(String.format("Iniciando deleção de conta com id %s.", id));
         this.deleter.deletar(id);
     }
 }

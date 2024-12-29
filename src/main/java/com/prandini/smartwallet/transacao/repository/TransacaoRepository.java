@@ -45,4 +45,8 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>, Tra
             " WHERE t.proxima.lancamento.id IN :lancamentoID ")
     @Modifying
     public void deleteProximaByLancamento(Long lancamentoID);
+    @Query(" DELETE FROM Transacao t " +
+            " WHERE t.lancamento.conta.id = :contaId")
+    @Modifying
+    void deleteByConta(Long contaId);
 }

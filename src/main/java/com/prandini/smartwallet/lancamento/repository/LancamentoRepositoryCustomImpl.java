@@ -44,14 +44,24 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
 
     private void buildParams(Map<String, Object> params, StringBuilder sb, LancamentoFilter filter){
         safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
-        safeAddParams(params, "categoria", filter.getCategoria(), sb, " AND l.categoriaLancamento = :categoria ");
+
         safeAddParams(params, "pagamento", filter.getPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
-        safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status = :status ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND l.dtCriacao >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND l.dtCriacao <= :dtFim ");
         safeAddParams(params, "banco", filter.getBancoConta(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
         safeAddParams(params, "nome", filter.getNomeConta(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
-        safeAddParams(params, "contaIds", filter.getContaIds(), sb, " AND c.id IN :contaIds ");
+
+        if(filter.getCategorias() != null && !filter.getCategorias().isEmpty()){
+            safeAddParams(params, "categoria", filter.getCategorias(), sb, " AND l.categoriaLancamento IN :categoria ");
+        }
+
+        if(filter.getStatus() != null && !filter.getStatus().isEmpty()){
+            safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status IN :status ");
+        }
+
+        if(filter.getContaIds() != null && !filter.getContaIds().isEmpty() && filter.getContaIds().get(0) != 0){
+            safeAddParams(params, "contaIds", filter.getContaIds(), sb, " AND c.id IN :contaIds ");
+        }
     }
 
     private static void safeAddParams(Map<String, Object> params, String name, Object value, StringBuilder sb, String queryPart){
