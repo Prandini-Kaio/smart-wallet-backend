@@ -29,6 +29,8 @@ public class TransacaoConverter {
         return TransacaoOutput.builder()
                 .id(transacao.getId())
                 .status(transacao.getStatus())
+                .tipo(transacao.getLancamento().getTipoLancamento())
+                .tipoPagamento(transacao.getLancamento().getTipoPagamento())
                 .valor(transacao.getValor())
                 .dtVencimento(dtVencimento)
                 .dtPagamento(dtPagamento)

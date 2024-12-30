@@ -99,6 +99,13 @@
             <artifactId>liquibase-core</artifactId>
             <version>4.30.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate6</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -121,15 +128,12 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.30.0</version>
                 <configuration>
-<!--                    <propertyFile>src/test/resources/application-db-local.properties</propertyFile>-->
                     <changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
                     <url>jdbc:postgresql://127.0.0.1:5432/smartwallet</url>
                     <username>postgres</username>
                     <password>postgres</password>
                     <driver>org.postgresql.Driver</driver>
-                    <referenceDriver>org.h2.Driver</referenceDriver>
-<!--                    <referenceUrl>jdbc:h2:mem:tests</referenceUrl>-->
-                    <referenceUrl>hibernate:spring:com.prandini.smartwallet?dialect=org.hibernate.dialect.PostgreSQLDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <referenceUrl>hibernate:spring:com.prandini.smartwallet?dialect=org.hibernate.dialect.PostgreSQLDialect</referenceUrl>
                     <diffChangeLogFile>src/main/resources/db/changelog/diff.yaml</diffChangeLogFile>
                     <outputChangeLogFile>src/main/resources/db/changelog/changelog.yaml</outputChangeLogFile>
                 </configuration>

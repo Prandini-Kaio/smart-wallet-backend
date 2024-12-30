@@ -40,7 +40,7 @@ public class TransacaoGetter {
     }
 
     public List<Transacao> byFilter(TransacaoFilter filter){
-        log.info("Consultando transações por filtro.");
+        log.info(String.format("Consultando transações por filtro %s.", filter));
 
         return this.repository.getTransacoesByFilter(filter);
     }
