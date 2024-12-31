@@ -71,4 +71,21 @@ public class LancamentoCreator {
                 .build();
 
     }
+
+    public Lancamento fromInput(LancamentoInput input) {
+        log.info("Criando lancamento output atraves de um input de lançamento.");
+
+        Conta conta = contaGetter.findByFilter(ContaFilter.builder()
+                .nome(input.getConta().getNome())
+                .banco(input.getConta().getBanco())
+                .build()
+        );
+
+        Lancamento lancamento = buildLancamento(input, conta);
+        List<Transacao> transacoes = transacaoCreator.create(lancamento);
+        transacoes.forEach(transacao -> transacao.setLancamento(lancamento));
+        lancamento.setTransacoes(transacoes);
+
+        return lancamento;
+    }
 }

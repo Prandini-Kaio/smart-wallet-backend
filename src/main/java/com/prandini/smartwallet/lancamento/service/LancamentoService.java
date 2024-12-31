@@ -5,6 +5,7 @@ package com.prandini.smartwallet.lancamento.service;
  * created 4/16/24
  */
 
+import com.prandini.smartwallet.common.model.ResumoFinanceiro;
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.lancamento.converter.SaldoProjetadoConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
@@ -119,5 +120,13 @@ public class LancamentoService {
     public void delete(Long id){
         log.info(String.format("Iniciando delete de lancamento por id %s.", id));
         this.deleter.delete(id);
+    }
+
+    public LancamentoOutput createMock(LancamentoInput input) {
+        return converter.toOutput(this.creator.fromInput(input));
+    }
+
+    public ResumoFinanceiro getResumo(LancamentoFilter filter) {
+        return this.getter.getResumo(filter);
     }
 }

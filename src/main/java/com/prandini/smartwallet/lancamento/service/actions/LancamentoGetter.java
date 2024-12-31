@@ -6,6 +6,7 @@ package com.prandini.smartwallet.lancamento.service.actions;
  */
 
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
+import com.prandini.smartwallet.common.model.ResumoFinanceiro;
 import com.prandini.smartwallet.lancamento.domain.*;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
@@ -59,5 +60,13 @@ public class LancamentoGetter {
         log.info(String.format("Consultando conta pelo id %s", id));
 
         return this.repository.getByConta(id);
+    }
+
+    public ResumoFinanceiro getResumo(LancamentoFilter filter) {
+        log.info("Calculando resumo financeiro da conta");
+
+        List<Lancamento> lancamentos = this.getByFilter(filter);
+
+        return ResumoFinanceiro.calcularResumo(lancamentos);
     }
 }

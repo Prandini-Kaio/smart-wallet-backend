@@ -43,6 +43,17 @@ public class TransacaoCreator {
         return this.repository.saveAll(transacoes);
     }
 
+    public List<Transacao> fromInputMock(LancamentoInput input) {
+        List<BigDecimal> valorParcelas = calcularParcelas(input.getValor(), input.getParcelas());
+
+        Conta conta = contaGetter.findByFilter(input.getConta());
+        List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
+                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaVencimento(), i))
+                .toList();
+
+        return transacoes;
+    }
+
     public List<Transacao> create(Lancamento lancamento) {
         log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.",
                 lancamento.getParcelas(), lancamento.getId(), DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao())));

@@ -74,4 +74,7 @@ public class Lancamento {
         return !transacoes.stream().anyMatch(transacao -> transacao.getStatus().equals(StatusTransacaoEnum.PAGO) && !getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA));
     }
 
+    public BigDecimal getValorProjetado() {
+        return valorBruto;
+    }
 }

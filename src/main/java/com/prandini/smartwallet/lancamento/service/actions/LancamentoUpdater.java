@@ -83,10 +83,9 @@ public class LancamentoUpdater {
 
         Lancamento lancamento = getter.byId(input.getId());
 
+        this.transacaoDeleter.byLancamento(lancamento.getId());
         List<Transacao> transacoes = transacaoCreator.fromInput(input);
         transacoes.forEach(transacao -> transacao.setLancamento(lancamento));
-
-        this.transacaoDeleter.byLancamento(lancamento.getId());
 
         lancamento.setValorBruto(input.getValor());
         lancamento.setCategoriaLancamento(input.getCategoriaLancamento());

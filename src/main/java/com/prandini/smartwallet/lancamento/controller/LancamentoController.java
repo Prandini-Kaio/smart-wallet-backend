@@ -88,4 +88,16 @@ public class LancamentoController {
         this.service.delete(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/create-input")
+    @Operation(description = "Cria um input de lançamento com base em um filtro.")
+    public ResponseEntity<LancamentoOutput> createInput(@RequestBody LancamentoInput input){
+        return ResponseEntity.ok().body(this.service.createMock(input));
+    }
+
+    @PostMapping("/resumo")
+    @Operation(description = "Retorna o resumo financeiro com base em um filtro.")
+    public ResponseEntity<ResumoFinanceiro> getResumo(@RequestBody LancamentoFilter filter){
+        return ResponseEntity.ok().body(this.service.getResumo(filter));
+    }
 }

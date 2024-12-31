@@ -19,8 +19,13 @@ public class OrcamentoCreator {
     @Resource
     private OrcamentoRepository repository;
 
+    @Resource
+    private OrcamentoValidator validator;
+
     public Orcamento criarOrcamento(OrcamentoInput input) {
         log.info("Criando novo orçamento.");
+
+        this.validator.validar(input);
 
         Orcamento orcamento = Orcamento.builder()
                 .valor(input.getValor())
