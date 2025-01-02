@@ -20,7 +20,7 @@ import java.time.Month;
 @NoArgsConstructor @AllArgsConstructor
 public class SaldoProjetadoOutput {
 
-    private Month mes;
+    private String mes;
 
     private BigDecimal entradas;
 

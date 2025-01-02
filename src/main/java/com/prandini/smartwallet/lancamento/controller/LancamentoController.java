@@ -10,6 +10,7 @@ import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.lancamento.model.SaldoProjetadoFilter;
 import com.prandini.smartwallet.lancamento.model.SaldoProjetadoOutput;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
 import com.prandini.smartwallet.lancamento.service.SaldoProjetadoService;
@@ -52,15 +53,9 @@ public class LancamentoController {
         return ResponseEntity.ok().body(this.service.getTotalizador(filter));
     }
 
-    @GetMapping("/saldo-projetado/lancamento")
+    @GetMapping("/saldo-projetado")
     @Operation(description = "Calcula o saldo projetado com base em um filtro.")
-    public ResponseEntity<List<SaldoProjetadoOutput>> getSaldoProjetado(LancamentoFilter filter){
-        return ResponseEntity.ok().body(this.saldoProjetadoService.getSaldoProjetado(filter));
-    }
-
-    @GetMapping("/saldo-projetado/transacao")
-    @Operation(description = "Calcula o saldo projetado com base em um filtro.")
-    public ResponseEntity<List<SaldoProjetadoOutput>> getSaldoProjetado(TransacaoFilter filter){
+    public ResponseEntity<List<SaldoProjetadoOutput>> getSaldoProjetado(SaldoProjetadoFilter filter){
         return ResponseEntity.ok().body(this.saldoProjetadoService.getSaldoProjetado(filter));
     }
 
@@ -70,8 +65,14 @@ public class LancamentoController {
         return ResponseEntity.ok().body(service.criarLancamento(input));
     }
 
+    @PostMapping("/create-input")
+    @Operation(description = "Cria um input de lançamento com base em um filtro.")
+    public ResponseEntity<LancamentoOutput> createInput(@RequestBody LancamentoInput input){
+        return ResponseEntity.ok().body(this.service.createMock(input));
+    }
+
     @PostMapping("/byFilter")
-    @Operation(description = "Criar lançamento com base na data atual.")
+    @Operation(description = "Busca lancamentos por filtro")
     public ResponseEntity<List<LancamentoOutput>> byFilter(@RequestBody @Valid LancamentoFilter filter){
         return ResponseEntity.ok().body(service.findByFilter(filter));
     }
@@ -87,12 +88,6 @@ public class LancamentoController {
     public ResponseEntity<Void> delete(@RequestParam Long id){
         this.service.delete(id);
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/create-input")
-    @Operation(description = "Cria um input de lançamento com base em um filtro.")
-    public ResponseEntity<LancamentoOutput> createInput(@RequestBody LancamentoInput input){
-        return ResponseEntity.ok().body(this.service.createMock(input));
     }
 
     @PostMapping("/resumo")

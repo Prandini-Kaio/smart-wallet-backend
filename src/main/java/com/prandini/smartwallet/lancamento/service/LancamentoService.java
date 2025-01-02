@@ -7,14 +7,12 @@ package com.prandini.smartwallet.lancamento.service;
 
 import com.prandini.smartwallet.common.model.ResumoFinanceiro;
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
-import com.prandini.smartwallet.lancamento.converter.SaldoProjetadoConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
-import com.prandini.smartwallet.lancamento.model.SaldoProjetadoOutput;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoDeleter;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
@@ -26,16 +24,9 @@ import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.apachecommons.CommonsLog;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -5,10 +5,8 @@ package com.prandini.smartwallet.lancamento.service;
  * created 12/18/24
  */
 
-import com.prandini.smartwallet.lancamento.converter.SaldoProjetadoConverter;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.SaldoProjetadoOutput;
+import com.prandini.smartwallet.lancamento.model.SaldoProjetadoFilter;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
@@ -16,15 +14,14 @@ import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SaldoProjetadoService {
-
-    @Resource
-    private SaldoProjetadoConverter converter;
 
     @Resource
     private LancamentoGetter lancamentoGetter;
@@ -32,55 +29,57 @@ public class SaldoProjetadoService {
     @Resource
     private TransacaoGetter transacaoGetter;
 
-    public List<SaldoProjetadoOutput> getSaldoProjetado(LancamentoFilter filter) {
+    public List<SaldoProjetadoOutput> getSaldoProjetado(SaldoProjetadoFilter filter) {
         List<SaldoProjetadoOutput> saldoProjetados = new ArrayList<>();
 
-        LocalDateTime dataInicio = filter.getDtInicio();
-        LocalDateTime dataFim = filter.getDtFim();
+        List<Transacao> transacoes = transacaoGetter.byFilter(TransacaoFilter.builder()
+                .categorias(filter.getCategorias())
+                .tipo(filter.getTipo())
+                .pagamento(filter.getPagamento())
+                .status(filter.getStatus())
+                .contaIds(filter.getContaIds())
+                .dtInicio(filter.getDtInicio())
+                .dtFim(filter.getDtFim())
+                .build()
+        );
 
-        if (dataInicio.isAfter(dataFim)) {
-            throw new IllegalArgumentException("Data de início não pode ser posterior à data de fim");
-        }
+        Map<Month, List<Transacao>> transacoesPorMes = transacoes.stream()
+                .collect(
+                        java.util.stream.Collectors.groupingBy(
+                                transacao -> transacao.getDtVencimento().getMonth()
+                        )
+                );
 
-        // Iterar pelos meses no intervalo
-        while (!dataInicio.isAfter(dataFim)) {
-            // Criar um novo filtro para o mês atual
-            LancamentoFilter mesFilter = filter;
-            mesFilter.setDtInicio(dataInicio.withDayOfMonth(1));
-            mesFilter.setDtFim(dataInicio.withDayOfMonth(dataInicio.toLocalDate().lengthOfMonth()));
+        BigDecimal valorEntradasResidual = BigDecimal.ZERO;
 
-            List<Lancamento> lancamentos = lancamentoGetter.findByFilter(mesFilter);
+        for (Month mes : Month.values()) {
+            List<Transacao> transacoesMes = transacoesPorMes.get(mes);
 
-            saldoProjetados.add(converter.toOutputLancamento(lancamentos, dataInicio));
+            BigDecimal entradas = transacoesMes == null
+                    ? BigDecimal.ZERO
+                    : transacoesMes.stream()
+                    .filter(transacao -> transacao.getLancamento().isEntrada())
+                    .map(Transacao::getValor)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            dataInicio = dataInicio.plusMonths(1);
-        }
+            BigDecimal saidas = transacoesMes == null
+                    ? BigDecimal.ZERO
+                    : transacoesMes.stream()
+                    .filter(transacao -> !transacao.getLancamento().isEntrada())
+                    .map(Transacao::getValor)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return saldoProjetados;
-    }
+            valorEntradasResidual = saldoProjetados.isEmpty()
+                    ? entradas.subtract(saidas)
+                    : valorEntradasResidual.add(entradas).subtract(saidas);
 
-    public List<SaldoProjetadoOutput> getSaldoProjetado(TransacaoFilter filter) {
-        List<SaldoProjetadoOutput> saldoProjetados = new ArrayList<>();
-
-        LocalDateTime dataInicio = filter.getDtInicio();
-        LocalDateTime dataFim = filter.getDtFim();
-
-        if (dataInicio.isAfter(dataFim)) {
-            throw new IllegalArgumentException("Data de início não pode ser posterior à data de fim");
-        }
-
-        // Iterar pelos meses no intervalo
-        while (!dataInicio.isAfter(dataFim)) {
-            // Criar um novo filtro para o mês atual
-            TransacaoFilter mesFilter = filter;
-            mesFilter.setDtInicio(dataInicio.withDayOfMonth(1));
-            mesFilter.setDtFim(dataInicio.withDayOfMonth(dataInicio.toLocalDate().lengthOfMonth()));
-
-            List<Transacao> transacoes = transacaoGetter.byFilter(mesFilter);
-
-            saldoProjetados.add(converter.toOutputTransacao(transacoes, dataInicio));
-
-            dataInicio = dataInicio.plusMonths(1);
+            saldoProjetados.add(SaldoProjetadoOutput.builder()
+                    .mes(mes.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.forLanguageTag("pt-BR")))
+                    .entradas(entradas)
+                    .saidas(saidas)
+                    .saldo(valorEntradasResidual)
+                    .build()
+            );
         }
 
         return saldoProjetados;

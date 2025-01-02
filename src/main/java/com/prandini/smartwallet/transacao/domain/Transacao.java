@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.transacao.domain;
 
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,5 +68,9 @@ public class Transacao {
             return false;
 
         return true;
+    }
+
+    public BigDecimal getValorComSinal(){
+        return this.lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? valor : valor.negate();
     }
 }

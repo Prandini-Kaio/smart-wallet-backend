@@ -18,5 +18,5 @@ public class ContaFilter {
 
     private TipoConta tipoConta;
 
-    private String diaVencimento;
+    private Integer diaVencimento;
 }
