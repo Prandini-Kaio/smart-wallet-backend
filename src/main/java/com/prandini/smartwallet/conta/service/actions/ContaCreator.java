@@ -34,6 +34,7 @@ public class ContaCreator {
                 .banco(input.getBanco().toUpperCase())
                 .nome(input.getNome().toUpperCase())
                 .diaVencimento(Integer.parseInt(input.getDiaVencimento()))
+                .diaFechamento(Integer.parseInt(input.getDiaFechamento()))
                 .saldoParcial(BigDecimal.ZERO)
                 .tipoConta(input.getTipoConta())
                 .color(input.getColor() != null ? input.getColor() : randomColor())

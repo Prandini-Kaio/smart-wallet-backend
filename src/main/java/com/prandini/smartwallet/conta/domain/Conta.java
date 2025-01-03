@@ -45,6 +45,9 @@ public class Conta {
     @Column(name = "DIA_VENCIMENTO")
     private int diaVencimento;
 
+    @Column(name = "DIA_FECHAMENTO")
+    private int diaFechamento;
+
     @Column(name = "SALDO_PARCIAL")
     private BigDecimal saldoParcial;
 

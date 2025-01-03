@@ -37,6 +37,7 @@ public class ContaUpdater {
         origin.setNome(input.getNome());
         origin.setTipoConta(input.getTipoConta());
         origin.setDiaVencimento(Integer.parseInt(input.getDiaVencimento()));
+        origin.setDiaFechamento(Integer.parseInt(input.getDiaFechamento()));
         origin.setColor(input.getColor());
 
         return this.repository.save(origin);

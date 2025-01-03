@@ -34,6 +34,9 @@ public class ContaInput {
     @Schema(example = "12")
     private String diaVencimento;
 
+    @Schema(example = "12")
+    private String diaFechamento;
+
     @Schema(example = "#FFFFF")
     private String color;
 }
