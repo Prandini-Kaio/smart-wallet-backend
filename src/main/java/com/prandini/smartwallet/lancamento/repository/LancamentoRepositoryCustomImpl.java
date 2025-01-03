@@ -39,17 +39,23 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
 
         params.forEach(query::setParameter);
 
-        return query.getResultList();
+            return query.getResultList();
     }
 
     private void buildParams(Map<String, Object> params, StringBuilder sb, LancamentoFilter filter){
         safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
 
         safeAddParams(params, "pagamento", filter.getPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
-        safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND l.dtCriacao >= :dtInicio ");
-        safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND l.dtCriacao <= :dtFim ");
-        safeAddParams(params, "banco", filter.getBancoConta(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', LOWER(:banco), '%') ");
-        safeAddParams(params, "nome", filter.getNomeConta(), sb, " AND LOWER(c.nome) LIKE CONCAT('%', LOWER(:nome), '%') ");
+
+        if (filter.getDtInicio() != null && filter.getDtFim() != null) {
+            sb.append(" AND EXISTS (")
+                    .append(" SELECT 1 FROM Transacao t2 ")
+                    .append(" WHERE t2.lancamento = l ")
+                    .append(" AND t2.dtVencimento BETWEEN :dtInicioVencimento AND :dtFimVencimento ")
+                    .append(")");
+            params.put("dtInicioVencimento", filter.getDtInicio());
+            params.put("dtFimVencimento", filter.getDtFim());
+        }
 
         if(filter.getCategorias() != null && !filter.getCategorias().isEmpty()){
             safeAddParams(params, "categoria", filter.getCategorias(), sb, " AND l.categoriaLancamento IN :categoria ");
