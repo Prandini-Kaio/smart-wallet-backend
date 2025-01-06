@@ -48,7 +48,7 @@ public class LancamentoInput {
     @NotNull
     private int parcelas;
 
-    private ContaFilter conta;
+    private Long contaId;
 
     private String descricao;
 }

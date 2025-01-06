@@ -73,4 +73,8 @@ public class Transacao {
     public BigDecimal getValorComSinal(){
         return this.lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? valor : valor.negate();
     }
+
+    public String getDescricaoCompleta() {
+        return this.lancamento.getDescricao() + " - " + this.descricao;
+    }
 }

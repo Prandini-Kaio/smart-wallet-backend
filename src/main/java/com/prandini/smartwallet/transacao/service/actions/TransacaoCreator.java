@@ -35,7 +35,7 @@ public class TransacaoCreator {
     public List<Transacao> fromInput(LancamentoInput input) {
         List<BigDecimal> valorParcelas = calcularParcelas(input.getValor(), input.getParcelas());
 
-        Conta conta = contaGetter.findByFilter(input.getConta());
+        Conta conta = contaGetter.byId(input.getContaId());
         List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
                 .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaVencimento(), i))
                 .toList();
@@ -46,7 +46,7 @@ public class TransacaoCreator {
     public List<Transacao> fromInputMock(LancamentoInput input) {
         List<BigDecimal> valorParcelas = calcularParcelas(input.getValor(), input.getParcelas());
 
-        Conta conta = contaGetter.findByFilter(input.getConta());
+        Conta conta = contaGetter.byId(input.getContaId());
         List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
                 .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaVencimento(), i))
                 .toList();

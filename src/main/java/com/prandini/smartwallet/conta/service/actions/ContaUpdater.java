@@ -31,7 +31,7 @@ public class ContaUpdater {
 
         this.validator.validarUpdate(input);
 
-        Conta origin = getter.byid(input.getId());
+        Conta origin = getter.byId(input.getId());
 
         origin.setBanco(input.getBanco());
         origin.setNome(input.getNome());

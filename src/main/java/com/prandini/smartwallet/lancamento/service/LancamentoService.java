@@ -5,7 +5,7 @@ package com.prandini.smartwallet.lancamento.service;
  * created 4/16/24
  */
 
-import com.prandini.smartwallet.common.model.ResumoFinanceiro;
+import com.prandini.smartwallet.common.model.ResumoFinanceiroOutput;
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
@@ -115,9 +115,5 @@ public class LancamentoService {
 
     public LancamentoOutput createMock(LancamentoInput input) {
         return converter.toOutput(this.creator.fromInput(input));
-    }
-
-    public ResumoFinanceiro getResumo(LancamentoFilter filter) {
-        return this.getter.getResumo(filter);
     }
 }

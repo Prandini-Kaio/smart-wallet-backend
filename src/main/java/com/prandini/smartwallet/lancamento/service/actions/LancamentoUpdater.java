@@ -79,7 +79,7 @@ public class LancamentoUpdater {
     }
 
     public Lancamento fromInput(LancamentoInput input){
-        Conta conta = contaGetter.findByFilter(input.getConta());
+        Conta conta = contaGetter.byId(input.getContaId());
 
         Lancamento lancamento = getter.byId(input.getId());
 

@@ -19,4 +19,8 @@ public enum StatusTransacaoEnum {
     public StatusTransacaoEnum fromDescricao(){
         return StatusTransacaoEnum.valueOf(this.descricao);
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
 }

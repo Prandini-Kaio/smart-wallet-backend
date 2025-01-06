@@ -54,7 +54,7 @@ public class AssinaturaTask {
                         .valor(a.getValor())
                         .dtCriacao(LocalDateTime.now())
                         .parcelas(1)
-                        .conta(ContaFilter.builder().banco(a.getConta().getBanco()).nome(a.getConta().getNome()).build())
+                        .contaId(a.getConta().getId())
                         .descricao(a.getDescricao())
                         .build();
 

@@ -5,13 +5,18 @@ package com.prandini.smartwallet.lancamento.service;
  * created 12/18/24
  */
 
-import com.prandini.smartwallet.lancamento.model.SaldoProjetadoOutput;
-import com.prandini.smartwallet.lancamento.model.SaldoProjetadoFilter;
+import com.prandini.smartwallet.common.model.ResumoFinanceiroOutput;
+import com.prandini.smartwallet.conta.converter.ContaConverter;
+import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
+import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
+import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroListOutput;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,8 +24,11 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@CommonsLog
 public class SaldoProjetadoService {
 
     @Resource
@@ -29,59 +37,47 @@ public class SaldoProjetadoService {
     @Resource
     private TransacaoGetter transacaoGetter;
 
-    public List<SaldoProjetadoOutput> getSaldoProjetado(SaldoProjetadoFilter filter) {
-        List<SaldoProjetadoOutput> saldoProjetados = new ArrayList<>();
+    @Resource
+    private ContaConverter contaConverter;
 
-        List<Transacao> transacoes = transacaoGetter.byFilter(TransacaoFilter.builder()
-                .categorias(filter.getCategorias())
+    public List<ResumoFinanceiroOutput> getResumoFinanceiro(ResumoFinanceiroFilter filter) {
+        log.info("Iniciando calculo de resumo financeiro.");
+
+        List<Lancamento> lancamentos = this.lancamentoGetter.findByFilter(LancamentoFilter.builder()
+                .contaIds(filter.getContaIds() != null ? filter.getContaIds() : null)
                 .tipo(filter.getTipo())
                 .pagamento(filter.getPagamento())
-                .status(filter.getStatus())
-                .contaIds(filter.getContaIds())
-                .dtInicio(filter.getDtInicio())
-                .dtFim(filter.getDtFim())
+                .categorias(filter.getCategorias())
                 .build()
         );
 
-        Map<Month, List<Transacao>> transacoesPorMes = transacoes.stream()
-                .collect(
-                        java.util.stream.Collectors.groupingBy(
-                                transacao -> transacao.getDtVencimento().getMonth()
-                        )
-                );
+        List<ResumoFinanceiroOutput> resumos = new ArrayList<>();
 
-        BigDecimal valorEntradasResidual = BigDecimal.ZERO;
+        for (Lancamento lancamento : lancamentos) {
+            List<Transacao> transacoes = lancamento.getTransacoes();
 
-        for (Month mes : Month.values()) {
-            List<Transacao> transacoesMes = transacoesPorMes.get(mes);
+            Optional<ResumoFinanceiroOutput> any = resumos.stream().filter(r -> r.getConta().getId().equals(lancamento.getConta().getId()) && r.getMes().equals(filter.getMes().getMonth())).findAny();
+            ResumoFinanceiroOutput resumo = any.orElseGet(() -> ResumoFinanceiroOutput.builder().build());
 
-            BigDecimal entradas = transacoesMes == null
-                    ? BigDecimal.ZERO
-                    : transacoesMes.stream()
-                    .filter(transacao -> transacao.getLancamento().isEntrada())
-                    .map(Transacao::getValor)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            resumo.setConta(contaConverter.toOutput(lancamento.getConta()));
+            resumo.setMes(filter.getMes().getMonth());
 
-            BigDecimal saidas = transacoesMes == null
-                    ? BigDecimal.ZERO
-                    : transacoesMes.stream()
-                    .filter(transacao -> !transacao.getLancamento().isEntrada())
-                    .map(Transacao::getValor)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal entradas = transacoes.stream()
+                    .filter(t -> t.getDtVencimento().getMonth().equals(filter.getMes().getMonth()))
+                    .filter(t -> t.getLancamento().getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA))
+                    .map(Transacao::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            valorEntradasResidual = saldoProjetados.isEmpty()
-                    ? entradas.subtract(saidas)
-                    : valorEntradasResidual.add(entradas).subtract(saidas);
+            BigDecimal saidas = transacoes.stream()
+                    .filter(t -> t.getDtVencimento().getMonth().equals(filter.getMes().getMonth()))
+                    .filter(t -> t.getLancamento().getTipoLancamento().equals(TipoLancamentoEnum.SAIDA))
+                    .map(Transacao::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            saldoProjetados.add(SaldoProjetadoOutput.builder()
-                    .mes(mes.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.forLanguageTag("pt-BR")))
-                    .entradas(entradas)
-                    .saidas(saidas)
-                    .saldo(valorEntradasResidual)
-                    .build()
-            );
+            resumo.setEntradas(entradas);
+            resumo.setSaidas(saidas);
+
+            resumos.add(resumo);
         }
 
-        return saldoProjetados;
+        return resumos;
     }
 }

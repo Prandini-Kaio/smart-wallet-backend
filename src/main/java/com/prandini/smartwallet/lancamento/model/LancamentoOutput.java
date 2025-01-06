@@ -11,6 +11,7 @@ import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@Data
 public class LancamentoOutput {
 
     private Long id;

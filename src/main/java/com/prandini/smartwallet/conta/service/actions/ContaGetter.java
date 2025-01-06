@@ -6,15 +6,11 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
-import com.prandini.smartwallet.common.model.AutcompleteDTO;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
-import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
@@ -22,11 +18,9 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Component
 @CommonsLog
@@ -52,7 +46,7 @@ public class ContaGetter {
         return repository.existsContaByNomeBanco(input.getNome(), input.getBanco());
     }
 
-    public Conta byid(Long id) {
+    public Conta byId(Long id) {
         log.info(String.format("Buscando conta por id %s.", id));
         return repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Conta"));
     }

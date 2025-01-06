@@ -42,11 +42,7 @@ public class LancamentoCreator {
 
         validator.validarCriacao(input);
 
-        Conta conta = contaGetter.findByFilter(ContaFilter.builder()
-                .nome(input.getConta().getNome())
-                .banco(input.getConta().getBanco())
-                .build()
-        );
+        Conta conta = contaGetter.byId(input.getContaId());
 
         Lancamento lancamento = buildLancamento(input, conta);
         List<Transacao> transacoes = transacaoCreator.create(lancamento);
@@ -75,11 +71,7 @@ public class LancamentoCreator {
     public Lancamento fromInput(LancamentoInput input) {
         log.info("Criando lancamento output atraves de um input de lançamento.");
 
-        Conta conta = contaGetter.findByFilter(ContaFilter.builder()
-                .nome(input.getConta().getNome())
-                .banco(input.getConta().getBanco())
-                .build()
-        );
+        Conta conta = contaGetter.byId(input.getContaId());
 
         Lancamento lancamento = buildLancamento(input, conta);
         List<Transacao> transacoes = transacaoCreator.create(lancamento);
