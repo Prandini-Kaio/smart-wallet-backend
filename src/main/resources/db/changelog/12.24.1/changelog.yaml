@@ -1,2 +1,19 @@
 databaseChangeLog:
-
+  - changeSet:
+      id: 1732217966423-13
+      author: kaiooliveira (generated)
+      changes:
+        - sql:
+            splitStatements: false
+            sql: |
+              WITH cte AS (
+                SELECT
+                  id
+                FROM conta
+                WHERE dia_fechamento IS NULL
+              )
+              UPDATE conta
+              SET dia_fechamento = 0
+              FROM cte
+              WHERE conta.id = cte.id;
+            dbms: postgresql

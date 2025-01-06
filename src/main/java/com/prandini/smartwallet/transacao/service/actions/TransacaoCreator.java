@@ -69,7 +69,7 @@ public class TransacaoCreator {
 
     private List<Transacao> gerarTransacoes(Lancamento lancamento, List<BigDecimal> parcelas) {
         return IntStream.range(0, lancamento.getParcelas())
-                .mapToObj(i -> buildTransacao(lancamento, parcelas.get(i), lancamento.getConta().getDiaVencimento(), i))
+                .mapToObj(i -> buildTransacao(lancamento, parcelas.get(i), lancamento.getConta().getDiaFechamento(), i))
                 .collect(Collectors.toList());
     }
 
@@ -116,7 +116,16 @@ public class TransacaoCreator {
         return parcelas;
     }
 
-    private LocalDateTime calcularDataVencimento(int diaVencimento, LocalDateTime dtCriacao, int indiceParcela) {
-        return dtCriacao.plusMonths(indiceParcela).withDayOfMonth(diaVencimento).withHour(0).withMinute(0).withSecond(0);
+    private LocalDateTime calcularDataVencimento(int diaFechamento, LocalDateTime dtCriacao, int indiceParcela) {
+        LocalDateTime baseDate = dtCriacao.plusMonths(indiceParcela); // Avança os meses baseados na parcela
+        int lastDayOfMonth = baseDate.toLocalDate().lengthOfMonth(); // Último dia do mês base
+        int diaVencimento = Math.min(diaFechamento, lastDayOfMonth); // Ajusta para o último dia do mês, se necessário
+
+        // Se o dia de vencimento já passou no mês atual, ajusta para o próximo mês
+        if (baseDate.getDayOfMonth() > diaVencimento) {
+            baseDate = baseDate.plusMonths(1);
+        }
+
+        return baseDate.withDayOfMonth(diaVencimento).withHour(0).withMinute(0).withSecond(0).withNano(0);
     }
 }
