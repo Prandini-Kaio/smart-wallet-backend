@@ -6,6 +6,7 @@ package com.prandini.smartwallet.common.model;
  */
 
 import com.prandini.smartwallet.conta.model.ContaOutput;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +22,22 @@ public class ResumoFinanceiroOutput {
 
     private ContaOutput conta;
 
-    private BigDecimal entradas;
+    @Builder.Default
+    private BigDecimal entradas = BigDecimal.ZERO;
 
-    private BigDecimal saidas;
+    @Builder.Default
+    private BigDecimal saidas = BigDecimal.ZERO;
 
     private Month mes;
+
+
+
+    public void addValor(BigDecimal valor, TipoLancamentoEnum tipo) {
+        if(tipo.equals(TipoLancamentoEnum.ENTRADA)){
+            this.entradas = this.entradas.add(valor);
+        }
+        if(tipo.equals(TipoLancamentoEnum.SAIDA)){
+            this.saidas = this.saidas.add(valor);
+        }
+    }
 }

@@ -69,4 +69,8 @@ public class ContaGetter {
     public TotalizadorFinanceiro getTotalizadorByFilter(ContaFilter filter){
         return this.repository.totalizadorByFilter(filter);
     }
+
+    public List<Conta> findAll() {
+        return this.repository.findAll();
+    }
 }

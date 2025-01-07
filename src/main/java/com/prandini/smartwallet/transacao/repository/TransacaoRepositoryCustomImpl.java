@@ -1,5 +1,6 @@
 package com.prandini.smartwallet.transacao.repository;
 
+import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import jakarta.persistence.EntityManager;
@@ -8,6 +9,8 @@ import jakarta.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +40,36 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
 
         sb.append(" ORDER BY t.dtVencimento DESC, l.dtCriacao DESC ");
+
+        // Criando a query com base no StringBuilder
+        Query query = this.entityManager.createQuery(sb.toString());
+
+        params.forEach(query::setParameter);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Transacao> byVencimentoConta(Conta conta, Month mes) {
+        StringBuilder sb = new StringBuilder();
+
+        Map<String, Object> params = new HashMap<>();
+
+        // Query
+        sb.append("SELECT t FROM Transacao t ")
+                .append(" JOIN t.lancamento l ")
+                .append(" JOIN l.conta c ")
+                .append("WHERE 1=1 ");
+
+        LocalDate now = LocalDate.now();
+        LocalDateTime dataInicio = LocalDateTime.of(now.getYear(), mes, conta.getDiaFechamento(), 0, 0, 0).minusMonths(1).plusDays(1);
+        LocalDateTime dataFim = LocalDateTime.of(now.getYear(), mes, conta.getDiaFechamento(), 23, 59, 59);
+
+        safeAddParams(params, "conta", conta,  sb, " AND c = :conta ");
+        safeAddParams(params, "dtInicio", dataInicio,  sb, " AND t.dtVencimento >= :dtInicio ");
+        safeAddParams(params, "dtFim", dataFim,  sb, " AND t.dtVencimento <= :dtFim ");
+
+        sb.append(" ORDER BY c.nome, t.dtVencimento DESC, l.dtCriacao DESC ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());

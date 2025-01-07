@@ -7,6 +7,8 @@ package com.prandini.smartwallet.transacao.service.actions;
 
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
@@ -16,6 +18,8 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -55,5 +59,15 @@ public class TransacaoGetter {
 
     public boolean hasTransacaoVencida(Long idLancamento){
         return this.repository.hasTransacaoVencida(idLancamento);
+    }
+
+    public List<Transacao> byContasMes(List<Conta> contas, Month mes) {
+        List<Transacao> transacoes = new ArrayList<>();
+
+        for (Conta conta : contas) {
+            transacoes.addAll(this.repository.byVencimentoConta(conta, mes));
+        }
+
+        return transacoes;
     }
 }

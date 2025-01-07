@@ -7,6 +7,8 @@ package com.prandini.smartwallet.lancamento.service;
 
 import com.prandini.smartwallet.common.model.ResumoFinanceiroOutput;
 import com.prandini.smartwallet.conta.converter.ContaConverter;
+import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
@@ -14,6 +16,7 @@ import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
 import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroListOutput;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
+import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -38,44 +41,44 @@ public class SaldoProjetadoService {
     private TransacaoGetter transacaoGetter;
 
     @Resource
+    private ContaGetter contaGetter;
+
+    @Resource
     private ContaConverter contaConverter;
 
     public List<ResumoFinanceiroOutput> getResumoFinanceiro(ResumoFinanceiroFilter filter) {
         log.info("Iniciando calculo de resumo financeiro.");
 
-        List<Lancamento> lancamentos = this.lancamentoGetter.findByFilter(LancamentoFilter.builder()
-                .contaIds(filter.getContaIds() != null ? filter.getContaIds() : null)
-                .tipo(filter.getTipo())
-                .pagamento(filter.getPagamento())
-                .categorias(filter.getCategorias())
-                .build()
-        );
+        List<Transacao> transacoes = new ArrayList<>();
+        List<Conta> contas = new ArrayList<>();
+
+        if(filter.getContaIds() == null){
+            contas = contaGetter.findAll();
+        }else {
+            contas = filter.getContaIds().stream().map(contaGetter::byId).toList();
+        }
+
+        transacoes = this.transacaoGetter.byContasMes(contas, filter.getMes());
 
         List<ResumoFinanceiroOutput> resumos = new ArrayList<>();
 
-        for (Lancamento lancamento : lancamentos) {
-            List<Transacao> transacoes = lancamento.getTransacoes();
+        // Cria um resumo pra cada conta, mesmo que zerado
+        contas.forEach(
+                conta -> resumos.add(ResumoFinanceiroOutput.builder().conta(contaConverter.toOutput(conta)).build())
+        );
 
-            Optional<ResumoFinanceiroOutput> any = resumos.stream().filter(r -> r.getConta().getId().equals(lancamento.getConta().getId()) && r.getMes().equals(filter.getMes().getMonth())).findAny();
+        for (Transacao transacao : transacoes) {
+
+            Optional<ResumoFinanceiroOutput> any = resumos.stream().filter(r -> r.getConta().getId().equals(transacao.getLancamento().getConta().getId())).findAny();
             ResumoFinanceiroOutput resumo = any.orElseGet(() -> ResumoFinanceiroOutput.builder().build());
 
-            resumo.setConta(contaConverter.toOutput(lancamento.getConta()));
-            resumo.setMes(filter.getMes().getMonth());
+            resumo.setMes(filter.getMes());
+            resumo.setConta(contaConverter.toOutput(transacao.getLancamento().getConta()));
+            resumo.addValor(transacao.getValor(), transacao.getLancamento().getTipoLancamento());
 
-            BigDecimal entradas = transacoes.stream()
-                    .filter(t -> t.getDtVencimento().getMonth().equals(filter.getMes().getMonth()))
-                    .filter(t -> t.getLancamento().getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA))
-                    .map(Transacao::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
-
-            BigDecimal saidas = transacoes.stream()
-                    .filter(t -> t.getDtVencimento().getMonth().equals(filter.getMes().getMonth()))
-                    .filter(t -> t.getLancamento().getTipoLancamento().equals(TipoLancamentoEnum.SAIDA))
-                    .map(Transacao::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
-
-            resumo.setEntradas(entradas);
-            resumo.setSaidas(saidas);
-
-            resumos.add(resumo);
+            if(!resumos.contains(resumo)){
+                resumos.add(resumo);
+            }
         }
 
         return resumos;

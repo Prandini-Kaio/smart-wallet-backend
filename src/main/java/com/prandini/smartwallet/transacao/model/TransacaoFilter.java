@@ -5,10 +5,10 @@ package com.prandini.smartwallet.transacao.model;
  * created 8/26/24
  */
 
-import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
+import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,4 +40,14 @@ public class TransacaoFilter {
     private LocalDateTime dtInicio;
 
     private LocalDateTime dtFim;
+
+    public static TransacaoFilter byResumoFinanceiro(ResumoFinanceiroFilter filter) {
+        return TransacaoFilter.builder()
+                .tipo(filter.getTipo())
+                .categorias(filter.getCategorias())
+                .pagamento(filter.getPagamento())
+                .status(filter.getStatus())
+                .contaIds(filter.getContaIds())
+                .build();
+    }
 }

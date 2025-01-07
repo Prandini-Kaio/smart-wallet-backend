@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 /**
@@ -31,5 +32,5 @@ public class ResumoFinanceiroFilter {
 
     private List<Long> contaIds;
 
-    private LocalDate mes;
+    private Month mes;
 }
