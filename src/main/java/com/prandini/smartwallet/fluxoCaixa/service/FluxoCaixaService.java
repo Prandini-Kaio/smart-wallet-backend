@@ -20,10 +20,6 @@ public class FluxoCaixaService {
     private FluxoCaixaProjetadoGetter projetadoGetter;
 
     public FluxoCaixaProjetadoOutput getProjetadoByFilter(FluxoCaixaProjetadoFilter filter) {
-        if(filter.getDtInicio() == null && filter.getDtFim() == null){
-            filter.setDtInicio(LocalDate.now());
-            filter.setDtFim(LocalDate.now());
-        }
         return projetadoGetter.getResumoProjetadoByFilter(filter);
     }
 }

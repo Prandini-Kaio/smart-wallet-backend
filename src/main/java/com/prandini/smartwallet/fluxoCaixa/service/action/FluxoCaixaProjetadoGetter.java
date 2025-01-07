@@ -2,6 +2,8 @@ package com.prandini.smartwallet.fluxoCaixa.service.action;
 
 import com.prandini.smartwallet.common.utils.DateUtils;
 import com.prandini.smartwallet.conta.converter.ContaConverter;
+import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.fluxoCaixa.model.FluxoCaixaProjetadoFilter;
 import com.prandini.smartwallet.fluxoCaixa.model.FluxoCaixaProjetadoOutput;
 import com.prandini.smartwallet.fluxoCaixa.model.LancamentosProjetadosOutput;
@@ -17,6 +19,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +44,9 @@ public class FluxoCaixaProjetadoGetter {
     @Resource
     private ContaConverter contaConverter;
 
+    @Resource
+    private ContaGetter contaGetter;
+
     public FluxoCaixaProjetadoOutput getResumoProjetadoByFilter(FluxoCaixaProjetadoFilter filter) {
 
         log.info("Calculando resumo de fluxo de caixa projetado.");
@@ -63,25 +69,35 @@ public class FluxoCaixaProjetadoGetter {
     }
 
     private void calculaSaldoInicial(FluxoCaixaProjetadoFilter filter, FluxoCaixaProjetadoOutput resumo) {
-        List<Transacao> transacoes = transacaoGetter.byFilter(
-                TransacaoFilter.builder()
-                        .contaIds(filter.getContaIds())
-                        .dtFim(filter.getDtInicio().atTime(23, 59,59).minusDays(1))
-                        .build()
-        );
+
+        List<Conta> contas = new ArrayList<>();
+
+        if(filter.getContaIds() != null && !filter.getContaIds().isEmpty()){
+            contas = filter.getContaIds().stream().map(contaGetter::byId).toList();
+        }else {
+            contas = contaGetter.findAll();
+        }
+
+        List<Transacao> transacoes = new ArrayList<>();
+        for (int i = filter.getMes().getValue() - 1; i > 0; i--){
+            transacoes.addAll(transacaoGetter.byContasMes(contas, Month.of(i)));
+        }
 
         BigDecimal saldoAnterior = transacoes.stream().map(Transacao::getValorComSinal).reduce(BigDecimal.ZERO, BigDecimal::add);
         resumo.setSaldoAnterior(saldoAnterior);
     }
 
     private void calculaSaldoProjetado(FluxoCaixaProjetadoFilter filter, List<LancamentosProjetadosOutput> lancamentosOutput, FluxoCaixaProjetadoOutput resumo) {
-        List<Transacao> transacoes = transacaoGetter.byFilter(
-                TransacaoFilter.builder()
-                        .contaIds(filter.getContaIds())
-                        .dtInicio(filter.getDtInicio().atStartOfDay())
-                        .dtFim(filter.getDtFim().atTime(23, 59, 59))
-                        .build()
-        );
+
+        List<Conta> contas = new ArrayList<>();
+
+        if(filter.getContaIds() != null && !filter.getContaIds().isEmpty()){
+            contas = filter.getContaIds().stream().map(contaGetter::byId).toList();
+        }else {
+            contas = contaGetter.findAll();
+        }
+
+        List<Transacao> transacoes = transacaoGetter.byContasMes(contas, filter.getMes());
 
         BigDecimal saldoProjetado = resumo.getSaldoAnterior();
 

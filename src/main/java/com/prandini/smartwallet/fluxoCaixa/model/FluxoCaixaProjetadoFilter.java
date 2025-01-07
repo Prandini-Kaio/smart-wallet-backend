@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 /**
@@ -21,6 +22,6 @@ public class FluxoCaixaProjetadoFilter {
 
     private LocalDate dtInicio;
 
-    private LocalDate dtFim;
+    private Month mes;
 
 }
