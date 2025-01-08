@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class TransacaoCreator {
 
         Conta conta = contaGetter.byId(input.getContaId());
         List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
-                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaVencimento(), i))
+                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaFechamento(), i))
                 .toList();
 
         return this.repository.saveAll(transacoes);
@@ -48,7 +49,7 @@ public class TransacaoCreator {
 
         Conta conta = contaGetter.byId(input.getContaId());
         List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
-                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaVencimento(), i))
+                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaFechamento(), i))
                 .toList();
 
         return transacoes;
@@ -97,7 +98,7 @@ public class TransacaoCreator {
                 .valor(valorParcela)
                 .status(isEntrada ? StatusTransacaoEnum.PAGO : StatusTransacaoEnum.PENDENTE)
                 .descricao(String.format(" [%d / %d]", indice + 1, parcelas))
-                .dtVencimento(isDebito ? LocalDateTime.now() : calcularDataVencimento(diaVencimento, dtCriacao, indice + 1))
+                .dtVencimento(isDebito ? dtCriacao : calcularDataVencimento(diaVencimento, dtCriacao, indice + 1))
                 .dtPagamento(isEntrada ? LocalDateTime.now() : null)
                 .build();
     }
@@ -117,15 +118,15 @@ public class TransacaoCreator {
     }
 
     private LocalDateTime calcularDataVencimento(int diaFechamento, LocalDateTime dtCriacao, int indiceParcela) {
-        LocalDateTime baseDate = dtCriacao.plusMonths(indiceParcela); // Avança os meses baseados na parcela
-        int lastDayOfMonth = baseDate.toLocalDate().lengthOfMonth(); // Último dia do mês base
-        int diaVencimento = Math.min(diaFechamento, lastDayOfMonth); // Ajusta para o último dia do mês, se necessário
+        LocalDateTime baseDate = LocalDateTime.of(dtCriacao.getYear(), dtCriacao.getMonth(), diaFechamento, 0, 0, 0);
 
-        // Se o dia de vencimento já passou no mês atual, ajusta para o próximo mês
-        if (baseDate.getDayOfMonth() > diaVencimento) {
+        if (dtCriacao.getDayOfMonth() > diaFechamento) {
             baseDate = baseDate.plusMonths(1);
         }
 
-        return baseDate.withDayOfMonth(diaVencimento).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        baseDate = baseDate.plusMonths(indiceParcela - 1);
+
+        return baseDate;
     }
+
 }

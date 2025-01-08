@@ -63,9 +63,7 @@ public class SaldoProjetadoService {
         List<ResumoFinanceiroOutput> resumos = new ArrayList<>();
 
         // Cria um resumo pra cada conta, mesmo que zerado
-        contas.forEach(
-                conta -> resumos.add(ResumoFinanceiroOutput.builder().conta(contaConverter.toOutput(conta)).build())
-        );
+        contas.stream().map(conta -> ResumoFinanceiroOutput.builder().conta(contaConverter.toOutput(conta)).build()).forEach(resumos::add);
 
         for (Transacao transacao : transacoes) {
 
