@@ -65,13 +65,19 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         LocalDateTime dataInicio;
         LocalDateTime dataFim;
 
-        if (mes == Month.FEBRUARY && conta.getDiaFechamento() > 28) {
-            LocalDate lastDayOfFebruary = now.withMonth(Month.FEBRUARY.getValue()).withDayOfMonth(now.withMonth(Month.FEBRUARY.getValue()).lengthOfMonth());
-            dataInicio = LocalDateTime.of(now.getYear(), Month.FEBRUARY, lastDayOfFebruary.getDayOfMonth(), 0, 0, 0).minusMonths(1).plusDays(1);
-            dataFim = LocalDateTime.of(now.getYear(), Month.FEBRUARY, lastDayOfFebruary.getDayOfMonth(), 23, 59, 59);
-        } else {
+        if(conta.getDiaFechamento() > conta.getDiaVencimento()){
+
+            if (mes == Month.FEBRUARY && conta.getDiaFechamento() > 28) {
+                LocalDate lastDayOfFebruary = now.withMonth(Month.FEBRUARY.getValue()).withDayOfMonth(now.withMonth(Month.FEBRUARY.getValue()).lengthOfMonth());
+                dataInicio = LocalDateTime.of(now.getYear(), Month.FEBRUARY, lastDayOfFebruary.getDayOfMonth(), 0, 0, 0).minusMonths(1).plusDays(1);
+                dataFim = LocalDateTime.of(now.getYear(), Month.FEBRUARY, lastDayOfFebruary.getDayOfMonth(), 23, 59, 59);
+            }else{
+                dataInicio = LocalDateTime.of(now.getYear(), mes, conta.getDiaFechamento(), 0, 0, 0).minusMonths(2).plusDays(1);
+                dataFim = LocalDateTime.of(now.getYear(), mes, conta.getDiaFechamento(), 23, 59, 59).minusMonths(1);
+            }
+        }else{
             dataInicio = LocalDateTime.of(now.getYear(), mes, conta.getDiaFechamento(), 0, 0, 0).minusMonths(1).plusDays(1);
-            dataFim = LocalDateTime.of(now.getYear(), mes, conta.getDiaFechamento(), 23, 59, 59);
+            dataFim = LocalDateTime.of(now.getYear(), mes, conta.getDiaVencimento(), 23, 59, 59);
         }
 
         safeAddParams(params, "conta", conta,  sb, " AND c = :conta ");

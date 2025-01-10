@@ -30,13 +30,15 @@ public class ContaConverter {
         LocalDate now = LocalDate.now();
         BigDecimal saldoParcial = getter.getSaldoParcialConta(conta);
 
+        String dtFechamento = conta.getDiaVencimento() < conta.getDiaFechamento() ? DateUtils.toBrazilianDayMonthString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaFechamento()).minusMonths(1)) : DateUtils.toBrazilianDayMonthString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaFechamento()));
+
         return ContaOutput.builder()
                 .id(conta.getId())
                 .banco(conta.getBanco())
                 .nome(conta.getNome())
                 .saldoParcial(saldoParcial)
-                .dtVencimento(DateUtils.toBrazilianDateString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaVencimento())))
-                .dtFechamento(DateUtils.toBrazilianDateString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaFechamento())))
+                .dtVencimento(DateUtils.toBrazilianDayMonthString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaVencimento())))
+                .dtFechamento(dtFechamento)
                 .tipoConta(conta.getTipoConta())
                 .color(conta.getColor())
                 .build();
