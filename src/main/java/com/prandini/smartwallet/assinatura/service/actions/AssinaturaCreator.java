@@ -30,20 +30,18 @@ public class AssinaturaCreator {
 
     public Assinatura create(AssinaturaInput input) {
 
-        log.info(String.format("Criando assinatura para %s", input.getDescricao()));
+        log.info(String.format("Criando assinatura para %s", input.getCategoria()));
 
-        Conta conta = contaGetter.findByFilter(ContaFilter.builder()
-                .banco(input.getBancoConta())
-                .nome(input.getNomeConta())
-                .build()
-        );
+        Conta conta = contaGetter.byId(input.getContaId());
 
         Assinatura assinatura = Assinatura.builder()
                 .conta(conta)
+                .categoria(input.getCategoria())
+                .tipo(input.getTipo())
+                .pagamento(input.getPagamento())
                 .valor(input.getValor())
                 .dtInicio(input.getDtInicio() != null ? input.getDtInicio() : LocalDate.now())
-                .dtFim(input.getDtFim() != null ? input.getDtFim() : null)
-                .descricao(input.getDescricao())
+                .dtFim(input.getDtFim() != null ? input.getDtFim() : LocalDate.now())
                 .ativa(input.isAtiva())
                 .build();
 
