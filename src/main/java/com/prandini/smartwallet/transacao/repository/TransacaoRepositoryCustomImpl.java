@@ -1,12 +1,13 @@
 package com.prandini.smartwallet.transacao.repository;
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,7 +52,7 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
     }
 
     @Override
-    public List<Transacao> byVencimentoConta(Conta conta, Month mes) {
+    public List<Transacao> bySaidasCreditoVencimentoConta(Conta conta, YearMonth mesAno) {
         StringBuilder sb = new StringBuilder();
 
         Map<String, Object> params = new HashMap<>();
@@ -62,12 +63,10 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
                 .append(" JOIN l.conta c ")
                 .append("WHERE 1=1 ");
 
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime dataInicio = LocalDateTime.now();
-        LocalDateTime dataFim = LocalDateTime.now();
+        LocalDateTime[] periodo = this.calcularPeriodoCredito(conta.getDiaFechamento(), conta.getDiaVencimento(), mesAno);
 
-        LocalDateTime[] periodo = this.calcularPeriodo(conta.getDiaFechamento(), conta.getDiaVencimento(), mes);
-
+        safeAddParams(params, "tipo", TipoLancamentoEnum.SAIDA, sb, " AND l.tipoLancamento = :tipo");
+        safeAddParams(params, "pagamento", TipoPagamentoEnum.CREDITO, sb, " AND l.tipoPagamento = :pagamento");
         safeAddParams(params, "conta", conta,  sb, " AND c = :conta ");
         safeAddParams(params, "dtInicio", periodo[0],  sb, " AND t.dtVencimento >= :dtInicio ");
         safeAddParams(params, "dtFim", periodo[1],  sb, " AND t.dtVencimento <= :dtFim ");
@@ -110,73 +109,24 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         }
     }
 
-    public LocalDateTime[] calcularPeriodo(LocalDateTime now, int diaFechamento, int diaVencimento, Month mes) {
-        int mesConsulta = mes.getValue();
-        int anoConsulta = now.getYear();
-
-        // Ajustar mês e ano para o cálculo do fechamento e vencimento
-        if (diaFechamento > diaVencimento) {
-            // Caso o fechamento e vencimento sejam de meses diferentes
-            mesConsulta -= 1;
-            if (mesConsulta == 0) {
-                mesConsulta = 12;
-                anoConsulta -= 1;
-            }
-            mesConsulta -= 1;
-        }
-
-        // Obter o último dia do mês anterior ao mês de consulta
-        YearMonth mesAnterior = YearMonth.of(anoConsulta, mesConsulta);
-        int ultimoDiaMesAnterior = mesAnterior.lengthOfMonth();
-
-        // Ajustar diaFechamento para não ultrapassar o último dia do mês
-        int diaFechamentoAjustado = Math.min(diaFechamento, ultimoDiaMesAnterior);
-
-        // Data de início: fechamento + 1 dia do mês anterior
-        LocalDateTime dataInicio = LocalDateTime.of(anoConsulta, mesConsulta, diaFechamentoAjustado, 0, 0, 0).plusDays(1);
-
-        // Calcular o próximo mês e ano para o fim do período
-        int mesProximo = mesConsulta + 1;
-        int anoProximo = anoConsulta;
-        if (mesProximo > 12) {
-            mesProximo = 1;
-            anoProximo += 1;
-        }
-
-        // Obter o último dia do próximo mês
-        YearMonth mesProximoObj = YearMonth.of(anoProximo, mesProximo);
-        int ultimoDiaMesProximo = mesProximoObj.lengthOfMonth();
-
-        // Ajustar diaFechamento para o próximo mês
-        int diaFechamentoProximoAjustado = Math.min(diaFechamento, ultimoDiaMesProximo);
-
-        // Data de fim: fechamento no próximo mês
-        LocalDateTime dataFim = LocalDateTime.of(anoProximo, mesProximo, diaFechamentoProximoAjustado, 23, 59, 59);
-
-        return new LocalDateTime[]{dataInicio, dataFim};
-    }
-
-    private LocalDateTime[] calcularPeriodo(int diaFechamento, int diaVencimento, Month mesConsulta){
-        // BUSCAR LANCAMENTOS DE UMA DATA FECHAMENTO A OUTRA
-        // MES DE FEVEREIRO
-
+    private LocalDateTime[] calcularPeriodoCredito(int diaFechamento, int diaVencimento, YearMonth mesAno){
         LocalDateTime dataInicio;
         LocalDateTime dataFim;
 
-        YearMonth mesAnoInicio = YearMonth.of(LocalDate.now().getYear(), mesConsulta);
+        YearMonth mesAnoInicio = mesAno;
         mesAnoInicio = mesAnoInicio.minusMonths(1);
         int diaConsulta = diaFechamento;
 
         if(diaFechamento > diaVencimento){
             mesAnoInicio = mesAnoInicio.minusMonths(1);
-            diaConsulta = Math.min(mesAnoInicio.lengthOfMonth(), diaFechamento);
+            diaConsulta = Math.min(mesAnoInicio.lengthOfMonth(), diaFechamento)-1;
         }
 
         diaConsulta = diaConsulta + 1;
 
         dataInicio = LocalDateTime.of(mesAnoInicio.getYear(), mesAnoInicio.getMonth(), diaConsulta, 0, 0, 0);
 
-        YearMonth mesAnoFim = YearMonth.of(LocalDate.now().getYear(), mesConsulta);
+        YearMonth mesAnoFim = mesAno;
         diaConsulta = diaFechamento;
 
         if(diaFechamento > diaVencimento){

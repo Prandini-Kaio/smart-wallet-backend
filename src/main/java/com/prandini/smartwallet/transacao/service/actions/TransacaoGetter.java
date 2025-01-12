@@ -8,17 +8,19 @@ package com.prandini.smartwallet.transacao.service.actions;
 import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.conta.domain.Conta;
-import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +63,31 @@ public class TransacaoGetter {
         return this.repository.hasTransacaoVencida(idLancamento);
     }
 
-    public List<Transacao> byContasMes(List<Conta> contas, Month mes) {
+    public List<Transacao> byContasMes(List<Conta> contas, YearMonth mesAno) {
         List<Transacao> transacoes = new ArrayList<>();
 
         for (Conta conta : contas) {
-            transacoes.addAll(this.repository.byVencimentoConta(conta, mes));
+            transacoes.addAll(this.repository.bySaidasCreditoVencimentoConta(conta, mesAno));
+
+            TransacaoFilter filter = TransacaoFilter.builder()
+                    .contaIds(List.of(conta.getId()))
+                    .dtInicio(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), 1, 0, 0, 0))
+                    .dtFim(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), mesAno.lengthOfMonth(), 23, 59, 59))
+                    .tipo(TipoLancamentoEnum.SAIDA)
+                    .pagamento(TipoPagamentoEnum.DEBITO)
+                    .build();
+
+            transacoes.addAll(this.repository.getTransacoesByFilter(filter));
+
+            filter = TransacaoFilter.builder()
+                    .contaIds(List.of(conta.getId()))
+                    .dtInicio(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), 1, 0, 0, 0))
+                    .dtFim(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), mesAno.lengthOfMonth(), 23, 59, 59))
+                    .tipo(TipoLancamentoEnum.ENTRADA)
+                    .pagamento(TipoPagamentoEnum.DEBITO)
+                    .build();
+
+            transacoes.addAll(this.repository.getTransacoesByFilter(filter));
         }
 
         return transacoes;

@@ -23,7 +23,9 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +60,8 @@ public class SaldoProjetadoService {
             contas = filter.getContaIds().stream().map(contaGetter::byId).toList();
         }
 
-        transacoes = this.transacaoGetter.byContasMes(contas, filter.getMes());
+        YearMonth mesAno = YearMonth.of(LocalDate.now().getYear(), filter.getMes());
+        transacoes = this.transacaoGetter.byContasMes(contas, mesAno);
 
         List<ResumoFinanceiroOutput> resumos = new ArrayList<>();
 

@@ -19,7 +19,9 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -79,9 +81,14 @@ public class FluxoCaixaProjetadoGetter {
         }
 
         List<Transacao> transacoes = new ArrayList<>();
+        YearMonth mesAno;
         for (int i = filter.getMes().getValue() - 1; i > 0; i--){
-            transacoes.addAll(transacaoGetter.byContasMes(contas, Month.of(i)));
+            mesAno = YearMonth.of(LocalDate.now().getYear(), Month.of(i));
+            transacoes.addAll(transacaoGetter.byContasMes(contas, mesAno));
         }
+
+        mesAno = YearMonth.of(LocalDate.now().getYear() -1, Month.of(12));
+        transacoes.addAll(transacaoGetter.byContasMes(contas, mesAno));
 
         BigDecimal saldoAnterior = transacoes.stream().map(Transacao::getValorComSinal).reduce(BigDecimal.ZERO, BigDecimal::add);
         resumo.setSaldoAnterior(saldoAnterior);
@@ -97,7 +104,8 @@ public class FluxoCaixaProjetadoGetter {
             contas = contaGetter.findAll();
         }
 
-        List<Transacao> transacoes = transacaoGetter.byContasMes(contas, filter.getMes());
+        YearMonth mesAno = YearMonth.of(LocalDate.now().getYear(), filter.getMes());
+        List<Transacao> transacoes = transacaoGetter.byContasMes(contas, mesAno);
 
         BigDecimal saldoProjetado = resumo.getSaldoAnterior();
 
