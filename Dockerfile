@@ -1,14 +1,20 @@
-# Use uma imagem base do Java 17 ou mais recente
-FROM openjdk:17-jdk-slim
+# Etapa base para o desenvolvimento
+FROM node:20 AS dev
 
-# Define o diretório de trabalho dentro do contêiner
+# Definir o diretório de trabalho no container
 WORKDIR /app
 
-# Copia o arquivo JAR para o contêinerr
-COPY target/*.jar app.jar
+# Copiar os arquivos de dependências
+COPY package*.json ./
 
-# Expõe a porta 8080
-EXPOSE 8080
+# Instalar as dependências
+RUN npm install
 
-# Comando para executar a aplicação
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring-profiles.active=db-local"]
+# Copiar todo o projeto para o container
+COPY . .
+
+# Expor a porta padrão do Angular (4200)
+EXPOSE 4200
+
+# Comando para rodar o Angular com --host 0.0.0.0
+CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
