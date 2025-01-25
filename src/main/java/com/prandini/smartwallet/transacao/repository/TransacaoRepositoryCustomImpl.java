@@ -113,28 +113,33 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         LocalDateTime dataInicio;
         LocalDateTime dataFim;
 
-        YearMonth mesAnoInicio = mesAno;
-        mesAnoInicio = mesAnoInicio.minusMonths(1);
-        int diaConsulta = diaFechamento;
-
-        if(diaFechamento > diaVencimento){
+        try {
+            YearMonth mesAnoInicio = mesAno;
             mesAnoInicio = mesAnoInicio.minusMonths(1);
-            diaConsulta = Math.min(mesAnoInicio.lengthOfMonth(), diaFechamento)-1;
+            int diaConsulta = diaFechamento;
+
+            if(diaFechamento > diaVencimento){
+                mesAnoInicio = mesAnoInicio.minusMonths(1);
+                diaConsulta = Math.min(mesAnoInicio.lengthOfMonth(), diaFechamento);
+            }
+
+            diaConsulta = diaConsulta;
+
+            dataInicio = LocalDateTime.of(mesAnoInicio.getYear(), mesAnoInicio.getMonth(), diaConsulta, 0, 0, 0);
+            dataInicio = dataInicio.plusDays(1);
+
+            YearMonth mesAnoFim = mesAno;
+            diaConsulta = diaFechamento;
+
+            if(diaFechamento > diaVencimento){
+                mesAnoFim = mesAnoFim.minusMonths(1);
+                diaConsulta = Math.min(mesAnoFim.lengthOfMonth(), diaFechamento);
+            }
+
+            dataFim = LocalDateTime.of(mesAnoFim.getYear(), mesAnoFim.getMonth(), diaConsulta, 23, 59, 59);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        diaConsulta = diaConsulta + 1;
-
-        dataInicio = LocalDateTime.of(mesAnoInicio.getYear(), mesAnoInicio.getMonth(), diaConsulta, 0, 0, 0);
-
-        YearMonth mesAnoFim = mesAno;
-        diaConsulta = diaFechamento;
-
-        if(diaFechamento > diaVencimento){
-            mesAnoFim = mesAnoFim.minusMonths(1);
-            diaConsulta = Math.min(mesAnoFim.lengthOfMonth(), diaFechamento);
-        }
-
-        dataFim = LocalDateTime.of(mesAnoFim.getYear(), mesAnoFim.getMonth(), diaConsulta, 23, 59, 59);
 
         return new LocalDateTime[]{dataInicio, dataFim};
     }
