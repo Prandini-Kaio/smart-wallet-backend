@@ -5,6 +5,7 @@ package com.prandini.smartwallet.assinatura.model;
  * created 9/4/24
  */
 
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor
@@ -20,7 +22,7 @@ public class AssinaturaFilter {
 
     private Long id;
 
-    private String conta;
+    private List<Long> contaIds;
 
     private BigDecimal valor;
 
@@ -28,7 +30,5 @@ public class AssinaturaFilter {
 
     private LocalDate dtFim;
 
-    private boolean ativa = true;
-
-    private String descricao;
+    private boolean ativa;
 }

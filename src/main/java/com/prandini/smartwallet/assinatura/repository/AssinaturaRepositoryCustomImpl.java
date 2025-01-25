@@ -26,16 +26,14 @@ public class AssinaturaRepositoryCustomImpl implements AssinaturaRepositoryCusto
 
         Map<String, Object> params = new HashMap<>();
 
-        // Query
         sb.append("SELECT a FROM Assinatura a ")
                 .append(" JOIN a.conta c ")
                 .append("WHERE 1=1 ");
 
-        safeAddParams(params, "conta", filter.getConta().toLowerCase(), sb, " AND LOWER(c.banco) LIKE CONCAT('%', :conta, '%') OR LOWER(c.nome) LIKE CONCAT('%', :conta, '%') ");
+        safeAddParams(params, "contas", filter.getContaIds(), sb, " AND c.id IN :contas ");
         safeAddParams(params, "valor", filter.getValor(), sb, " AND a.valor = :valor ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND a.dtInicio >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND a.dtFim <= :dtFim ");
-        safeAddParams(params, "desc", filter.getDescricao(), sb, " AND a.descricao <= :desc ");
         safeAddParams(params, "ativa", filter.isAtiva(), sb, " AND a.ativa = :ativa ");
 
         // Criando a query com base no StringBuilder
