@@ -22,7 +22,7 @@ services:
 
   app:
     build: .
-    container_name: smartwallet-app
+    container_name: smart-wallet-api
     image: smartwallet:latest
     networks:
       - sw_network
