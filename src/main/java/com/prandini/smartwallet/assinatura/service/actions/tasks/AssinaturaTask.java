@@ -8,6 +8,8 @@ package com.prandini.smartwallet.assinatura.service.actions.tasks;
 import com.prandini.smartwallet.assinatura.domain.Assinatura;
 import com.prandini.smartwallet.assinatura.model.AssinaturaFilter;
 import com.prandini.smartwallet.assinatura.service.actions.AssinaturaGetter;
+import com.prandini.smartwallet.assinatura.service.actions.AssinaturaValidator;
+import com.prandini.smartwallet.common.exception.BusinessException;
 import com.prandini.smartwallet.conta.converter.ContaConverter;
 import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
@@ -21,7 +23,9 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 @Component
@@ -37,7 +41,12 @@ public class AssinaturaTask {
     @Resource
     private ContaConverter contaConverter;
 
-    @Scheduled(cron = "0 0 0 1 * ?")
+    @Resource
+    private AssinaturaValidator validator;
+
+//    @Scheduled(cron = "0 0 0 1 * ?")
+    // Schedule a todo minuto
+    @Scheduled(cron = "0 * * * * ?")
     public void cadastrarLancamento(){
         log.info("Renovando assinaturas");
 
@@ -45,7 +54,15 @@ public class AssinaturaTask {
 
         if (!assinaturas.isEmpty()) {
             assinaturas.forEach(a -> {
-                log.info(String.format("Iniciando renovação para %s", a.getDescricao()));
+                try{
+                    this.validator.validarTask(a);
+                }catch (BusinessException e){
+                    log.error(e);
+                    return;
+                }
+                
+                log.info(String.format("Iniciando renovação para conta %s de assinatura %s.", a.getConta().getBancoNome(), a.getDescricao()));
+
                 LancamentoInput input = LancamentoInput.builder()
                         .tipoLancamento(TipoLancamentoEnum.SAIDA)
                         .categoriaLancamento(CategoriaLancamentoEnum.ASSINATURA)
