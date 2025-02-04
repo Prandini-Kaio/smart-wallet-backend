@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,4 +59,16 @@ public class Conta {
 
     @Column(name = "COLOR")
     private String color;
+
+    public String getBancoNome(){
+        return banco + " - " + nome;
+    }
+
+    public LocalDate getDiaVencimento(YearMonth date) {
+        return LocalDate.of(date.getYear(), date.getMonth(), Math.min(diaVencimento, date.atEndOfMonth().getDayOfMonth()));
+    }
+
+    public LocalDate getDiaFechamento(YearMonth date) {
+        return LocalDate.of(date.getYear(), date.getMonth(), Math.min(diaFechamento, date.atEndOfMonth().getDayOfMonth()));
+    }
 }

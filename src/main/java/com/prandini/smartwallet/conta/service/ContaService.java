@@ -20,6 +20,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -54,7 +55,7 @@ public class ContaService {
 
     public List<ContaOutput> getByFilter(ContaFilter filter) {
         log.info(String.format("Iniciando busca de contas por filtro %s.", filter));
-        return this.getter.byFilter(filter).stream().map(converter::toOutput).toList();
+        return this.getter.byFilter(filter).stream().map(converter::toOutput).sorted(Comparator.comparing(ContaOutput::getBanco)).toList();
     }
 
     @Transactional

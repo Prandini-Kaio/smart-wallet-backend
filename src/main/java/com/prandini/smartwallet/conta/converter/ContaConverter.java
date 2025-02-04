@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 /*
  * @author prandini
@@ -28,17 +29,19 @@ public class ContaConverter {
     public ContaOutput toOutput(Conta conta){
 
         LocalDate now = LocalDate.now();
+        YearMonth nowYM = YearMonth.now();
+
         BigDecimal saldoParcial = getter.getSaldoParcialConta(conta);
 
-        String dtFechamento = conta.getDiaVencimento() < conta.getDiaFechamento() ? DateUtils.toBrazilianDayMonthString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaFechamento()).minusMonths(1)) : DateUtils.toBrazilianDayMonthString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaFechamento()));
+        LocalDate dtFechamento = conta.getDiaVencimento() < conta.getDiaFechamento() ? conta.getDiaFechamento(nowYM.minusMonths(1)) : conta.getDiaFechamento(nowYM);
 
         return ContaOutput.builder()
                 .id(conta.getId())
                 .banco(conta.getBanco())
                 .nome(conta.getNome())
                 .saldoParcial(saldoParcial)
-                .dtVencimento(DateUtils.toBrazilianDayMonthString(LocalDate.of(now.getYear(), now.getMonth(), conta.getDiaVencimento())))
-                .dtFechamento(dtFechamento)
+                .dtVencimento(DateUtils.toBrazilianDayMonthString(conta.getDiaVencimento(nowYM)))
+                .dtFechamento(DateUtils.toBrazilianDayMonthString(dtFechamento))
                 .tipoConta(conta.getTipoConta())
                 .color(conta.getColor())
                 .build();
