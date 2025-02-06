@@ -8,6 +8,7 @@ package com.prandini.smartwallet.lancamento.service;
 import com.prandini.smartwallet.common.model.ResumoFinanceiroOutput;
 import com.prandini.smartwallet.conta.converter.ContaConverter;
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -27,6 +28,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,7 +57,7 @@ public class SaldoProjetadoService {
         List<Conta> contas = new ArrayList<>();
 
         if(filter.getContaIds() == null){
-            contas = contaGetter.findAll();
+            contas = contaGetter.byFilter(ContaFilter.builder().build());
         }else {
             contas = filter.getContaIds().stream().map(contaGetter::byId).toList();
         }
@@ -82,6 +84,6 @@ public class SaldoProjetadoService {
             }
         }
 
-        return resumos;
+        return resumos.stream().sorted(Comparator.comparing(r -> r.getConta().getBanco())).collect(Collectors.toList());
     }
 }
