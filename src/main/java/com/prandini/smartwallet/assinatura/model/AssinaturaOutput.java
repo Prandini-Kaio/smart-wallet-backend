@@ -5,6 +5,7 @@ package com.prandini.smartwallet.assinatura.model;
  * created 9/4/24
  */
 
+import com.prandini.smartwallet.conta.model.ContaOutput;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class AssinaturaOutput {
 
     private Long id;
 
-    private String conta;
+    private ContaOutput conta;
 
     private BigDecimal valor;
 

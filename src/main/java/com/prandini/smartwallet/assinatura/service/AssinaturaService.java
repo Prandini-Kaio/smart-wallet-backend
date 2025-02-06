@@ -28,6 +28,12 @@ public class AssinaturaService {
     private AssinaturaGetter getter;
 
     @Resource
+    private AssinaturaUpdater updater;
+
+    @Resource
+    private AssinaturaDeleter deleter;
+
+    @Resource
     private AssinaturaConverter converter;
 
     public AssinaturaOutput criarAssinatura(AssinaturaInput input) {
@@ -38,5 +44,13 @@ public class AssinaturaService {
 
     public List<AssinaturaOutput> byFilter(AssinaturaFilter filter) {
         return this.getter.byFilter(filter).stream().map(converter::toOutput).toList();
+    }
+
+    public AssinaturaOutput atualizarAssinatura(AssinaturaInput input) {
+        return converter.toOutput(this.updater.update(input));
+    }
+
+    public void deletarAssinatura(Long id) {
+        this.deleter.delete(id);
     }
 }

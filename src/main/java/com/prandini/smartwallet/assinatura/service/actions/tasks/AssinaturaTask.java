@@ -44,9 +44,7 @@ public class AssinaturaTask {
     @Resource
     private AssinaturaValidator validator;
 
-//    @Scheduled(cron = "0 0 0 1 * ?")
-    // Schedule a todo minuto
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
     public void cadastrarLancamento(){
         log.info("Renovando assinaturas");
 
@@ -60,7 +58,7 @@ public class AssinaturaTask {
                     log.error(e);
                     return;
                 }
-                
+
                 log.info(String.format("Iniciando renovação para conta %s de assinatura %s.", a.getConta().getBancoNome(), a.getDescricao()));
 
                 LancamentoInput input = LancamentoInput.builder()

@@ -42,4 +42,23 @@ public class AssinaturaController {
     public ResponseEntity<AssinaturaOutput> assinar(@RequestBody AssinaturaInput input){
         return ResponseEntity.ok().body(this.service.criarAssinatura(input));
     }
+
+    @PutMapping
+    @Operation(
+            summary = "Atualiza uma assinatura.",
+            description = "Atualiza uma assinatura ativa."
+    )
+    public ResponseEntity<AssinaturaOutput> atualizar(@RequestBody AssinaturaInput input){
+        return ResponseEntity.ok().body(this.service.atualizarAssinatura(input));
+    }
+
+    @DeleteMapping
+    @Operation(
+            summary = "Deleta uma assinatura.",
+            description = "Deleta uma assinatura ativa."
+    )
+    public ResponseEntity<Void> deletar(Long id){
+        this.service.deletarAssinatura(id);
+        return ResponseEntity.ok().build();
+    }
 }
