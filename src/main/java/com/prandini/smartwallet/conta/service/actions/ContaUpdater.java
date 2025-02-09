@@ -6,9 +6,12 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.domain.ContaBancaria;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
+import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.model.LancamentoDeleteEvent;
 import com.prandini.smartwallet.lancamento.model.events.LancamentoEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -16,6 +19,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -50,7 +54,7 @@ public class ContaUpdater {
 
     @EventListener
     public void onLancamentoEntry(LancamentoEvent event){
-        log.info("Evento de lançamento recebido: " + event);
+        log.info("Evento de lançamento recebido: " + event.getLancamento().getDescricao());
 
         Conta contaOrigem = event.getLancamento().getContaOrigem() != null ? event.getLancamento().getContaOrigem() : null;
         Conta contaDestino = event.getLancamento().getContaDestino();
@@ -67,6 +71,36 @@ public class ContaUpdater {
             contaDestino.setSaldoDisponivel(contaDestino.getSaldoDisponivel().add(event.getLancamento().getValorBruto()));
         }
 
-        this.repository.saveAll(List.of(contaOrigem, contaDestino));
+        List<Conta> contas = new ArrayList<>();
+
+        safeAdd(contas, contaOrigem);
+        safeAdd(contas, contaDestino);
+
+        this.repository.saveAll(contas);
+    }
+
+    @EventListener
+    public void onLancamentoDelete(LancamentoDeleteEvent event){
+        log.info("Evento de lançamento recebido: " + event.getLancamento().getDescricao());
+
+        TipoLancamentoEnum tipo = event.getLancamento().getTipoLancamento();
+
+        if(tipo.isEntrada()){
+            event.getLancamento().getContaDestino().removeEntrada(event.getLancamento().getValorBruto());
+        }
+
+        if(tipo.isSaida()){
+            event.getLancamento().getContaDestino().removeSaida(event.getLancamento().getValorBruto());
+        }
+
+        if(tipo.isTransferencia()){
+            event.getLancamento().getContaOrigem().setSaldoDisponivel(event.getLancamento().getContaOrigem().getSaldoDisponivel().add(event.getLancamento().getValorBruto()));
+            event.getLancamento().getContaDestino().setSaldoDisponivel(event.getLancamento().getContaDestino().getSaldoDisponivel().subtract(event.getLancamento().getValorBruto()));
+        }
+    }
+
+    private void safeAdd(List<Conta> list, Conta conta){
+        if(conta != null)
+            list.add(conta);
     }
 }

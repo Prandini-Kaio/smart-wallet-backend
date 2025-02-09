@@ -9,7 +9,6 @@ import jakarta.persistence.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /*
  * @author prandini
@@ -31,7 +30,8 @@ public class AssinaturaRepositoryCustomImpl implements AssinaturaRepositoryCusto
                 .append(" LEFT JOIN a.contaOrigem co ")
                 .append("WHERE 1=1 ");
 
-        safeAddParams(params, "contas", filter.getContaIds(), sb, " AND cd.id IN :contas ");
+        safeAddParams(params, "contasDestino", filter.getContaDestinoIds(), sb, " AND cd.id IN :contasDestino ");
+        safeAddParams(params, "contasOrigem", filter.getContaDestinoIds(), sb, " AND co.id IN :contasOrigem ");
         safeAddParams(params, "valor", filter.getValor(), sb, " AND a.valor = :valor ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND a.dtInicio >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND a.dtFim <= :dtFim ");

@@ -16,4 +16,16 @@ public enum TipoLancamentoEnum {
     public String getDescricao() {
         return descricao;
     }
+
+    public boolean isSaida() {
+        return this.equals(SAIDA);
+    }
+
+    public boolean isEntrada() {
+        return this.equals(ENTRADA);
+    }
+
+    public boolean isTransferencia() {
+        return this.equals(TRANSFERENCIA);
+    }
 }

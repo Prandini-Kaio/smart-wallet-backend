@@ -1,2 +1,21 @@
 databaseChangeLog:
-
+  - changeSet:
+      id: 0
+      author: prandini (generated)
+      changes:
+        - createTable:
+            tableName: initial_table
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+  - changeSet:
+      id: 1
+      author: prandini (generated)
+      changes:
+        - dropTable:
+            tableName: initial_table

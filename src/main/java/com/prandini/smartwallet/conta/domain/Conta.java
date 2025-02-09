@@ -88,4 +88,19 @@ public class Conta {
         this.contaPassivos.setSaldo(this.contaPassivos.getSaldo().add(valor));
     }
 
+    public void removeEntrada(BigDecimal valorBruto) {
+        this.contaAtivos.setSaldo(this.contaAtivos.getSaldo().subtract(valorBruto));
+    }
+
+    public void removeSaida(BigDecimal valor) {
+        this.contaPassivos.setSaldo(this.contaPassivos.getSaldo().subtract(valor));
+    }
+
+    public BigDecimal getSaldoDisponivel() {
+        return this.contaAtivos.getSaldo();
+    }
+
+    public BigDecimal getSaldoPendente() {
+        return this.contaPassivos.getSaldo();
+    }
 }

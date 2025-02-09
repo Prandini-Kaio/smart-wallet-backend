@@ -21,7 +21,9 @@ public class AssinaturaOutput {
 
     private Long id;
 
-    private ContaOutput conta;
+    private ContaOutput contaDestino;
+
+    private ContaOutput contaOrigem;
 
     private BigDecimal valor;
 

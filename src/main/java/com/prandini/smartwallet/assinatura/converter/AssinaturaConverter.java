@@ -16,7 +16,8 @@ public class AssinaturaConverter {
 
         return AssinaturaOutput.builder()
                 .id(assinatura.getId())
-                .conta(contaConverter.toOutput(assinatura.getContaDestino()))
+                .contaDestino(contaConverter.toOutput(assinatura.getContaDestino()))
+                .contaOrigem(assinatura.getContaOrigem() != null ? contaConverter.toOutput(assinatura.getContaDestino()) : null)
                 .valor(assinatura.getValor())
                 .ativa(assinatura.isAtiva())
                 .dtInicio(assinatura.getDtInicio())

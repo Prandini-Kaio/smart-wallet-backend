@@ -6,6 +6,7 @@ import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
+import com.prandini.smartwallet.lancamento.model.events.LancamentoEvent;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoCreator;
@@ -54,7 +55,7 @@ public class LancamentoCreator {
         transacoes.forEach(transacao -> transacao.setLancamento(lancamento));
         lancamento.setTransacoes(transacoes);
 
-        this.publisher.publishEvent(lancamento);
+        this.publisher.publishEvent(new LancamentoEvent(lancamento));
 
         return this.repository.save(lancamento);
     }

@@ -1,5 +1,6 @@
 package com.prandini.smartwallet.conta.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prandini.smartwallet.conta.model.TipoConta;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,7 @@ public class ContaBancaria {
 
     @ManyToOne
     @JoinColumn(name = "CONTA_ORIGEM")
+    @JsonIgnore
     private Conta contaOrigem;
 
     @Column(name = "SALDO")

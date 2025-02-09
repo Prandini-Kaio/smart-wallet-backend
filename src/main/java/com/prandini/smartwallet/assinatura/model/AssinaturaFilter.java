@@ -5,7 +5,6 @@ package com.prandini.smartwallet.assinatura.model;
  * created 9/4/24
  */
 
-import com.prandini.smartwallet.conta.model.ContaFilter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +21,9 @@ public class AssinaturaFilter {
 
     private Long id;
 
-    private List<Long> contaIds;
+    private List<Long> contaDestinoIds;
+
+    private List<Long> contaOrigemIds;
 
     private BigDecimal valor;
 
