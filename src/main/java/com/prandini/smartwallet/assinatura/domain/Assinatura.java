@@ -8,9 +8,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,7 +31,10 @@ public class Assinatura {
     private Long id;
 
     @ManyToOne
-    private Conta conta;
+    private Conta contaDestino;
+
+    @ManyToOne
+    private Conta contaOrigem;
 
     @Column(name = "CATEGORIA")
     private CategoriaLancamentoEnum categoria;

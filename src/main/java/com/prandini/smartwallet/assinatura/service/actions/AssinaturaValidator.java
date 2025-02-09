@@ -22,7 +22,7 @@ public class AssinaturaValidator {
     }
 
     private void validarFechamentoConta(Assinatura assinatura) {
-        if(!assinatura.getConta().getDiaFechamento(YearMonth.now()).equals(LocalDate.now()))
+        if(!assinatura.getContaDestino().getDiaFechamento(YearMonth.now()).equals(LocalDate.now()))
             throw new BusinessException(AssinaturaExceptionMessage.contaNaoFechada());
     }
 

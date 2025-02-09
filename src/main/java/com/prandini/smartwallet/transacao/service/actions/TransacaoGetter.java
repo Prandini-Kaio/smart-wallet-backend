@@ -70,7 +70,7 @@ public class TransacaoGetter {
             transacoes.addAll(this.repository.bySaidasCreditoVencimentoConta(conta, mesAno));
 
             TransacaoFilter filter = TransacaoFilter.builder()
-                    .contaIds(List.of(conta.getId()))
+                    .contaDestinoIds(List.of(conta.getId()))
                     .dtInicio(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), 1, 0, 0, 0))
                     .dtFim(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), mesAno.lengthOfMonth(), 23, 59, 59))
                     .tipo(TipoLancamentoEnum.SAIDA)
@@ -80,7 +80,7 @@ public class TransacaoGetter {
             transacoes.addAll(this.repository.getTransacoesByFilter(filter));
 
             filter = TransacaoFilter.builder()
-                    .contaIds(List.of(conta.getId()))
+                    .contaDestinoIds(List.of(conta.getId()))
                     .dtInicio(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), 1, 0, 0, 0))
                     .dtFim(LocalDateTime.of(mesAno.getYear(), mesAno.getMonth(), mesAno.lengthOfMonth(), 23, 59, 59))
                     .tipo(TipoLancamentoEnum.ENTRADA)

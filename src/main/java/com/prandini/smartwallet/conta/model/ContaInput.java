@@ -28,9 +28,6 @@ public class ContaInput {
     @Schema(example = "CORRENTE")
     private String nome;
 
-    @Schema(example = "ECONOMIA")
-    private TipoConta tipoConta;
-
     @Schema(example = "12")
     private String diaVencimento;
 

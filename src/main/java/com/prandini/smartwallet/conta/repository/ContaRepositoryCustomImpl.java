@@ -38,7 +38,7 @@ public class ContaRepositoryCustomImpl implements ContaRepositoryCustom{
         safeAddParams(params, "tipoConta", filter.getTipoConta(), sb, " AND c.tipoConta = :tipoConta ");
         safeAddParams(params, "diaVencimento", filter.getDiaVencimento(), sb, " AND c.diaVencimento = :diaVencimento ");
 
-        sb.append(" ORDER BY c.saldoParcial DESC ");
+        sb.append(" ORDER BY c.banco ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());

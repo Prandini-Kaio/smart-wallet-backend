@@ -7,7 +7,6 @@ import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoCreator;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoDeleter;
 import jakarta.annotation.Resource;
@@ -72,14 +71,15 @@ public class LancamentoUpdater {
         origin.setValorBruto(lancamento.getValorBruto());
         origin.setDtCriacao(lancamento.getDtCriacao());
         origin.setParcelas(lancamento.getParcelas());
-        origin.setConta(lancamento.getConta());
+        origin.setContaOrigem(lancamento.getContaOrigem());
         origin.setDescricao(lancamento.getDescricao());
 
         return repository.save(origin);
     }
 
     public Lancamento fromInput(LancamentoInput input){
-        Conta conta = contaGetter.byId(input.getContaId());
+        Conta contaDestino = contaGetter.byId(input.getContaDestinoId());
+        Conta contaOrigem = contaGetter.byId(input.getContaOrigemId());
 
         Lancamento lancamento = getter.byId(input.getId());
 
@@ -94,7 +94,8 @@ public class LancamentoUpdater {
         lancamento.setStatus(input.getStatus());
         lancamento.setDtCriacao(input.getDtCriacao());
         lancamento.setParcelas(input.getParcelas());
-        lancamento.setConta(conta);
+        lancamento.setContaDestino(contaDestino);
+        lancamento.setContaOrigem(contaOrigem);
         lancamento.setDescricao(input.getDescricao());
         lancamento.setTransacoes(new ArrayList<>(transacoes));
 

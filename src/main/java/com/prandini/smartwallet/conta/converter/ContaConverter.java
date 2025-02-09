@@ -28,10 +28,7 @@ public class ContaConverter {
 
     public ContaOutput toOutput(Conta conta){
 
-        LocalDate now = LocalDate.now();
         YearMonth nowYM = YearMonth.now();
-
-        BigDecimal saldoParcial = getter.getSaldoParcialConta(conta);
 
         LocalDate dtFechamento = conta.getDiaVencimento() < conta.getDiaFechamento() ? conta.getDiaFechamento(nowYM.minusMonths(1)) : conta.getDiaFechamento(nowYM);
 
@@ -39,21 +36,12 @@ public class ContaConverter {
                 .id(conta.getId())
                 .banco(conta.getBanco())
                 .nome(conta.getNome())
-                .saldoParcial(saldoParcial)
+                .saldoDisponivel(conta.getSaldoDisponivel())
+                .saldoPendente(conta.getSaldoPendente())
+                .saldoContaAtivos(conta.getContaAtivos().getSaldo())
+                .saldoContaPassivos(conta.getContaPassivos().getSaldo())
                 .dtVencimento(DateUtils.toBrazilianDayMonthString(conta.getDiaVencimento(nowYM)))
                 .dtFechamento(DateUtils.toBrazilianDayMonthString(dtFechamento))
-                .tipoConta(conta.getTipoConta())
-                .color(conta.getColor())
-                .build();
-    }
-
-    public ContaInput toInput(Conta conta){
-        return ContaInput.builder()
-                .banco(conta.getBanco())
-                .nome(conta.getNome())
-                .tipoConta(conta.getTipoConta())
-                .diaVencimento(String.valueOf(conta.getDiaVencimento()))
-                .diaFechamento(String.valueOf(conta.getDiaFechamento()))
                 .color(conta.getColor())
                 .build();
     }

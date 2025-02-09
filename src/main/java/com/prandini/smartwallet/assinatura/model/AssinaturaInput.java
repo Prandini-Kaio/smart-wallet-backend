@@ -23,7 +23,9 @@ public class AssinaturaInput {
 
     private Long id;
 
-    private Long contaId;
+    private Long contaDestinoId;
+
+    private Long contaOrigemId;
 
     private CategoriaLancamentoEnum categoria;
 

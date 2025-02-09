@@ -30,7 +30,9 @@ public class ResumoFinanceiroFilter {
 
     private List<StatusTransacaoEnum> status;
 
-    private List<Long> contaIds;
+    private List<Long> contaDestinoIds;
+
+    private List<Long> contaOrigemIds;
 
     private Month mes;
 }

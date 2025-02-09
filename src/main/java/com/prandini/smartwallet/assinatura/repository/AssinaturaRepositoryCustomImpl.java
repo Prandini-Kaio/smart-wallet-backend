@@ -27,10 +27,11 @@ public class AssinaturaRepositoryCustomImpl implements AssinaturaRepositoryCusto
         Map<String, Object> params = new HashMap<>();
 
         sb.append("SELECT a FROM Assinatura a ")
-                .append(" JOIN a.conta c ")
+                .append(" JOIN a.contaDestino cd ")
+                .append(" LEFT JOIN a.contaOrigem co ")
                 .append("WHERE 1=1 ");
 
-        safeAddParams(params, "contas", filter.getContaIds(), sb, " AND c.id IN :contas ");
+        safeAddParams(params, "contas", filter.getContaIds(), sb, " AND cd.id IN :contas ");
         safeAddParams(params, "valor", filter.getValor(), sb, " AND a.valor = :valor ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND a.dtInicio >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND a.dtFim <= :dtFim ");

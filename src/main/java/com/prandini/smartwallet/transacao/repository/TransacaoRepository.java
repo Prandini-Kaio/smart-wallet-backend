@@ -15,7 +15,7 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>, Tra
     @Query("SELECT t FROM Transacao t WHERE MONTH(t.dtVencimento) = :month")
     List<Transacao> findByVencimento(Integer month);
 
-    @Query("SELECT t FROM Transacao t JOIN t.lancamento l JOIN l.conta c WHERE lower(c.banco) LIKE CONCAT('%', LOWER(:filter),'%') OR l.descricao LIKE CONCAT('%', LOWER(:filter), '%') OR c.nome LIKE CONCAT('%', LOWER(:filter), '%')")
+    @Query("SELECT t FROM Transacao t JOIN t.lancamento l JOIN l.contaOrigem c WHERE lower(c.banco) LIKE CONCAT('%', LOWER(:filter),'%') OR l.descricao LIKE CONCAT('%', LOWER(:filter), '%') OR c.nome LIKE CONCAT('%', LOWER(:filter), '%')")
     List<Transacao> findByStringFilter(String filter);
 
     @Query("SELECT t FROM Transacao t  WHERE t.status = :status AND MONTH(t.dtVencimento) = :month")
@@ -46,7 +46,7 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>, Tra
     @Modifying
     public void deleteProximaByLancamento(Long lancamentoID);
     @Query(" DELETE FROM Transacao t " +
-            " WHERE t.lancamento.conta.id = :contaId")
+            " WHERE t.lancamento.contaOrigem.id = :contaId")
     @Modifying
     void deleteByConta(Long contaId);
 }

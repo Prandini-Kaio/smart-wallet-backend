@@ -36,7 +36,8 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         // Query
         sb.append("SELECT t FROM Transacao t ")
                 .append(" JOIN t.lancamento l ")
-                .append(" JOIN l.conta c ")
+                .append(" JOIN l.contaDestino cd ")
+                .append(" LEFT JOIN l.contaOrigem co ")
                 .append("WHERE 1=1 ");
 
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
@@ -60,18 +61,19 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         // Query
         sb.append("SELECT t FROM Transacao t ")
                 .append(" JOIN t.lancamento l ")
-                .append(" JOIN l.conta c ")
+                .append(" JOIN l.contaDestino cd ")
+                .append(" LEFT JOIN l.contaOrigem co ")
                 .append("WHERE 1=1 ");
 
         LocalDateTime[] periodo = this.calcularPeriodoCredito(conta.getDiaFechamento(), conta.getDiaVencimento(), mesAno);
 
         safeAddParams(params, "tipo", TipoLancamentoEnum.SAIDA, sb, " AND l.tipoLancamento = :tipo");
         safeAddParams(params, "pagamento", TipoPagamentoEnum.CREDITO, sb, " AND l.tipoPagamento = :pagamento");
-        safeAddParams(params, "conta", conta,  sb, " AND c = :conta ");
+        safeAddParams(params, "contaDestino", conta, sb, " AND cd = :contaDestino ");
         safeAddParams(params, "dtInicio", periodo[0],  sb, " AND t.dtVencimento >= :dtInicio ");
         safeAddParams(params, "dtFim", periodo[1],  sb, " AND t.dtVencimento <= :dtFim ");
 
-        sb.append(" ORDER BY c.nome, t.dtVencimento DESC, l.dtCriacao DESC ");
+        sb.append(" ORDER BY cd.banco, t.dtVencimento DESC, l.dtCriacao DESC ");
 
         // Criando a query com base no StringBuilder
         Query query = this.entityManager.createQuery(sb.toString());
@@ -104,8 +106,12 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
             safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status IN :status ");
         }
 
-        if(filter.getContaIds() != null && !filter.getContaIds().isEmpty() && filter.getContaIds().get(0) != 0){
-            safeAddParams(params, "contaIds", filter.getContaIds(), sb, " AND c.id IN :contaIds ");
+        if(filter.getContaDestinoIds() != null && !filter.getContaDestinoIds().isEmpty() && filter.getContaDestinoIds().get(0) != 0){
+            safeAddParams(params, "contaDestinoIds", filter.getContaDestinoIds(), sb, " AND cd.id IN :contaDestinoIds ");
+        }
+
+        if(filter.getContaOrigemIds() != null && !filter.getContaOrigemIds().isEmpty() && filter.getContaOrigemIds().get(0) != 0){
+            safeAddParams(params, "contaOrigemIds", filter.getContaOrigemIds(), sb, " AND co.id IN :contaOrigemIds ");
         }
     }
 
@@ -122,8 +128,6 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
                 mesAnoInicio = mesAnoInicio.minusMonths(1);
                 diaConsulta = Math.min(mesAnoInicio.lengthOfMonth(), diaFechamento);
             }
-
-            diaConsulta = diaConsulta;
 
             dataInicio = LocalDateTime.of(mesAnoInicio.getYear(), mesAnoInicio.getMonth(), diaConsulta, 0, 0, 0);
             dataInicio = dataInicio.plusDays(1);

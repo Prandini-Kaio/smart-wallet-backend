@@ -35,7 +35,9 @@ public class TransacaoFilter {
 
     private List<StatusTransacaoEnum> status;
 
-    private List<Long> contaIds;
+    private List<Long> contaDestinoIds;
+
+    private List<Long> contaOrigemIds;
 
     private LocalDateTime dtInicio;
 
@@ -47,7 +49,8 @@ public class TransacaoFilter {
                 .categorias(filter.getCategorias())
                 .pagamento(filter.getPagamento())
                 .status(filter.getStatus())
-                .contaIds(filter.getContaIds())
+                .contaDestinoIds(filter.getContaDestinoIds())
+                .contaOrigemIds(filter.getContaOrigemIds())
                 .build();
     }
 }

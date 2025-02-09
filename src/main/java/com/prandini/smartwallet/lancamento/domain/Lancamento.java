@@ -61,7 +61,12 @@ public class Lancamento {
     private List<Transacao> transacoes;
 
     @ManyToOne
-    private Conta conta;
+    @JoinColumn(name = "CONTA_ORIGEM_ID")
+    private Conta contaOrigem;
+
+    @ManyToOne
+    @JoinColumn(name = "CONTA_DESTINO_ID")
+    private Conta contaDestino;
 
     @Column(name = "DESCRICAO")
     private String descricao;

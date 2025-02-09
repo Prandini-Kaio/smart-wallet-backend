@@ -7,6 +7,7 @@ package com.prandini.smartwallet.conta.domain;
 
 import com.prandini.smartwallet.conta.model.TipoConta;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -14,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +36,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Conta {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,18 +47,23 @@ public class Conta {
     @Column(name = "NOME")
     private String nome;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private ContaBancaria contaAtivos;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private ContaBancaria contaPassivos;
+
     @Column(name = "DIA_VENCIMENTO")
     private int diaVencimento;
 
     @Column(name = "DIA_FECHAMENTO")
     private int diaFechamento;
 
-    @Column(name = "SALDO_PARCIAL")
-    private BigDecimal saldoParcial;
+    @Column(name = "SALDO_DISPONIVEL")
+    private BigDecimal saldoDisponivel;
 
-    @Column(name = "TIPO_CONTA")
-    @Enumerated
-    private TipoConta tipoConta;
+    @Column(name = "SALDO_PENDENTE")
+    private BigDecimal saldoPendente;
 
     @Column(name = "COLOR")
     private String color;
@@ -71,4 +79,13 @@ public class Conta {
     public LocalDate getDiaFechamento(YearMonth date) {
         return LocalDate.of(date.getYear(), date.getMonth(), Math.min(diaFechamento, date.atEndOfMonth().getDayOfMonth()));
     }
+
+    public void addEntrada(BigDecimal valor) {
+        this.contaAtivos.setSaldo(this.contaAtivos.getSaldo().add(valor));
+    }
+
+    public void addSaida(BigDecimal valor) {
+        this.contaPassivos.setSaldo(this.contaPassivos.getSaldo().add(valor));
+    }
+
 }

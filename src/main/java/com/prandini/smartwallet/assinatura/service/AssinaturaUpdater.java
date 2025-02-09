@@ -1,7 +1,6 @@
 package com.prandini.smartwallet.assinatura.service;
 
 import com.prandini.smartwallet.assinatura.domain.Assinatura;
-import com.prandini.smartwallet.assinatura.model.AssinaturaFilter;
 import com.prandini.smartwallet.assinatura.model.AssinaturaInput;
 import com.prandini.smartwallet.assinatura.repository.AssinaturaRepository;
 import com.prandini.smartwallet.assinatura.service.actions.AssinaturaGetter;
@@ -34,10 +33,12 @@ public class AssinaturaUpdater {
 
         Assinatura assinatura = getter.byId(input.getId());
 
-        Conta conta = contaGetter.byId(input.getContaId());
+        Conta contaDestino = contaGetter.byId(input.getContaDestinoId());
+        Conta contaOrigem = input.getContaOrigemId() != null ? contaGetter.byId(input.getContaOrigemId()) : null;
 
         assinatura.setDescricao(input.getDescricao());
-        assinatura.setConta(conta);
+        assinatura.setContaDestino(contaDestino);
+        assinatura.setContaOrigem(contaOrigem);
         assinatura.setValor(input.getValor());
         assinatura.setAtiva(input.isAtiva());
         assinatura.setDtInicio(input.getDtInicio());

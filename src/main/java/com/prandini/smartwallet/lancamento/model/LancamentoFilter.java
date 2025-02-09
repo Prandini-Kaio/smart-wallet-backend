@@ -32,7 +32,9 @@ public class LancamentoFilter {
 
     private LocalDateTime dtFim;
 
-    private List<Long> contaIds;
+    private List<Long> contaDestinoIds;
+
+    private List<Long> contaOrigemIds;
 
     private String nomeConta;
 

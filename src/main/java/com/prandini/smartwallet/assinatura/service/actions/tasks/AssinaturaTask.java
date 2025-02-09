@@ -11,7 +11,6 @@ import com.prandini.smartwallet.assinatura.service.actions.AssinaturaGetter;
 import com.prandini.smartwallet.assinatura.service.actions.AssinaturaValidator;
 import com.prandini.smartwallet.common.exception.BusinessException;
 import com.prandini.smartwallet.conta.converter.ContaConverter;
-import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -23,9 +22,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.util.List;
 
 @Component
@@ -59,7 +56,7 @@ public class AssinaturaTask {
                     return;
                 }
 
-                log.info(String.format("Iniciando renovação para conta %s de assinatura %s.", a.getConta().getBancoNome(), a.getDescricao()));
+                log.info(String.format("Iniciando renovação para conta %s de assinatura %s.", a.getContaDestino().getBancoNome(), a.getDescricao()));
 
                 LancamentoInput input = LancamentoInput.builder()
                         .tipoLancamento(TipoLancamentoEnum.SAIDA)
@@ -69,7 +66,8 @@ public class AssinaturaTask {
                         .valor(a.getValor())
                         .dtCriacao(LocalDateTime.now())
                         .parcelas(1)
-                        .contaId(a.getConta().getId())
+                        .contaDestinoId(a.getContaDestino().getId())
+                        .contaOrigemId(a.getContaOrigem() != null ? a.getContaOrigem().getId() : null)
                         .descricao(a.getDescricao())
                         .build();
 

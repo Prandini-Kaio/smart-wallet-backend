@@ -7,12 +7,8 @@ import com.prandini.smartwallet.conta.service.actions.ContaGetter;
 import com.prandini.smartwallet.fluxoCaixa.model.FluxoCaixaProjetadoFilter;
 import com.prandini.smartwallet.fluxoCaixa.model.FluxoCaixaProjetadoOutput;
 import com.prandini.smartwallet.fluxoCaixa.model.LancamentosProjetadosOutput;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
-import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
@@ -110,9 +106,9 @@ public class FluxoCaixaProjetadoGetter {
         BigDecimal saldoProjetado = resumo.getSaldoAnterior();
 
         for (Transacao transacao : transacoes){
-            Optional<LancamentosProjetadosOutput> any = lancamentosOutput.stream().filter(l -> l.getConta().equals(contaConverter.toOutput(transacao.getLancamento().getConta()))).findAny();
+            Optional<LancamentosProjetadosOutput> any = lancamentosOutput.stream().filter(l -> l.getConta().equals(contaConverter.toOutput(transacao.getLancamento().getContaDestino()))).findAny();
             LancamentosProjetadosOutput output = any.orElseGet(() -> LancamentosProjetadosOutput.builder().build());
-            output.setConta(contaConverter.toOutput(transacao.getLancamento().getConta()));
+            output.setConta(contaConverter.toOutput(transacao.getLancamento().getContaDestino()));
             output.setCategoria(transacao.getLancamento().getCategoriaLancamento());
             output.setDtVencimento(DateUtils.toBrazilianDateTimeString(transacao.getDtVencimento()));
             output.setDescricao(transacao.getDescricaoCompleta());

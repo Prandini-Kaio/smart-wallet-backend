@@ -32,10 +32,12 @@ public class AssinaturaCreator {
 
         log.info(String.format("Criando assinatura para %s", input.getCategoria()));
 
-        Conta conta = contaGetter.byId(input.getContaId());
+        Conta contaDestino = contaGetter.byId(input.getContaDestinoId());
+        Conta contaOrigem = input.getContaOrigemId() != null ? contaGetter.byId(input.getContaDestinoId()) : null;
 
         Assinatura assinatura = Assinatura.builder()
-                .conta(conta)
+                .contaDestino(contaDestino)
+                .contaOrigem(contaOrigem)
                 .categoria(input.getCategoria())
                 .tipo(input.getTipo())
                 .pagamento(input.getPagamento())

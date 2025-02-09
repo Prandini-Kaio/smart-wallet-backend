@@ -32,7 +32,9 @@ public class LancamentoOutput {
 
     private BigDecimal valor;
 
-    private ContaOutput conta;
+    private ContaOutput contaDestino;
+
+    private ContaOutput contaOrigem;
 
     private String dtCriacao;
 

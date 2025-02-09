@@ -15,15 +15,22 @@ import java.util.Map;
 
 public enum TipoConta {
 
-    ECONOMIA("Economia"),
+    ASSETS(1, "Ativos"), // ENTRADAS
 
-    INVESTIMENTO("Investimento"),
+    LIABILITIES(2, "Passivos"), // SAIDAS
 
-    CORRENTE_POUPANCA("Corrente/Poupança");
+    ECONOMIA(3, "Economia"),
+
+    INVESTIMENTO(4, "Investimento"),
+
+    CORRENTE_POUPANCA(5, "Corrente/Poupança");
+
+    private Integer id;
 
     private String descricao;
 
-    TipoConta(String descricao){
+    TipoConta(Integer id, String descricao){
+        this.id = id;
         this.descricao = descricao;
     }
 

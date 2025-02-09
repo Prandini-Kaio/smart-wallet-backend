@@ -10,27 +10,19 @@ import com.prandini.smartwallet.conta.converter.ContaConverter;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
-import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
-import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroListOutput;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.model.TransacaoFilter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,10 +48,10 @@ public class SaldoProjetadoService {
         List<Transacao> transacoes = new ArrayList<>();
         List<Conta> contas = new ArrayList<>();
 
-        if(filter.getContaIds() == null){
+        if(filter.getContaDestinoIds() == null){
             contas = contaGetter.byFilter(ContaFilter.builder().build());
         }else {
-            contas = filter.getContaIds().stream().map(contaGetter::byId).toList();
+            contas = filter.getContaDestinoIds().stream().map(contaGetter::byId).toList();
         }
 
         YearMonth mesAno = YearMonth.of(LocalDate.now().getYear(), filter.getMes());
@@ -72,11 +64,11 @@ public class SaldoProjetadoService {
 
         for (Transacao transacao : transacoes) {
 
-            Optional<ResumoFinanceiroOutput> any = resumos.stream().filter(r -> r.getConta().getId().equals(transacao.getLancamento().getConta().getId())).findAny();
+            Optional<ResumoFinanceiroOutput> any = resumos.stream().filter(r -> r.getConta().getId().equals(transacao.getLancamento().getContaDestino().getId())).findAny();
             ResumoFinanceiroOutput resumo = any.orElseGet(() -> ResumoFinanceiroOutput.builder().build());
 
             resumo.setMes(filter.getMes());
-            resumo.setConta(contaConverter.toOutput(transacao.getLancamento().getConta()));
+            resumo.setConta(contaConverter.toOutput(transacao.getLancamento().getContaDestino()));
             resumo.addValor(transacao.getValor(), transacao.getLancamento().getTipoLancamento());
 
             if(!resumos.contains(resumo)){

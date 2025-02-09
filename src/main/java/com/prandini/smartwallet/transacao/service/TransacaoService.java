@@ -2,7 +2,6 @@ package com.prandini.smartwallet.transacao.service;
 
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -76,7 +74,7 @@ public class TransacaoService {
 
         List<Transacao> transacoes = getter.byIdLancamento(lancamento.getId());
 
-        LocalDateTime vencimentoConta = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), lancamento.getConta().getDiaVencimento(), 23, 59, 59);
+        LocalDateTime vencimentoConta = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonthValue(), lancamento.getContaDestino().getDiaVencimento(), 23, 59, 59);
 
         transacoes.forEach(transacao -> {
             if(transacao.getStatus().equals(StatusTransacaoEnum.PENDENTE)){

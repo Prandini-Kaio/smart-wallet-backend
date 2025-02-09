@@ -2,7 +2,10 @@ package com.prandini.smartwallet.lancamento.domain;
 
 public enum TipoLancamentoEnum {
     ENTRADA("Entrada"),
-    SAIDA("Saída");
+
+    SAIDA("Saída"),
+
+    TRANSFERENCIA("Transferência");
 
     private final String descricao;
 

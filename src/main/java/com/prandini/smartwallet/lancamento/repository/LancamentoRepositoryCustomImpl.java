@@ -28,7 +28,8 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
 
         // Query
         sb.append("SELECT l FROM Lancamento l ")
-                .append("JOIN l.conta c ")
+                .append("JOIN l.contaDestino cd ")
+                .append("LEFT JOIN l.contaOrigem co ")
                 .append("WHERE 1=1 ");
 
         Optional.ofNullable(filter).ifPresent(f -> buildParams(params, sb, f));
@@ -39,7 +40,7 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
 
         params.forEach(query::setParameter);
 
-            return query.getResultList();
+        return query.getResultList();
     }
 
     private void buildParams(Map<String, Object> params, StringBuilder sb, LancamentoFilter filter){
@@ -65,8 +66,12 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
             safeAddParams(params, "status", filter.getStatus(), sb, " AND l.status IN :status ");
         }
 
-        if(filter.getContaIds() != null && !filter.getContaIds().isEmpty() && filter.getContaIds().get(0) != 0){
-            safeAddParams(params, "contaIds", filter.getContaIds(), sb, " AND c.id IN :contaIds ");
+        if(filter.getContaDestinoIds() != null && !filter.getContaDestinoIds().isEmpty() && filter.getContaDestinoIds().get(0) != 0){
+            safeAddParams(params, "contaDestinoIds", filter.getContaDestinoIds(), sb, " AND cd.id IN :contaDestinoIds ");
+        }
+
+        if(filter.getContaOrigemIds() != null && !filter.getContaOrigemIds().isEmpty() && filter.getContaOrigemIds().get(0) != 0){
+            safeAddParams(params, "contaOrigemIds", filter.getContaOrigemIds(), sb, " AND co.id IN :contaOrigemIds ");
         }
     }
 

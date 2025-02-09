@@ -41,14 +41,22 @@ public class LancamentoValidator {
         log.info("Implementar validacao de update do lancamento");
     }
 
-    public void validarCriacao(LancamentoInput input) {
+    public void validarCriacao(LancamentoInput input, Conta contaDestino, Conta contaOrigem) {
         this.validarInput(input);
+        this.validarConta(input, contaDestino, contaOrigem);
     }
 
     private void validarInput(LancamentoInput input){
         this.validarTipoPagamento(input);
         this.validarCategoriaLancamento(input);
         this.validarTipoLancamento(input);
+    }
+
+    private void validarConta(LancamentoInput input, Conta contaDestino, Conta contaOrigem) {
+        if(input.getTipoLancamento().equals(TipoLancamentoEnum.TRANSFERENCIA)){
+            if(contaDestino == null || contaOrigem == null)
+                throw new BusinessException(LancamentoExceptionMessages.contasInvalidasTransferencia());
+        }
     }
 
     private void validarTipoPagamento(LancamentoInput input){
@@ -62,29 +70,6 @@ public class LancamentoValidator {
     private void validarCategoriaLancamento(LancamentoInput input){
         if(input.getCategoriaLancamento() == null)
             throw new BusinessException(CommonExceptionMessages.campoObrigatorio("Categoria lançamento"));
-
-        this.validarLancamentoEconomia(input);
-        this.validarLancamentoInvestimento(input);
-    }
-
-    private void validarLancamentoEconomia(LancamentoInput input){
-        if(input.getCategoriaLancamento().equals(CategoriaLancamentoEnum.ECONOMIA)){
-            Conta conta = contaGetter.byId(input.getContaId());
-
-            if(!conta.getTipoConta().equals(TipoConta.ECONOMIA)){
-                throw new BusinessException(LancamentoExceptionMessages.contaIncorreta("economia", "Economias"));
-            }
-        }
-    }
-
-    private void validarLancamentoInvestimento(LancamentoInput input){
-        if(input.getCategoriaLancamento().equals(CategoriaLancamentoEnum.INVESTIMENTO)){
-            Conta conta = contaGetter.byId(input.getContaId());
-
-            if(!conta.getTipoConta().equals(TipoConta.INVESTIMENTO)){
-                throw new BusinessException(LancamentoExceptionMessages.contaIncorreta("investimento", "Investimentos"));
-            }
-        }
     }
 
     private void validarTipoLancamento(LancamentoInput input){
