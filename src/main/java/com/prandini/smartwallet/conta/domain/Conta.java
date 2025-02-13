@@ -5,16 +5,14 @@ package com.prandini.smartwallet.conta.domain;
  * created 4/5/24
  */
 
-import com.prandini.smartwallet.conta.model.TipoConta;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,10 +22,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "CONTA")
@@ -81,11 +76,14 @@ public class Conta {
     }
 
     public void addEntrada(BigDecimal valor) {
-        this.contaAtivos.setSaldo(this.contaAtivos.getSaldo().add(valor));
+        this.contaAtivos.addEntrada(this.contaAtivos.getSaldo().add(valor));
     }
 
-    public void addSaida(BigDecimal valor) {
-        this.contaPassivos.setSaldo(this.contaPassivos.getSaldo().add(valor));
+    public void addSaida(BigDecimal valor, TipoPagamentoEnum pagamento) {
+        if(pagamento.isDebito())
+            this.contaPassivos.addEntrada(valor);
+        else
+            this.contaAtivos.addSaida(valor);
     }
 
     public void removeEntrada(BigDecimal valorBruto) {

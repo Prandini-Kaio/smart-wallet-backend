@@ -14,4 +14,12 @@ public enum TipoPagamentoEnum {
     public String getDescricao() {
         return descricao;
     }
+
+    public boolean isDebito() {
+        return this.equals(DEBITO);
+    }
+
+    public boolean isCredito() {
+        return this.equals(CREDITO);
+    }
 }

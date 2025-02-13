@@ -49,4 +49,12 @@ public class ContaBancaria {
     @Enumerated(EnumType.STRING)
     private TipoConta tipoConta;
 
+    public void addSaida(BigDecimal valor) {
+        this.saldo = this.saldo.subtract(valor);
+    }
+
+    public void addEntrada(BigDecimal valor) {
+        this.saldo = this.saldo.add(valor);
+    }
+
 }

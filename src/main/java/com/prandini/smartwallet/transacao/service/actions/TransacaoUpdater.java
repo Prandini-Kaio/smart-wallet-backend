@@ -61,6 +61,7 @@ public class TransacaoUpdater {
         transacao.setStatus(StatusTransacaoEnum.PAGO);
         transacao.setDtPagamento(LocalDateTime.now());
 
+
         if(transacao.getProxima() == null)
             lancamentoUpdater.quitarLancamento(transacao.getLancamento().getId());
 

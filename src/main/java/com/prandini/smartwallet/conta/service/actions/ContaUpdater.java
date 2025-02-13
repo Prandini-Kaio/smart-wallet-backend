@@ -6,10 +6,8 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
-import com.prandini.smartwallet.conta.domain.ContaBancaria;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoDeleteEvent;
 import com.prandini.smartwallet.lancamento.model.events.LancamentoEvent;
@@ -18,7 +16,6 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
