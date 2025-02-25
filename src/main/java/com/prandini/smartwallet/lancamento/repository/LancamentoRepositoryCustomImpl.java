@@ -1,5 +1,6 @@
 package com.prandini.smartwallet.lancamento.repository;
 
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import jakarta.persistence.EntityManager;
@@ -47,6 +48,7 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
         safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
 
         safeAddParams(params, "pagamento", filter.getPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
+        safeAddParams(params, "categoria", CategoriaLancamentoEnum.PAGAMENTO, sb, " AND l.categoriaLancamento NOT IN :categoria ");
 
         if (filter.getDtInicio() != null && filter.getDtFim() != null) {
             sb.append(" AND EXISTS (")
@@ -59,7 +61,7 @@ public class LancamentoRepositoryCustomImpl implements LancamentoRepositoryCusto
         }
 
         if(filter.getCategorias() != null && !filter.getCategorias().isEmpty()){
-            safeAddParams(params, "categoria", filter.getCategorias(), sb, " AND l.categoriaLancamento IN :categoria ");
+            safeAddParams(params, "categoria", filter.getCategorias(), sb, " AND l.categoriaLancamento NOT IN :categoria ");
         }
 
         if(filter.getStatus() != null && !filter.getStatus().isEmpty()){

@@ -45,6 +45,10 @@ public class TransacaoGetter {
         return this.repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Transação"));
     }
 
+    public List<Transacao> byIdsIn(List<Long> ids){
+        return this.repository.findByIdsIn(ids);
+    }
+
     public List<Transacao> byFilter(TransacaoFilter filter){
         log.info(String.format("Consultando transações por filtro %s.", filter));
 

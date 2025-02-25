@@ -28,7 +28,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, L
 
 
     @Query(" DELETE FROM Lancamento l " +
-            " WHERE l.contaOrigem.id = :id ")
+            " WHERE l.contaDestino.id = :id ")
     @Modifying
     void deleteByConta(Long id);
 }

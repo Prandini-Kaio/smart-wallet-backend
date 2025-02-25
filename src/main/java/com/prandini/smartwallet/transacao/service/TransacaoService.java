@@ -1,12 +1,14 @@
 package com.prandini.smartwallet.transacao.service;
 
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
+import com.prandini.smartwallet.transacao.model.TransacaoPagamentoInput;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoUpdater;
 import jakarta.annotation.Resource;
@@ -14,6 +16,8 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -36,10 +40,21 @@ public class TransacaoService {
     private TransacaoUpdater updater;
 
 
-    public TransacaoOutput pagarTransacao(Long id) {
-        log.info(String.format("Iniciando pagamento da transação %s.", id));
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<TransacaoOutput> pagarTransacao(TransacaoPagamentoInput input) {
+        log.info(String.format("Iniciando pagamento da transação %s.", input.getIds()));
 
-        return TransacaoConverter.toOutput(updater.pagar(id));
+        return this.updater.pagar(input).stream().map(TransacaoConverter::toOutput).collect(Collectors.toList());
+    }
+
+    public List<TransacaoOutput> pagarTransacoes(TransacaoFilter filter, Long contaDestinoId) {
+        log.info("Iniciando pagamento de transações a partir de um filtro");
+        List<Transacao> transacoes = getter.byFilter(filter)
+                .stream().sorted(Comparator.comparing(Transacao::getDtVencimento)).toList();
+
+        List<Long> ids = transacoes.stream().map(Transacao::getId).toList();
+
+        return this.updater.pagar(new TransacaoPagamentoInput(ids, contaDestinoId)).stream().map(TransacaoConverter::toOutput).collect(Collectors.toList());
     }
 
     public TransacaoOutput update(Transacao transacao) {
@@ -85,12 +100,5 @@ public class TransacaoService {
                 }
             }
         });
-    }
-
-    public List<TransacaoOutput> pagarTransacoes(TransacaoFilter filter) {
-        log.info("Iniciando pagamento de transações a partir de um filtro");
-        List<Transacao> transacoes = getter.byFilter(filter)
-                .stream().sorted(Comparator.comparing(Transacao::getDtVencimento)).toList();
-        return this.updater.pagarTodos(transacoes).stream().map(TransacaoConverter::toOutput).collect(Collectors.toList());
     }
 }

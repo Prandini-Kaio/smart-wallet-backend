@@ -35,7 +35,9 @@ public enum CategoriaLancamentoEnum {
 
     ASSINATURA(12, "Assinatura", "draw-pen"),
 
-    OUTROS(13, "Outros", "cube");
+    OUTROS(13, "Outros", "cube"),
+
+    PAGAMENTO(14, "Pagamento", "cube");
 
     public final Integer id;
 

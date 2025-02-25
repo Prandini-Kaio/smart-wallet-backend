@@ -17,6 +17,8 @@ import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /*
  * @author prandini
  * created 4/26/24
@@ -89,10 +91,12 @@ public class LancamentoValidator {
     }
 
     public void validaDelete(Long id) {
-        Lancamento lancamento = getter.byId(id);
+        List<Lancamento> lancamentos = getter.getByConta(id);
 
-        if(!lancamento.canDelete()){
-            throw new BusinessException(LancamentoExceptionMessages.naoPossibelDeletar());
+        for (Lancamento lancamento : lancamentos) {
+            if (!lancamento.canDelete()) {
+                throw new BusinessException(LancamentoExceptionMessages.naoPossibelDeletar());
+            }
         }
     }
 }

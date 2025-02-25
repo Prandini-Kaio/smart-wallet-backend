@@ -2,9 +2,11 @@ package com.prandini.smartwallet.lancamento.service.actions;
 
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
+import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
+import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.service.actions.TransacaoCreator;
@@ -12,6 +14,7 @@ import com.prandini.smartwallet.transacao.service.actions.TransacaoDeleter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

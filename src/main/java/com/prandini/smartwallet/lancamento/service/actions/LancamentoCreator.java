@@ -3,8 +3,11 @@ package com.prandini.smartwallet.lancamento.service.actions;
 import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaFilter;
 import com.prandini.smartwallet.conta.service.actions.ContaGetter;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.events.LancamentoEvent;
 import com.prandini.smartwallet.lancamento.repository.LancamentoRepository;
@@ -15,6 +18,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -89,5 +93,29 @@ public class LancamentoCreator {
         lancamento.setTransacoes(transacoes);
 
         return lancamento;
+    }
+
+    public Lancamento gerarPagamento(BigDecimal valorPagamento, String contas, Conta contaDestino)  {
+        log.info("Gerando lançamento de pagamento.");
+
+        LancamentoInput input = LancamentoInput.builder()
+                .tipoLancamento(TipoLancamentoEnum.SAIDA)
+                .categoriaLancamento(CategoriaLancamentoEnum.PAGAMENTO)
+                .tipoPagamento(TipoPagamentoEnum.DEBITO)
+                .status(StatusLancamento.QUITADO)
+                .valor(valorPagamento)
+                .dtCriacao(LocalDateTime.now())
+                .dtCriacao(LocalDateTime.now())
+                .parcelas(1)
+                .contaDestinoId(contaDestino.getId())
+                .descricao(String.format("Pgto. %s para %s",valorPagamento, contas))
+                .build();
+
+        Lancamento lancamento = buildLancamento(input, contaDestino, null);
+        List<Transacao> transacoes = transacaoCreator.create(lancamento);
+        transacoes.forEach(transacao -> transacao.setLancamento(lancamento));
+        lancamento.setTransacoes(transacoes);
+
+        return this.repository.save(lancamento);
     }
 }

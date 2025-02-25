@@ -9,8 +9,10 @@ import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoDeleteEvent;
 import com.prandini.smartwallet.lancamento.model.events.LancamentoEvent;
+import com.prandini.smartwallet.transacao.model.TransacaoPagamentoEvent;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.context.event.EventListener;
@@ -60,12 +62,12 @@ public class ContaUpdater {
             contaDestino.addEntrada(event.getLancamento().getValorBruto());
 
         if(event.getLancamento().getTipoLancamento().equals(TipoLancamentoEnum.SAIDA)){
-            contaDestino.addSaida(event.getLancamento().getValorBruto());
+            contaDestino.addSaida(event.getLancamento().getValorBruto(), event.getLancamento().getTipoPagamento());
         }
 
         if(contaOrigem != null && event.getLancamento().getTipoLancamento().equals(TipoLancamentoEnum.TRANSFERENCIA)){
-            contaOrigem.setSaldoDisponivel(contaOrigem.getSaldoDisponivel().subtract(event.getLancamento().getValorBruto()));
-            contaDestino.setSaldoDisponivel(contaDestino.getSaldoDisponivel().add(event.getLancamento().getValorBruto()));
+            contaOrigem.addSaida(event.getLancamento().getValorBruto(), TipoPagamentoEnum.DEBITO);
+            contaDestino.addEntrada(event.getLancamento().getValorBruto());
         }
 
         List<Conta> contas = new ArrayList<>();
@@ -99,5 +101,16 @@ public class ContaUpdater {
     private void safeAdd(List<Conta> list, Conta conta){
         if(conta != null)
             list.add(conta);
+    }
+
+    @EventListener
+    public void onPayTransacao(TransacaoPagamentoEvent event){
+        log.info("Evento de pagamento de transações recebido.");
+
+        Conta conta = getter.byId(event.getConta().getId());
+
+        conta.addSaida(event.getValor(), TipoPagamentoEnum.DEBITO);
+
+        this.repository.save(conta);
     }
 }

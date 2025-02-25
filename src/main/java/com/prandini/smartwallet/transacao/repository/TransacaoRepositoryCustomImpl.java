@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.transacao.repository;
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.transacao.domain.Transacao;
@@ -95,6 +96,7 @@ public class TransacaoRepositoryCustomImpl implements TransacaoRepositoryCustom{
         safeAddParams(params, "idLancamento", filter.getIdLancamento(), sb, " AND l.id = :idLancamento ");
         safeAddParams(params, "tipo", filter.getTipo(), sb, " AND l.tipoLancamento = :tipo ");
         safeAddParams(params, "pagamento", filter.getPagamento(), sb, " AND l.tipoPagamento = :pagamento ");
+        safeAddParams(params, "categoria", CategoriaLancamentoEnum.PAGAMENTO, sb, " AND l.categoriaLancamento NOT IN :categoria ");
         safeAddParams(params, "dtInicio", filter.getDtInicio(), sb, " AND t.dtVencimento >= :dtInicio ");
         safeAddParams(params, "dtFim", filter.getDtFim(), sb, " AND t.dtVencimento <= :dtFim ");
 

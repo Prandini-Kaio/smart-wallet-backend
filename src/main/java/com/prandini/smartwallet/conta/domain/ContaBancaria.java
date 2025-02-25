@@ -57,4 +57,12 @@ public class ContaBancaria {
         this.saldo = this.saldo.add(valor);
     }
 
+    @Override
+    public String toString() {
+        return "ContaBancaria{" +
+                "id=" + id +
+                ", saldo=" + saldo +
+                ", tipoConta=" + tipoConta +
+                '}';
+    }
 }

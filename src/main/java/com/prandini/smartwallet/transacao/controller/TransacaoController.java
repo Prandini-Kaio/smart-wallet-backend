@@ -4,6 +4,7 @@ import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import com.prandini.smartwallet.transacao.model.TransacaoFilter;
+import com.prandini.smartwallet.transacao.model.TransacaoPagamentoInput;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
 import com.prandini.smartwallet.transacao.service.TransacaoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,14 +56,14 @@ public class TransacaoController {
 
     @PutMapping("/pagar")
     @Operation(description = "Paga uma transação em aberto.")
-    public ResponseEntity<TransacaoOutput> pagarTransacao(@RequestParam Long id){
-        return ResponseEntity.ok().body(this.service.pagarTransacao(id));
+    public ResponseEntity<List<TransacaoOutput>> pagar(TransacaoPagamentoInput input){
+        return ResponseEntity.ok().body(this.service.pagarTransacao(input));
     }
 
     @PutMapping("/pagar-todos")
     @Operation(description = "Paga uma transação em aberto.")
-    public ResponseEntity<List<TransacaoOutput>> pagarTodosTransacao(TransacaoFilter filter){
-        return ResponseEntity.ok().body(this.service.pagarTransacoes(filter));
+    public ResponseEntity<List<TransacaoOutput>> pagarTodosTransacao(TransacaoFilter filter, Long contaDestinoId){
+        return ResponseEntity.ok().body(this.service.pagarTransacoes(filter, contaDestinoId));
     }
 
 

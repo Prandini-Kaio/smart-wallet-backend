@@ -5,14 +5,17 @@ package com.prandini.smartwallet.lancamento.service;
  * created 4/16/24
  */
 
-import com.prandini.smartwallet.common.model.ResumoFinanceiroOutput;
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
-import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoDeleter;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
@@ -27,6 +30,8 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -57,7 +62,6 @@ public class LancamentoService {
     @Transactional
     public LancamentoOutput criarLancamento(LancamentoInput input) {
         log.info("Iniciando criação de lancamento.");
-
         return converter.toOutput(creator.create(input));
     }
 
@@ -115,5 +119,10 @@ public class LancamentoService {
 
     public LancamentoOutput createMock(LancamentoInput input) {
         return converter.toOutput(this.creator.fromInput(input));
+    }
+
+    @Transactional
+    public LancamentoOutput gerarPagamento(BigDecimal valorPagamento, String contas, Conta contaDestino) {
+        return this.converter.toOutput(this.creator.gerarPagamento(valorPagamento, contas, contaDestino));
     }
 }

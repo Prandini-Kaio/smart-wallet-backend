@@ -81,9 +81,9 @@ public class Conta {
 
     public void addSaida(BigDecimal valor, TipoPagamentoEnum pagamento) {
         if(pagamento.isDebito())
-            this.contaPassivos.addEntrada(valor);
-        else
             this.contaAtivos.addSaida(valor);
+        else
+            this.contaPassivos.addEntrada(valor);
     }
 
     public void removeEntrada(BigDecimal valorBruto) {
