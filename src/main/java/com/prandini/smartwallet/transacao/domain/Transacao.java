@@ -59,8 +59,6 @@ public class Transacao {
 
     private String categoria;
 
-    private String formaPagamento;
-
     private String observacao;
 
     private Integer numeroParcelas;

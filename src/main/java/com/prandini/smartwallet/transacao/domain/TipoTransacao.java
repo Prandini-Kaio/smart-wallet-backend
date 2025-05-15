@@ -6,5 +6,6 @@ package com.prandini.smartwallet.transacao.domain;
  */
 public enum TipoTransacao {
     CREDITO,
-    DEBITO
+    DEBITO,
+    PIX
 }

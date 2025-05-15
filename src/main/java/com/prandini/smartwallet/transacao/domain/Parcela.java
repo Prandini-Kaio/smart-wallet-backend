@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.transacao.domain;
 
 import com.prandini.smartwallet.cartao.domain.Cartao;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

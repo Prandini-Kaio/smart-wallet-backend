@@ -27,12 +27,13 @@ public class TransacaoConverter {
     public TransacaoOutput toOutput(Transacao transacao){
 
         return TransacaoOutput.builder()
+                .usuarioId(transacao.getUsuario().getId())
+                .tipoTransacao(transacao.getTipo())
                 .categoria(transacao.getCategoria())
                 .data(transacao.getData() != null ? transacao.getData().toString() : "")
-                .formaPagamento(transacao.getFormaPagamento())
                 .valor(transacao.getValor().toString())
                 .observacao(transacao.getObservacao())
-                .parcelas(transacao.getParcelas().stream().map(parcelaConverter::toOutput).collect(Collectors.toList()))
+                .parcelas(transacao.getParcelas() != null ? transacao.getParcelas().stream().map(parcelaConverter::toOutput).collect(Collectors.toList()) : null)
                 .numeroParcelas(transacao.getNumeroParcelas())
                 .build();
     }

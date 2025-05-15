@@ -46,7 +46,6 @@ public class TransacaoCreator {
                 .categoria(input.getCategoria())
                 .tipo(input.getTipoTransacao())
                 .descricao(input.getDescricao())
-                .formaPagamento(input.getFormaPagamento())
                 .observacao(input.getObservacao())
                 .build();
 
