@@ -1,21 +1,13 @@
 package com.prandini.smartwallet.transacao.controller;
 
-import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
-import com.prandini.smartwallet.transacao.converter.TransacaoConverter;
-import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
-import com.prandini.smartwallet.transacao.model.TransacaoFilter;
-import com.prandini.smartwallet.transacao.model.TransacaoPagamentoInput;
-import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
+import com.prandini.smartwallet.transacao.model.TransacaoInput;
+import com.prandini.smartwallet.transacao.model.TransacaoOutput;
 import com.prandini.smartwallet.transacao.service.TransacaoService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /*
@@ -30,41 +22,13 @@ public class TransacaoController {
     @Resource
     private TransacaoService service;
 
-    @Resource
-    private TransacaoRepository repository;
-
     @GetMapping
-    public ResponseEntity<List<TransacaoOutput>> findByFilter(
-            TransacaoFilter filter
-    ){
-        return ResponseEntity.ok().body(this.service.findByFilter(filter));
+    public ResponseEntity<List<TransacaoOutput>> getAll(){
+        return ResponseEntity.ok().body(service.findAll());
     }
 
-    @GetMapping("/all")
-    @Operation(description = "Retorna todas as transações.")
-    public ResponseEntity<Page<TransacaoOutput>> searchAll(Pageable pageable){
-        return ResponseEntity.ok().body(
-                repository.findAll(pageable).map(TransacaoConverter::toOutput)
-        );
+    @PostMapping
+    public ResponseEntity<TransacaoOutput> create(@RequestBody TransacaoInput input) {
+        return ResponseEntity.ok().body(service.createWithTransactional(input));
     }
-
-    @GetMapping("/totalizador")
-    @Operation
-    public ResponseEntity<TotalizadorFinanceiro> searchTotalizador(TransacaoFilter filter){
-        return ResponseEntity.ok().body(this.service.findTotalizadorByFilter(filter));
-    }
-
-    @PutMapping("/pagar")
-    @Operation(description = "Paga uma transação em aberto.")
-    public ResponseEntity<List<TransacaoOutput>> pagar(TransacaoPagamentoInput input){
-        return ResponseEntity.ok().body(this.service.pagarTransacao(input));
-    }
-
-    @PutMapping("/pagar-todos")
-    @Operation(description = "Paga uma transação em aberto.")
-    public ResponseEntity<List<TransacaoOutput>> pagarTodosTransacao(TransacaoFilter filter, Long contaDestinoId){
-        return ResponseEntity.ok().body(this.service.pagarTransacoes(filter, contaDestinoId));
-    }
-
-
 }

@@ -1,26 +1,21 @@
 package com.prandini.smartwallet.transacao.service.actions;
 
-import com.prandini.smartwallet.common.utils.DateUtils;
-import com.prandini.smartwallet.conta.domain.Conta;
-import com.prandini.smartwallet.conta.service.actions.ContaGetter;
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
-import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
-import com.prandini.smartwallet.lancamento.model.LancamentoInput;
-import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
+import com.prandini.smartwallet.cartao.domain.Cartao;
+import com.prandini.smartwallet.cartao.service.actions.CartaoGetter;
+import com.prandini.smartwallet.transacao.domain.Parcela;
 import com.prandini.smartwallet.transacao.domain.Transacao;
+import com.prandini.smartwallet.transacao.model.TransacaoInput;
+import com.prandini.smartwallet.transacao.repository.ParcelaRepository;
 import com.prandini.smartwallet.transacao.repository.TransacaoRepository;
+import com.prandini.smartwallet.usuario.domain.Usuario;
+import com.prandini.smartwallet.usuario.service.actions.UsuarioGetter;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.time.LocalDate;
 
 @Component
 @CommonsLog
@@ -30,102 +25,79 @@ public class TransacaoCreator {
     private TransacaoRepository repository;
 
     @Resource
-    private ContaGetter contaGetter;
+    private CartaoGetter cartaoGetter;
 
-    public List<Transacao> fromInput(LancamentoInput input) {
-        List<BigDecimal> valorParcelas = calcularParcelas(input.getValor(), input.getParcelas());
+    @Resource
+    private UsuarioGetter usuarioGetter;
 
-        Conta conta = contaGetter.byId(input.getContaDestinoId());
-        List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
-                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaFechamento(), i))
-                .toList();
+    @Resource
+    private ParcelaRepository parcelaRepository;
 
-        return this.repository.saveAll(transacoes);
-    }
+    public Transacao fromInput(TransacaoInput input){
+        Usuario usuario = usuarioGetter.byId(input.getUsuarioId());
+        Cartao cartao = cartaoGetter.byId(input.getCartaoId());
 
-    public List<Transacao> fromInputMock(LancamentoInput input) {
-        List<BigDecimal> valorParcelas = calcularParcelas(input.getValor(), input.getParcelas());
-
-        Conta conta = contaGetter.byId(input.getContaDestinoId());
-        List<Transacao> transacoes = IntStream.range(0, input.getParcelas())
-                .mapToObj(i -> buildTransacao(input, valorParcelas.get(i), conta.getDiaFechamento(), i))
-                .toList();
-
-        return transacoes;
-    }
-
-    public List<Transacao> create(Lancamento lancamento) {
-        log.info(String.format("Gerando %s transações do lançamento %s a partir da data %s.",
-                lancamento.getParcelas(), lancamento.getId(), DateUtils.toBrazilianDateTimeString(lancamento.getDtCriacao())));
-
-        List<BigDecimal> parcelas = calcularParcelas(lancamento.getValorBruto(), lancamento.getParcelas());
-
-        List<Transacao> transacoes = gerarTransacoes(lancamento, parcelas);
-
-        ajustarTransacoesEncadeadas(transacoes);
-
-        return transacoes;
-    }
-
-    private List<Transacao> gerarTransacoes(Lancamento lancamento, List<BigDecimal> parcelas) {
-        return IntStream.range(0, lancamento.getParcelas())
-                .mapToObj(i -> buildTransacao(lancamento, parcelas.get(i), lancamento.getContaDestino().getDiaFechamento(), i))
-                .collect(Collectors.toList());
-    }
-
-    private void ajustarTransacoesEncadeadas(List<Transacao> transacoes) {
-        IntStream.range(0, transacoes.size() - 1)
-                .forEach(i -> transacoes.get(i).setProxima(transacoes.get(i + 1)));
-        if (!transacoes.isEmpty()) {
-            transacoes.get(transacoes.size() - 1).setProxima(null);
-        }
-    }
-
-    private Transacao buildTransacao(LancamentoInput input, BigDecimal valorParcela, int diaVencimento, int indice) {
-        return this.buildTransacao(input.getTipoLancamento(), input.getTipoPagamento(), input.getParcelas(), diaVencimento, input.getDtCriacao(), valorParcela, indice);
-    }
-
-    private Transacao buildTransacao(Lancamento lancamento, BigDecimal valorParcela, int diaVencimento, int indice) {
-        return this.buildTransacao(lancamento.getTipoLancamento(), lancamento.getTipoPagamento(), lancamento.getParcelas(), diaVencimento, lancamento.getDtCriacao(), valorParcela, indice);
-    }
-
-    private Transacao buildTransacao(TipoLancamentoEnum tipo, TipoPagamentoEnum tipoPagamento, int parcelas, int diaVencimento, LocalDateTime dtCriacao, BigDecimal valorParcela, int indice) {
-        boolean isEntrada = tipo.equals(TipoLancamentoEnum.ENTRADA);
-        boolean isDebito = tipoPagamento.equals(TipoPagamentoEnum.DEBITO);
-
-        return Transacao.builder()
-                .valor(valorParcela)
-                .status(isEntrada ? StatusTransacaoEnum.PAGO : StatusTransacaoEnum.PENDENTE)
-                .descricao(String.format(" [%d / %d]", indice + 1, parcelas))
-                .dtVencimento(isDebito ? dtCriacao : calcularDataVencimento(diaVencimento, dtCriacao, indice + 1))
-                .dtPagamento(isEntrada ? LocalDateTime.now() : null)
+        Transacao transacao = Transacao.builder()
+                .usuario(usuario)
+                .cartao(cartao)
+                .valor(input.getValor())
+                .data(input.getData())
+                .numeroParcelas(input.getNumeroParcelas())
+                .categoria(input.getCategoria())
+                .tipo(input.getTipoTransacao())
+                .descricao(input.getDescricao())
+                .formaPagamento(input.getFormaPagamento())
+                .observacao(input.getObservacao())
                 .build();
-    }
 
-    private List<BigDecimal> calcularParcelas(BigDecimal total, int numParcelas) {
-        BigDecimal valorParcela = total.divide(BigDecimal.valueOf(numParcelas), 2, RoundingMode.DOWN);
-        List<BigDecimal> parcelas = new ArrayList<>(numParcelas);
+        this.repository.save(transacao);
 
-        IntStream.range(0, numParcelas).forEach(i -> parcelas.add(valorParcela));
-
-        BigDecimal somaParcelas = valorParcela.multiply(BigDecimal.valueOf(numParcelas - 1));
-        BigDecimal ultimaParcela = total.subtract(somaParcelas);
-
-        parcelas.set(numParcelas - 1, ultimaParcela);  // Corrige a última parcela
-
-        return parcelas;
-    }
-
-    private LocalDateTime calcularDataVencimento(int diaFechamento, LocalDateTime dtCriacao, int indiceParcela) {
-        LocalDateTime baseDate = LocalDateTime.of(dtCriacao.getYear(), dtCriacao.getMonth(), diaFechamento, 0, 0, 0);
-
-        if (dtCriacao.getDayOfMonth() > diaFechamento) {
-            baseDate = baseDate.plusMonths(1);
+        if(input.getNumeroParcelas() == null || input.getNumeroParcelas() > 1){
+            gerarParcelas(transacao);
         }
 
-        baseDate = baseDate.plusMonths(indiceParcela - 1);
+        return transacao;
+    }
 
-        return baseDate;
+    private void gerarParcelas(Transacao transacao){
+        BigDecimal valorParcela = transacao.getValor().divide(
+                BigDecimal.valueOf(transacao.getNumeroParcelas()), 2, RoundingMode.HALF_UP
+        );
+
+        LocalDate dataBase = transacao.getData();
+        Cartao cartao = transacao.getCartao();
+
+        for(int i = 0; i < transacao.getNumeroParcelas(); i++){
+            LocalDate vencimento;
+
+            if(cartao != null) {
+                vencimento = calcularVencimentoComCartao(dataBase.plusMonths(i), cartao);
+            }else {
+                vencimento = dataBase.plusMonths(i);
+            }
+
+            Parcela parcela = Parcela.builder()
+                    .numero(i + 1)
+                    .valor(valorParcela)
+                    .dataVencimento(vencimento)
+                    .transacao(transacao)
+                    .cartao(cartao)
+                    .build();
+
+            parcelaRepository.save(parcela);
+        }
+    }
+
+    private LocalDate calcularVencimentoComCartao(LocalDate dataCompra, Cartao cartao){
+        LocalDate fechamento = cartao.getDataFechamento();
+        LocalDate vencimento = cartao.getDataVencimento();
+
+        if(dataCompra.getDayOfMonth() <= fechamento.getDayOfMonth()){
+            return vencimento.withMonth(dataCompra.getMonthValue()).withYear(dataCompra.getYear());
+        }else {
+            LocalDate proximoMes = fechamento.plusMonths(1);
+            return vencimento.withMonth(proximoMes.getMonthValue()).withYear(proximoMes.getYear());
+        }
     }
 
 }

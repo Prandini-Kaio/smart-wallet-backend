@@ -1,17 +1,18 @@
 package com.prandini.smartwallet.transacao.domain;
 
-import com.prandini.smartwallet.lancamento.domain.Lancamento;
-import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
-import jakarta.persistence.CascadeType;
+import com.prandini.smartwallet.usuario.domain.Usuario;
+import com.prandini.smartwallet.cartao.domain.Cartao;
+import com.prandini.smartwallet.recorrencia.domain.Recorrencia;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,10 +20,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @author prandini
@@ -40,41 +42,37 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Transacao proxima;
-
-    @Column(name = "VALOR")
-    private BigDecimal valor;
-
-    @Column(name = "DATA_VENCIMENTO")
-    private LocalDateTime dtVencimento;
-
-    @Column(name = "DATA_PAGAMENTO")
-    private LocalDateTime dtPagamento;
-
-    @Enumerated
-    @Column(name = "STATUS")
-    private StatusTransacaoEnum status;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "LANCAMENTO_ID")
-    private Lancamento lancamento;
+    @ManyToOne
+    @JoinColumn(name = "COD_USUARIO")
+    private Usuario usuario;
 
     @Column(name = "DESCRICAO")
     private String descricao;
 
-    public boolean isProjetavel(){
-        if(status.equals(StatusTransacaoEnum.PAGO) || status.equals(StatusTransacaoEnum.CANCELADO))
-            return false;
+    @Enumerated(EnumType.STRING)
+    private TipoTransacao tipo;
 
-        return true;
-    }
+    @Column(name = "VALOR", precision = 10, scale = 2)
+    private BigDecimal valor;
 
-    public BigDecimal getValorComSinal(){
-        return this.lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? valor : valor.negate();
-    }
+    private LocalDate data;
 
-    public String getDescricaoCompleta() {
-        return this.lancamento.getDescricao() + " - " + this.descricao;
-    }
+    private String categoria;
+
+    private String formaPagamento;
+
+    private String observacao;
+
+    private Integer numeroParcelas;
+
+    @ManyToOne
+    @JoinColumn(name = "COD_CARTAO")
+    private Cartao cartao;
+
+    @OneToMany(mappedBy = "transacao", orphanRemoval = true)
+    private List<Parcela> parcelas = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "COD_RECORRENCIA")
+    private Recorrencia recorrencia;
 }

@@ -1,41 +1,39 @@
 package com.prandini.smartwallet.transacao.converter;
 
 
-
-import com.prandini.smartwallet.common.utils.DateUtils;
-import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
-import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
+import com.prandini.smartwallet.transacao.model.TransacaoOutput;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * @author prandini
  * created 4/16/24
  */
+
+@Component
 public class TransacaoConverter {
 
-    public static List<TransacaoOutput> toListOutputs(List<Transacao> transacoes){
-        return transacoes.stream().map(TransacaoConverter::toOutput).toList();
+    @Resource
+    private ParcelaConverter parcelaConverter;
+
+    public List<TransacaoOutput> toListOutputs(List<Transacao> transacoes){
+        return transacoes.stream().map(this::toOutput).toList();
     }
 
-    public static TransacaoOutput toOutput(Transacao transacao){
-
-        String dtVencimento = DateUtils.toBrazilianDateString(transacao.getDtVencimento().toLocalDate());
-        String dtPagamento = transacao.getDtPagamento() != null
-                ? DateUtils.toBrazilianDateString(transacao.getDtPagamento().toLocalDate())
-                : null;
+    public TransacaoOutput toOutput(Transacao transacao){
 
         return TransacaoOutput.builder()
-                .id(transacao.getId())
-                .status(transacao.getStatus())
-                .tipo(transacao.getLancamento().getTipoLancamento())
-                .tipoPagamento(transacao.getLancamento().getTipoPagamento())
-                .valor(transacao.getValor())
-                .dtVencimento(dtVencimento)
-                .dtPagamento(dtPagamento)
-                .descricao(transacao.getDescricao())
-                .descricaoLancamento(transacao.getLancamento().getDescricao())
+                .categoria(transacao.getCategoria())
+                .data(transacao.getData() != null ? transacao.getData().toString() : "")
+                .formaPagamento(transacao.getFormaPagamento())
+                .valor(transacao.getValor().toString())
+                .observacao(transacao.getObservacao())
+                .parcelas(transacao.getParcelas().stream().map(parcelaConverter::toOutput).collect(Collectors.toList()))
+                .numeroParcelas(transacao.getNumeroParcelas())
                 .build();
     }
 }

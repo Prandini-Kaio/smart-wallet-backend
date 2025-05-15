@@ -13,17 +13,4 @@ import org.springframework.stereotype.Component;
 @Component
 @CommonsLog
 public class TransacaoDeleter {
-
-    @Resource
-    private TransacaoRepository repository;
-
-    public void byLancamento(Long lancamentoID){
-        log.info(String.format("deletando todas as transações do lancamento com id %s.", lancamentoID));
-        this.repository.deleteProximaByLancamento(lancamentoID);
-        this.repository.deleteByLancamento(lancamentoID);
-    }
-
-    public void byConta(Long contaId) {
-        this.repository.deleteByConta(contaId);
-    }
 }
