@@ -6,6 +6,8 @@ import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author kaiooliveira
  * created 05/05/2025
@@ -19,5 +21,9 @@ public class CartaoGetter {
 
     public Cartao byId(Long id){
         return repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Cartão"));
+    }
+
+    public List<Cartao> byBancoId(Long bancoId) {
+        return this.repository.findAllByBancoId(bancoId);
     }
 }
