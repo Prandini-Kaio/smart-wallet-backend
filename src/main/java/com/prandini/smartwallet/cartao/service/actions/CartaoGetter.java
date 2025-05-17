@@ -19,11 +19,16 @@ public class CartaoGetter {
     @Resource
     private CartaoRepository repository;
 
+    // fixme: this method should be in the CartaoService class
     public Cartao byId(Long id){
         return repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Cartão"));
     }
 
     public List<Cartao> byBancoId(Long bancoId) {
         return this.repository.findAllByBancoId(bancoId);
+    }
+
+    public List<Cartao> byUsuarioId(Long id) {
+        return repository.findByUsuarioId(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Cartão"));
     }
 }

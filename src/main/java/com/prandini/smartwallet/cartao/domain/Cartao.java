@@ -2,6 +2,7 @@ package com.prandini.smartwallet.cartao.domain;
 
 import com.prandini.smartwallet.banco.domain.Banco;
 import com.prandini.smartwallet.usuario.domain.Usuario;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,10 +35,16 @@ public class Cartao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "NOME_CARTAO")
+    private String nome;
+
+    @Column(name = "DATA_VENCIMENTO")
     private LocalDate dataVencimento;
 
+    @Column(name = "DATA_FECHAMENTO")
     private LocalDate dataFechamento;
 
+    @Column(name = "ATIVO")
     private boolean ativo;
 
     @ManyToOne

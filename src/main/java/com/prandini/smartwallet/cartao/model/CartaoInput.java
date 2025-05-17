@@ -15,15 +15,18 @@ import java.time.LocalDate;
 @Data
 public class CartaoInput {
 
-    public Long bancoId;
+    private Long bancoId;
 
-    public Long usuarioId;
+    private Long usuarioId;
+
+    @NotNull(message = "O campo Nome é obrigatório.")
+    private String nome;
 
     @NotNull(message = "O campo Data Vencimento é obrigatório.")
-    public LocalDate dataVencimento;
+    private LocalDate dataVencimento;
 
     @NotNull(message = "O campo Data Fechamento é obrigatório.")
-    public LocalDate dataFechamento;
+    private LocalDate dataFechamento;
 
-    public boolean ativo = true;
+    private boolean ativo = true;
 }

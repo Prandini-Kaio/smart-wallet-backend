@@ -29,8 +29,8 @@ public class CartaoController {
     private CartaoService service;
 
     @GetMapping
-    public ResponseEntity<CartaoOutput> byId(@RequestParam Long id) {
-        return ResponseEntity.ok().body(service.byId(id));
+    public ResponseEntity<List<CartaoOutput>> byId(@RequestParam Long userId) {
+        return ResponseEntity.ok().body(service.byUsuarioId(userId));
     }
 
     @GetMapping("/banco")

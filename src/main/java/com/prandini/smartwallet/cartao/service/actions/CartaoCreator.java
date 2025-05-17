@@ -32,15 +32,16 @@ public class CartaoCreator {
     private UsuarioGetter usuarioGetter;
 
     public Cartao createFromInput(CartaoInput input) {
-        Banco banco = bancoGetter.byId(input.bancoId);
-        Usuario usuario = usuarioGetter.byId(input.usuarioId);
+        Banco banco = bancoGetter.byId(input.getBancoId());
+        Usuario usuario = usuarioGetter.byId(input.getUsuarioId());
 
         Cartao cartao = Cartao.builder()
                 .banco(banco)
                 .usuario(usuario)
-                .dataVencimento(input.dataVencimento)
-                .dataFechamento(input.dataFechamento)
-                .ativo(input.ativo)
+                .nome(input.getNome())
+                .dataVencimento(input.getDataVencimento())
+                .dataFechamento(input.getDataFechamento())
+                .ativo(input.isAtivo())
                 .build();
 
         return this.repository.save(cartao);

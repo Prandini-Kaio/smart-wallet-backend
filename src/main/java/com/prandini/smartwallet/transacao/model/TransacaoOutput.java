@@ -17,6 +17,8 @@ import java.util.List;
 @Data
 public class TransacaoOutput {
 
+    private Long id;
+
     private Long usuarioId;
 
     private TipoTransacao tipoTransacao;

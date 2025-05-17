@@ -9,6 +9,8 @@ import com.prandini.smartwallet.banco.service.actions.BancoGetter;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author kaiooliveira
  * created 15/05/2025
@@ -33,5 +35,9 @@ public class BancoService {
     public BancoOutput create(BancoInput input) {
         Banco banco = creator.createFromInput(input);
         return converter.toOutput(banco);
+    }
+
+    public List<BancoOutput> findAll() {
+        return this.getter.findAll().stream().map(converter::toOutput).toList();
     }
 }

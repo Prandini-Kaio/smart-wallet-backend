@@ -14,7 +14,10 @@ public class CartaoConverter {
 
     public CartaoOutput toCartaoOutput(Cartao cartao) {
         return CartaoOutput.builder()
+                .id(cartao.getId())
                 .bancoId(cartao.getBanco().getId())
+                .usuarioId(cartao.getUsuario().getId())
+                .nome(cartao.getNome())
                 .dataVencimento(cartao.getDataVencimento())
                 .dataFechamento(cartao.getDataFechamento())
                 .ativo(cartao.isAtivo())

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author kaiooliveira
  * created 15/05/2025
@@ -27,6 +29,11 @@ public class BancoController {
     private BancoService service;
 
     @GetMapping
+    public ResponseEntity<List<BancoOutput>> getAll() {
+        return ResponseEntity.ok().body(this.service.findAll());
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<BancoOutput> byId(@RequestParam Long id) {
         return ResponseEntity.ok().body(this.service.byId(id));
     }

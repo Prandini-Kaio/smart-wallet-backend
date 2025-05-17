@@ -36,9 +36,6 @@ public class TransacaoInput {
     @NotNull(message = "Campo categoria é obrigatório.")
     private String categoria;
 
-    @NotNull(message = "Campo forma de pagamento é obrigatório.")
-    private String formaPagamento;
-
     private String observacao;
 
     private Integer numeroParcelas = 1;

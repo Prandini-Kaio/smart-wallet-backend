@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author kaiooliveira
@@ -19,4 +20,10 @@ public interface CartaoRepository extends JpaRepository<Cartao, Long> {
             " JOIN c.banco b " +
             " WHERE b.id = :bancoId ")
     List<Cartao> findAllByBancoId(Long bancoId);
+
+
+    @Query(" SELECT c FROM Cartao c " +
+            " JOIN c.usuario u " +
+            " WHERE u.id = :id ")
+    Optional<List<Cartao>> findByUsuarioId(Long id);
 }

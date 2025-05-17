@@ -18,7 +18,11 @@ import java.time.LocalDate;
 @Builder
 public class CartaoOutput {
 
+    private Long id;
+
     private Long bancoId;
+
+    private String nome;
 
     private LocalDate dataVencimento;
 

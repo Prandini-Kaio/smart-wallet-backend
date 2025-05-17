@@ -34,6 +34,11 @@ public class CartaoService {
         return converter.toCartaoOutput(cartao);
     }
 
+    public List<CartaoOutput> byUsuarioId(Long userId){
+        List<Cartao> cartoes = getter.byUsuarioId(userId);
+        return cartoes.stream().map(converter::toCartaoOutput).collect(Collectors.toList());
+    }
+
     public List<CartaoOutput> byBancoId(Long bancoId) {
         return getter.byBancoId(bancoId).stream().map(converter::toCartaoOutput).collect(Collectors.toList());
     }
