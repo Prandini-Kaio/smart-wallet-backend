@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/lancamento/categoria")
@@ -21,6 +23,6 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity<List<CategoriaLancamentoEnum>> getAll(){
-        return ResponseEntity.ok().body(List.of(CategoriaLancamentoEnum.values()));
+        return ResponseEntity.ok().body(List.of(CategoriaLancamentoEnum.values()).stream().sorted(Comparator.comparing(CategoriaLancamentoEnum::getId)).collect(Collectors.toList()));
     }
 }

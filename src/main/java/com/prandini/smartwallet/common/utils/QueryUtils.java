@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class QueryUtils {
 
-    private static void safeAddParams(Map<String, Object> params, String name, Object value, StringBuilder sb, String queryPart){
+    public static void safeAddParams(Map<String, Object> params, String name, Object value, StringBuilder sb, String queryPart){
         if(value != null){
             params.put(name, value);
             sb.append(queryPart);

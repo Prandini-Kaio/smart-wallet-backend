@@ -6,14 +6,9 @@ package com.prandini.smartwallet.lancamento.domain;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
+import com.prandini.smartwallet.transacao.domain.Transacao;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +18,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "LANCAMENTO")
@@ -50,7 +46,7 @@ public class Lancamento {
     private StatusLancamento status;
 
     @Column(name = "VALOR")
-    private BigDecimal valor;
+    private BigDecimal valorBruto;
 
     @Column(name = "DATA_CRIACAO")
     private LocalDateTime dtCriacao;
@@ -61,10 +57,29 @@ public class Lancamento {
     @Column(name = "PARCELAS")
     private int parcelas;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lancamento")
+    private List<Transacao> transacoes;
+
     @ManyToOne
-    private Conta conta;
+    @JoinColumn(name = "CONTA_ORIGEM_ID")
+    private Conta contaOrigem;
+
+    @ManyToOne
+    @JoinColumn(name = "CONTA_DESTINO_ID")
+    private Conta contaDestino;
 
     @Column(name = "DESCRICAO")
     private String descricao;
 
+    public boolean isEntrada() {
+        return tipoLancamento == TipoLancamentoEnum.ENTRADA;
+    }
+
+    public boolean canDelete(){
+        return !transacoes.stream().anyMatch(transacao -> transacao.getStatus().equals(StatusTransacaoEnum.PAGO) && !getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA));
+    }
+
+    public BigDecimal getValorProjetado() {
+        return valorBruto;
+    }
 }

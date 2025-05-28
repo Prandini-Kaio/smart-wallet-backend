@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor
@@ -20,7 +21,9 @@ public class AssinaturaFilter {
 
     private Long id;
 
-    private String conta;
+    private List<Long> contaDestinoIds;
+
+    private List<Long> contaOrigemIds;
 
     private BigDecimal valor;
 
@@ -28,7 +31,5 @@ public class AssinaturaFilter {
 
     private LocalDate dtFim;
 
-    private boolean ativa;
-
-    private String descricao;
+    private Boolean ativa;
 }

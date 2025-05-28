@@ -1,0 +1,86 @@
+databaseChangeLog:
+- changeSet:
+    id: 1735454671221-1
+    author: prandini (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: dtFim
+            type: date
+        tableName: ASSINATURA
+- changeSet:
+    id: 1735454671221-2
+    author: prandini (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: dtInicio
+            type: date
+        tableName: ASSINATURA
+- changeSet:
+    id: 1735454671221-3
+    author: prandini (generated)
+    changes:
+    - dropColumn:
+        columnName: dt_fim
+        tableName: assinatura
+- changeSet:
+    id: 1735454671221-4
+    author: prandini (generated)
+    changes:
+    - dropColumn:
+        columnName: dt_inicio
+        tableName: assinatura
+- changeSet:
+    id: 1735454671221-5
+    author: prandini (generated)
+    changes:
+    - dropColumn:
+        columnName: valor_bruto
+        tableName: lancamento
+
+databaseChangeLog:
+- changeSet:
+    id: 1735866544398-1
+    author: prandini (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: dtFim
+            type: date
+        tableName: ASSINATURA
+- changeSet:
+    id: 1735866544398-2
+    author: prandini (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: dtInicio
+            type: date
+        tableName: ASSINATURA
+- changeSet:
+    id: 1735866544398-3
+    author: prandini (generated)
+    changes:
+    - dropColumn:
+        columnName: dt_fim
+        tableName: assinatura
+- changeSet:
+    id: 1735866544398-4
+    author: prandini (generated)
+    changes:
+    - dropColumn:
+        columnName: dt_inicio
+        tableName: assinatura
+- changeSet:
+    id: 1735866544398-5
+    author: prandini (generated)
+    changes:
+    - dropColumn:
+        columnName: valor_bruto
+        tableName: lancamento
+

@@ -1,4 +1,4 @@
-package com.prandini.smartwallet.common.rest;
+package com.prandini.smartwallet.common.rest.model;
 
 /*
  * @author prandini
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class ErrorResponseAPI {
+public class ErrorResponseOutput {
 
     private String message;
     private int code;

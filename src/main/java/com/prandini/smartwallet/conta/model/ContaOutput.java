@@ -20,9 +20,19 @@ public class ContaOutput {
 
     private String nome;
 
+    private BigDecimal saldoContaAtivos;
+
+    private BigDecimal saldoContaPassivos;
+
     private String dtVencimento;
+
+    private String dtFechamento;
 
     private TipoConta tipoConta;
 
-    private BigDecimal saldoParcial;
+    private BigDecimal saldoDisponivel;
+
+    private BigDecimal saldoPendente;
+
+    private String color;
 }

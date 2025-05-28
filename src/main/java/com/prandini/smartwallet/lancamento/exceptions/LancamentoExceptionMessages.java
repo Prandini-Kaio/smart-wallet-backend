@@ -13,6 +13,10 @@ public class LancamentoExceptionMessages {
 
     private static String CONTA_INCORRETA = "Lançamento de %s deve ser registrado apenas na conta de %s.";
 
+    private static String NAO_E_POSSIVEL_DELETAR = "Lançamento com parcelas pagas, não é possivel excluir.";
+
+    private static final String CONTAS_INVALIDAS_TRANSFERENCIA = "Para lançamentos de transferência, as contas de origem e destino devem ser válidas.";
+
     public static String entradaComParcelas(){
         return ENTRADA_COM_PARCELAS;
     }
@@ -27,5 +31,13 @@ public class LancamentoExceptionMessages {
 
     public static String contaIncorreta(String tipo, String conta) {
         return String.format(CONTA_INCORRETA, tipo, conta);
+    }
+
+    public static String naoPossibelDeletar(){
+        return NAO_E_POSSIVEL_DELETAR;
+    }
+
+    public static String contasInvalidasTransferencia() {
+        return CONTAS_INVALIDAS_TRANSFERENCIA;
     }
 }

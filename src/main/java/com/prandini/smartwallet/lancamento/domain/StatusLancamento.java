@@ -8,11 +8,19 @@ public enum StatusLancamento {
 
     EM_ABERTO("Em aberto"),
 
-    QUITADO("Quitado");
+    QUITADO("Quitado"),
+
+    VENCIDO("Vencido"),
+
+    CANCELADO("Cancelado");
 
     private final String descricao;
 
     StatusLancamento(String descricao){
         this.descricao = descricao;
+    }
+
+    public String getDescricao() {
+        return descricao;
     }
 }

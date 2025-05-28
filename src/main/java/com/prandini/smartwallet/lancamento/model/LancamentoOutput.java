@@ -4,32 +4,37 @@ package com.prandini.smartwallet.lancamento.model;
  * @author prandini
  * created 4/5/24
  */
+import com.prandini.smartwallet.conta.model.ContaOutput;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
+import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 @Getter
+@Data
 public class LancamentoOutput {
 
     private Long id;
 
-    private TipoLancamentoEnum tipoLancamento;
+    private String tipoLancamento;
 
-    private CategoriaLancamentoEnum categoriaLancamento;
+    private String categoriaLancamento;
 
-    private TipoPagamentoEnum tipoPagamento;
+    private String tipoPagamento;
 
     private BigDecimal valor;
 
-    private String conta;
+    private ContaOutput contaDestino;
 
-    private String banco;
+    private ContaOutput contaOrigem;
 
     private String dtCriacao;
 
@@ -37,7 +42,9 @@ public class LancamentoOutput {
 
     private String descricao;
 
-    private StatusLancamento status;
+    private List<TransacaoOutput> transacoes;
+
+    private String status;
 
     private String icone;
 

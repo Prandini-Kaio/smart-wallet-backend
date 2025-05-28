@@ -6,6 +6,10 @@ package com.prandini.smartwallet.assinatura.model;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
+import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Value;
@@ -19,18 +23,23 @@ public class AssinaturaInput {
 
     private Long id;
 
-    @NotNull
-    private String conta;
+    private Long contaDestinoId;
 
-    @NotNull
+    private Long contaOrigemId;
+
+    private CategoriaLancamentoEnum categoria;
+
+    private TipoLancamentoEnum tipo;
+
+    private TipoPagamentoEnum pagamento;
+
     private BigDecimal valor;
+
+    private String descricao;
 
     private LocalDate dtInicio;
 
     private LocalDate dtFim;
 
     private boolean ativa = true;
-
-    @NotNull
-    private String descricao;
 }

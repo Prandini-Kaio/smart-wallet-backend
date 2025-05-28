@@ -1,6 +1,7 @@
 package com.prandini.smartwallet.transacao.domain;
 
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -60,4 +62,19 @@ public class Transacao {
 
     @Column(name = "DESCRICAO")
     private String descricao;
+
+    public boolean isProjetavel(){
+        if(status.equals(StatusTransacaoEnum.PAGO) || status.equals(StatusTransacaoEnum.CANCELADO))
+            return false;
+
+        return true;
+    }
+
+    public BigDecimal getValorComSinal(){
+        return this.lancamento.getTipoLancamento().equals(TipoLancamentoEnum.ENTRADA) ? valor : valor.negate();
+    }
+
+    public String getDescricaoCompleta() {
+        return this.lancamento.getDescricao() + " - " + this.descricao;
+    }
 }

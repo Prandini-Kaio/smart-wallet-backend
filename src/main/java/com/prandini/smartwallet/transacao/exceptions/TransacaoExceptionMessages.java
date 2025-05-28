@@ -8,7 +8,7 @@ public class TransacaoExceptionMessages {
 
     private static String PAGAMENTO_INCORRETO = "Pagamento de transação cancelado não é permitido";
 
-    private static String PAGAMENTO_JA_EFETUADO = "A transação já foi paga.";
+    private static String PAGAMENTO_JA_EFETUADO = "A transação %s já foi paga.";
 
     private static String SEQUENCIA_INVALIDA = "hÁ Uma transação em aberto com vencimento anterior a esta.";
 
@@ -17,8 +17,8 @@ public class TransacaoExceptionMessages {
         return PAGAMENTO_INCORRETO;
     }
 
-    public static String pagamentoJaEfetuado(){
-        return PAGAMENTO_JA_EFETUADO;
+    public static String pagamentoJaEfetuado(String descricao){
+        return String.format(PAGAMENTO_JA_EFETUADO, descricao);
     }
 
     public static String sequenciaInvalida() {

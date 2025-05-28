@@ -3,6 +3,7 @@ package com.prandini.smartwallet.transacao.converter;
 
 
 import com.prandini.smartwallet.common.utils.DateUtils;
+import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
 import com.prandini.smartwallet.transacao.domain.Transacao;
 import com.prandini.smartwallet.transacao.domain.dto.TransacaoOutput;
 
@@ -28,10 +29,13 @@ public class TransacaoConverter {
         return TransacaoOutput.builder()
                 .id(transacao.getId())
                 .status(transacao.getStatus())
+                .tipo(transacao.getLancamento().getTipoLancamento())
+                .tipoPagamento(transacao.getLancamento().getTipoPagamento())
                 .valor(transacao.getValor())
                 .dtVencimento(dtVencimento)
                 .dtPagamento(dtPagamento)
                 .descricao(transacao.getDescricao())
+                .descricaoLancamento(transacao.getLancamento().getDescricao())
                 .build();
     }
 }

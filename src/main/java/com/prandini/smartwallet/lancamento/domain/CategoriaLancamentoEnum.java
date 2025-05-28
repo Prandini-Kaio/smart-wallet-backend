@@ -4,39 +4,49 @@ package com.prandini.smartwallet.lancamento.domain;
  * @author prandini
  * created 5/3/24
  */
+
+import lombok.Getter;
+
+@Getter
 public enum CategoriaLancamentoEnum {
 
-    MORADIA("Moradia", "home"), // GASTOS COM A CASA
+    ALIMENTACAO(1, "Alimentação", "food"),
 
-    ALIMENTACAO("Alimentação", "food"), // SUPERMERCADO...
+    MORADIA(2, "Moradia", "home"),
 
-    SAUDE("Saúde", "heart-multiple"), // REMEDIOS, CONSULTAS, ACADEMIA
+    LAZER(3, "Lazer", "beach"),
 
-    CARRO("Carro", "car"), // COMBUSTIVEL, MECANICA, CONSORCIO...
+    CACHORRO(4, "Cachorro", "dog-side"),
 
-    EDUCACAO("Educação", "school"), // FACULDADE, CURSOS...
+    CARRO(5, "Carro", "car"),
 
-    LAZER("Lazer", "beach"),
+    SAUDE(6, "Saúde", "heart-multiple"),
 
-    IMPOSTOS("Impostos", "knife"), // IPVA, INSS, IMPOSTO DE RENDA...
+    RENDA(7, "Renda", "cash"),
 
-    ECONOMIA("Economia", "piggy-bank"), // INVESTIMENTOS E POUPANCA
+    EDUCACAO(8, "Educação", "school"),
 
-    INVESTIMENTO("Investimento", "piggy-bank"), // INVESTIMENTOS E POUPANCA
+    IMPOSTOS(9, "Impostos", "knife"),
 
-    CACHORRO("Cachorro", "dog-side"),
+    INVESTIMENTO(10, "Investimento", "piggy-bank"),
 
-    OUTROS("Outros", "cube"),
+    ECONOMIA(11, "Economia", "piggy-bank"),
 
-    RENDA("Renda", "cash"),
 
-    ASSINATURA("Assinatura", "draw-pen");
+    ASSINATURA(12, "Assinatura", "draw-pen"),
+
+    OUTROS(13, "Outros", "cube"),
+
+    PAGAMENTO(14, "Pagamento", "cube");
+
+    public final Integer id;
 
     public final String nome;
 
     public String icone;
 
-    CategoriaLancamentoEnum(String nome, String icone){
+    CategoriaLancamentoEnum(Integer id, String nome, String icone){
+        this.id = id;
         this.nome = nome;
         this.icone = icone;
     }

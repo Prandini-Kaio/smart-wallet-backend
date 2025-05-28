@@ -8,11 +8,11 @@ package com.prandini.smartwallet.assinatura.service.actions;
 import com.prandini.smartwallet.assinatura.domain.Assinatura;
 import com.prandini.smartwallet.assinatura.model.AssinaturaFilter;
 import com.prandini.smartwallet.assinatura.repository.AssinaturaRepository;
+import com.prandini.smartwallet.common.exception.CommonExceptionSupplier;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
 public class AssinaturaGetter {
@@ -20,7 +20,11 @@ public class AssinaturaGetter {
     @Resource
     private AssinaturaRepository repository;
 
-    public List<Assinatura> streamByFilter(AssinaturaFilter filter){
-        return this.repository.streamByFilter(filter);
+    public Assinatura byId(Long id){
+        return this.repository.findById(id).orElseThrow(CommonExceptionSupplier.naoEncontrado("Assinatura", id.toString()));
+    }
+
+    public List<Assinatura> byFilter(AssinaturaFilter filter){
+        return this.repository.byFilter(filter);
     }
 }

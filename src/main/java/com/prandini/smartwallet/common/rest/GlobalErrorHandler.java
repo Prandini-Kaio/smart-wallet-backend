@@ -1,4 +1,4 @@
-package com.prandini.smartwallet.common.rest.controller;
+package com.prandini.smartwallet.common.rest;
 
 /*
  * @author prandini
@@ -6,7 +6,11 @@ package com.prandini.smartwallet.common.rest.controller;
  */
 
 import com.prandini.smartwallet.common.exception.BusinessException;
-import com.prandini.smartwallet.common.rest.ErrorResponseAPI;
+import com.prandini.smartwallet.common.rest.domain.ErrorLog;
+import com.prandini.smartwallet.common.rest.model.ErrorLogInput;
+import com.prandini.smartwallet.common.rest.model.ErrorResponseOutput;
+import com.prandini.smartwallet.common.rest.service.actions.ErrorLogCreator;
+import jakarta.annotation.Resource;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import lombok.extern.apachecommons.CommonsLog;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,25 +34,29 @@ import java.util.stream.Collectors;
 
 @CommonsLog
 @RestControllerAdvice
-public class ErrorHandlerController {
+public class GlobalErrorHandler {
+
     final String CAMPOS_INVALIDOS_MSG = "Campos inválidos.";
+
+    @Resource
+    private ErrorLogCreator creator;
 
     @ExceptionHandler({
             NoSuchElementException.class,
             EntityNotFoundException.class,
             EmptyResultDataAccessException.class
     })
-    public ResponseEntity<ErrorResponseAPI> handleOptionalNotFoundException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorResponseOutput> handleOptionalNotFoundException(Exception ex, WebRequest request) {
         return this.handleError(HttpStatus.NOT_FOUND, ex, request);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponseAPI> handleRuntimeException(DataIntegrityViolationException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponseOutput> handleRuntimeException(DataIntegrityViolationException ex, WebRequest request) {
         return this.handleError(HttpStatus.INTERNAL_SERVER_ERROR, ex, request);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponseAPI> handleRuntimeException(RuntimeException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponseOutput> handleRuntimeException(RuntimeException ex, WebRequest request) {
         return this.handleError(HttpStatus.INTERNAL_SERVER_ERROR, ex, request);
     }
 
@@ -55,31 +64,34 @@ public class ErrorHandlerController {
             BusinessException.class,
             IllegalArgumentException.class
     })
-    public ResponseEntity<ErrorResponseAPI> handleBusinessException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorResponseOutput> handleBusinessException(Exception ex, WebRequest request) {
         return this.handleError(HttpStatus.BAD_REQUEST, ex, request);
     }
 
     @ExceptionHandler({
             ValidationException.class
     })
-    public ResponseEntity<ErrorResponseAPI> handleValidationException(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorResponseOutput> handleValidationException(Exception ex, WebRequest request) {
+
+        createLogError(ex);
+
         return this.handleError(ex.getCause().getMessage(), request);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<ErrorResponseAPI> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponseOutput> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
         return this.getMethodArgumentoNotValidResponse(HttpStatus.BAD_REQUEST, ex, request);
     }
 
-    private ResponseEntity<ErrorResponseAPI> handleError(String exMessage, WebRequest request) {
+    private ResponseEntity<ErrorResponseOutput> handleError(String exMessage, WebRequest request) {
         log.error(exMessage);
         List<String> errors = new ArrayList<>();
         errors.add(exMessage);
         return this.getErrorResponse(request, errors);
     }
 
-    private ResponseEntity<ErrorResponseAPI> getErrorResponse(WebRequest request, List<String> errors) {
-        ErrorResponseAPI body = new ErrorResponseAPI(
+    private ResponseEntity<ErrorResponseOutput> getErrorResponse(WebRequest request, List<String> errors) {
+        ErrorResponseOutput body = new ErrorResponseOutput(
                 CAMPOS_INVALIDOS_MSG,
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -90,8 +102,8 @@ public class ErrorHandlerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
-    private ResponseEntity<ErrorResponseAPI> getErrorResponse(HttpStatus status, String exMessage, WebRequest request) {
-        ErrorResponseAPI body = new ErrorResponseAPI(
+    private ResponseEntity<ErrorResponseOutput> getErrorResponse(HttpStatus status, String exMessage, WebRequest request) {
+        ErrorResponseOutput body = new ErrorResponseOutput(
                 exMessage,
                 status.value(),
                 status.getReasonPhrase(),
@@ -102,9 +114,9 @@ public class ErrorHandlerController {
         return ResponseEntity.status(status).body(body);
     }
 
-    private ResponseEntity<ErrorResponseAPI> getMethodArgumentoNotValidResponse(HttpStatus status, MethodArgumentNotValidException ex, WebRequest request) {
+    private ResponseEntity<ErrorResponseOutput> getMethodArgumentoNotValidResponse(HttpStatus status, MethodArgumentNotValidException ex, WebRequest request) {
         final List<String> erros = getMethodArgumentNotValidMessage(status, ex, request);
-        ErrorResponseAPI body = new ErrorResponseAPI(
+        ErrorResponseOutput body = new ErrorResponseOutput(
                 CAMPOS_INVALIDOS_MSG,
                 status.value(),
                 status.getReasonPhrase(),
@@ -122,17 +134,17 @@ public class ErrorHandlerController {
         return e.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(ErrorHandlerController::formatError)
+                .map(GlobalErrorHandler::formatError)
                 .collect(Collectors.toList());
     }
 
-    private ResponseEntity<ErrorResponseAPI> handleError(HttpStatus status, Throwable ex, WebRequest request) {
-        return this.handleError(status, ex.getMessage(), request);
-    }
+    private ResponseEntity<ErrorResponseOutput> handleError(HttpStatus status, Throwable ex, WebRequest request) {
 
-    private ResponseEntity<ErrorResponseAPI> handleError(HttpStatus status, String exMessage, WebRequest request) {
-        log.error(exMessage);
-        return this.getErrorResponse(status, exMessage, request);
+        log.error(ex.getMessage());
+
+        createLogError(ex);
+
+        return this.getErrorResponse(status, ex.getMessage(), request);
     }
 
     private static String formatError(FieldError error) {
@@ -147,5 +159,22 @@ public class ErrorHandlerController {
             builder.append(" - ").append(error.getRejectedValue());
         }
         return builder.toString();
+    }
+
+    private String getStackTraceAsString(Throwable ex) {
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement element : ex.getStackTrace()) {
+            sb.append(element.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    private void createLogError(Throwable ex) {
+        this.creator.create(ErrorLogInput.builder()
+                .errorMessage(ex.getMessage())
+                .stackTrace(getStackTraceAsString(ex))
+                .operador("DEFAULT")
+                .timestamp(LocalDateTime.now())
+                .build());
     }
 }

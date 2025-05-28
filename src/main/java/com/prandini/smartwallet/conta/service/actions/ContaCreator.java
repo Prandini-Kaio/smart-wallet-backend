@@ -6,13 +6,17 @@ package com.prandini.smartwallet.conta.service.actions;
  */
 
 import com.prandini.smartwallet.conta.domain.Conta;
+import com.prandini.smartwallet.conta.domain.ContaBancaria;
 import com.prandini.smartwallet.conta.model.ContaInput;
+import com.prandini.smartwallet.conta.model.TipoConta;
 import com.prandini.smartwallet.conta.repository.ContaRepository;
 import jakarta.annotation.Resource;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @CommonsLog
@@ -34,10 +38,38 @@ public class ContaCreator {
                 .banco(input.getBanco().toUpperCase())
                 .nome(input.getNome().toUpperCase())
                 .diaVencimento(Integer.parseInt(input.getDiaVencimento()))
-                .saldoParcial(BigDecimal.ZERO)
-                .tipoConta(input.getTipoConta())
+                .diaFechamento(Integer.parseInt(input.getDiaFechamento()))
+                .saldoDisponivel(BigDecimal.ZERO)
+                .saldoPendente(BigDecimal.ZERO)
+                .color(input.getColor() != null ? input.getColor() : randomColor())
                 .build();
 
+        ContaBancaria asset = ContaBancaria.builder()
+                .contaOrigem(conta)
+                .saldo(BigDecimal.ZERO)
+                .tipoConta(TipoConta.ASSETS)
+                .build();
+
+        ContaBancaria liability = ContaBancaria.builder()
+                .contaOrigem(conta)
+                .saldo(BigDecimal.ZERO)
+                .tipoConta(TipoConta.LIABILITIES)
+                .build();
+
+        // Contas bancarias
+        conta.setContaAtivos(asset);
+        conta.setContaPassivos(liability);
+
         return repository.save(conta);
+    }
+
+    private String randomColor() {
+        // Gera valores aleatórios para cada componente de cor
+        int red = (int) (Math.random() * 256);
+        int green = (int) (Math.random() * 256);
+        int blue = (int) (Math.random() * 256);
+
+        // Formata a cor no formato hexadecimal
+        return String.format("#%02X%02X%02X", red, green, blue);
     }
 }

@@ -5,21 +5,33 @@ package com.prandini.smartwallet.lancamento.service;
  * created 4/16/24
  */
 
+import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.conta.domain.Conta;
 import com.prandini.smartwallet.lancamento.converter.LancamentoConverter;
+import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.Lancamento;
+import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
+import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
+import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
-import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoCreator;
+import com.prandini.smartwallet.lancamento.service.actions.LancamentoDeleter;
 import com.prandini.smartwallet.lancamento.service.actions.LancamentoGetter;
+import com.prandini.smartwallet.lancamento.service.actions.LancamentoUpdater;
+import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
+import com.prandini.smartwallet.transacao.domain.Transacao;
+import com.prandini.smartwallet.transacao.service.TransacaoService;
+import com.prandini.smartwallet.transacao.service.actions.TransacaoGetter;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.extern.apachecommons.CommonsLog;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,47 +44,85 @@ public class LancamentoService {
     @Resource
     private LancamentoGetter getter;
 
+    @Resource
+    private LancamentoUpdater updater;
 
-    public List<LancamentoOutput> findAll(Pageable pageable){
-        log.info("Iniciando busca de todos os lancamentos.");
+    @Resource
+    private LancamentoDeleter deleter;
 
-        List<Lancamento> lancamentos = getter.findTodos();
+    @Resource
+    private TransacaoService transacaoService;
 
-        return lancamentos.stream().map(LancamentoConverter::toOutput).toList();
-    }
+    @Resource
+    private TransacaoGetter transacaoGetter;
+
+    @Resource
+    private LancamentoConverter converter;
 
     @Transactional
     public LancamentoOutput criarLancamento(LancamentoInput input) {
         log.info("Iniciando criação de lancamento.");
-
-        return LancamentoConverter.toOutput(creator.create(input));
-    }
-
-    public List<LancamentoOutput> findByVencimento(Integer mes) {
-        log.info(String.format("Iniciando busca de lancamentos por mês %s.", mes ));
-
-        return getter.findByDtCriacao(mes).stream().map(LancamentoConverter::toOutput).toList();
+        return converter.toOutput(creator.create(input));
     }
 
     public List<LancamentoOutput> findByFilter(LancamentoFilter filter) {
         log.info(String.format("Iniciando busca de lancamentos por filtro %s.", filter));
 
-        return getter.findByFilter(filter).stream().map(LancamentoConverter::toOutput).toList();
-    }
-
-    public List<String> getCategorias() {
-        return this.getter.getCategorias();
+        return getter.findByFilter(filter).stream().map(converter::toOutput).toList();
     }
 
     public TotalizadorFinanceiro getTotalizador(LancamentoFilter filter) {
         return this.getter.getTotalizador(filter);
     }
 
-    public TotalizadorFinanceiro getTotalizadorByPeriodo(String conta, LocalDate dtInicio, LocalDate dtFim) {
-        return this.getter.getTotalizadorByPeriodo(conta, dtInicio, dtFim);
+    public LancamentoOutput findById(Long id) {
+        return converter.toOutput(this.getter.byId(id));
     }
 
-    public LancamentoOutput findById(Long id) {
-        return LancamentoConverter.toOutput(this.getter.byId(id));
+    @Transactional
+    public void updateStatus(Lancamento lancamento){
+
+        transacaoService.updateStatus(lancamento);
+
+        log.info("Iniciando atualização de status dos lançamentos");
+
+        List<Transacao> transacoes = transacaoGetter.byIdLancamento(lancamento.getId());
+
+        boolean todasQuitadas = transacoes.stream().allMatch(t -> t.getStatus().equals(StatusTransacaoEnum.PAGO));
+        boolean algumaVencida = transacoes.stream().anyMatch(t -> t.getStatus().equals(StatusTransacaoEnum.ATRASADO));
+        boolean todasCanceladas = transacoes.stream().anyMatch(t -> t.getStatus().equals(StatusTransacaoEnum.CANCELADO));
+        boolean algumaEmAberto = transacoes.stream().allMatch(t -> t.getStatus().equals(StatusTransacaoEnum.PENDENTE));
+
+        if(algumaEmAberto)
+            lancamento.setStatus(StatusLancamento.EM_ABERTO);
+        if(algumaVencida)
+            lancamento.setStatus(StatusLancamento.VENCIDO);
+        if(todasQuitadas) {
+            lancamento.setStatus(StatusLancamento.QUITADO);
+        }
+        if(todasCanceladas)
+            lancamento.setStatus(StatusLancamento.CANCELADO);
+
+        this.updater.update(lancamento);
+    }
+
+    @Transactional
+    public LancamentoOutput editar(@Valid LancamentoInput input) {
+        return converter.toOutput(this.updater.fromInput(input));
+    }
+
+    @Transactional
+    public void delete(Long id){
+        log.info(String.format("Iniciando delete de lancamento por id %s.", id));
+        this.deleter.delete(id);
+    }
+
+    public LancamentoOutput createMock(LancamentoInput input) {
+        return converter.toOutput(this.creator.fromInput(input));
+    }
+
+    @Transactional
+    public LancamentoOutput gerarPagamento(BigDecimal valorPagamento, String contas, Conta contaDestino) {
+        return this.converter.toOutput(this.creator.gerarPagamento(valorPagamento, contas, contaDestino));
     }
 }

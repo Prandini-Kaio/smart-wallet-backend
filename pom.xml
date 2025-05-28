@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.prandini</groupId>
     <artifactId>smart-wallet-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0-RELEASE</version>
     <name>smart-wallet-backend</name>
     <description>smart-wallet-backend</description>
     <url/>
@@ -30,6 +30,7 @@
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <mapscommons.version>1.0.1</mapscommons.version>
     </properties>
     <dependencies>
         <dependency>
@@ -60,7 +61,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -92,6 +93,20 @@
             <version>1.18.30</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.maps.commons</groupId>
+            <artifactId>maps-commons-data</artifactId>
+            <version>${mapscommons.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -108,6 +123,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

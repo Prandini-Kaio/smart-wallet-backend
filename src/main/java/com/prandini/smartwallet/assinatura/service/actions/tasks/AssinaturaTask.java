@@ -8,6 +8,9 @@ package com.prandini.smartwallet.assinatura.service.actions.tasks;
 import com.prandini.smartwallet.assinatura.domain.Assinatura;
 import com.prandini.smartwallet.assinatura.model.AssinaturaFilter;
 import com.prandini.smartwallet.assinatura.service.actions.AssinaturaGetter;
+import com.prandini.smartwallet.assinatura.service.actions.AssinaturaValidator;
+import com.prandini.smartwallet.common.exception.BusinessException;
+import com.prandini.smartwallet.conta.converter.ContaConverter;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -32,15 +35,29 @@ public class AssinaturaTask {
     @Resource
     private LancamentoService lancamentoService;
 
+    @Resource
+    private ContaConverter contaConverter;
+
+    @Resource
+    private AssinaturaValidator validator;
+
     @Scheduled(cron = "0 0 0 1 * ?")
     public void cadastrarLancamento(){
         log.info("Renovando assinaturas");
 
-        List<Assinatura> assinaturas = getter.streamByFilter(AssinaturaFilter.builder().ativa(true).build());
+        List<Assinatura> assinaturas = getter.byFilter(AssinaturaFilter.builder().ativa(true).build());
 
         if (!assinaturas.isEmpty()) {
             assinaturas.forEach(a -> {
-                log.info(String.format("Iniciando renovação para %s", a.getDescricao()));
+                try{
+                    this.validator.validarTask(a);
+                }catch (BusinessException e){
+                    log.error(e);
+                    return;
+                }
+
+                log.info(String.format("Iniciando renovação para conta %s de assinatura %s.", a.getContaDestino().getBancoNome(), a.getDescricao()));
+
                 LancamentoInput input = LancamentoInput.builder()
                         .tipoLancamento(TipoLancamentoEnum.SAIDA)
                         .categoriaLancamento(CategoriaLancamentoEnum.ASSINATURA)
@@ -49,7 +66,8 @@ public class AssinaturaTask {
                         .valor(a.getValor())
                         .dtCriacao(LocalDateTime.now())
                         .parcelas(1)
-                        .conta(a.getConta().getBanco())
+                        .contaDestinoId(a.getContaDestino().getId())
+                        .contaOrigemId(a.getContaOrigem() != null ? a.getContaOrigem().getId() : null)
                         .descricao(a.getDescricao())
                         .build();
 

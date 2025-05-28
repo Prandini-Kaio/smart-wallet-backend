@@ -1,5 +1,7 @@
 package com.prandini.smartwallet.lancamento.model;
 
+import com.prandini.smartwallet.conta.model.ContaFilter;
+import com.prandini.smartwallet.conta.model.ContaInput;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.StatusLancamento;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
@@ -23,6 +25,8 @@ import java.time.LocalDateTime;
 @Builder
 public class LancamentoInput {
 
+    private Long id;
+
     @NotNull
     private TipoLancamentoEnum tipoLancamento;
 
@@ -44,8 +48,9 @@ public class LancamentoInput {
     @NotNull
     private int parcelas;
 
-    @NotEmpty
-    private String conta;
+    private Long contaDestinoId;
+
+    private Long contaOrigemId;
 
     private String descricao;
 }

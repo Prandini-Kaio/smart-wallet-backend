@@ -5,26 +5,24 @@ package com.prandini.smartwallet.lancamento.controller;
  * created 4/16/24
  */
 
-import com.prandini.smartwallet.common.model.ResumoFinanceiro;
+import com.prandini.smartwallet.common.model.ResumoFinanceiroOutput;
 import com.prandini.smartwallet.lancamento.model.LancamentoFilter;
 import com.prandini.smartwallet.lancamento.model.LancamentoInput;
 import com.prandini.smartwallet.lancamento.model.LancamentoOutput;
 import com.prandini.smartwallet.common.model.TotalizadorFinanceiro;
+import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
+import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroListOutput;
+import com.prandini.smartwallet.lancamento.model.SaldoProjetadoFilter;
+import com.prandini.smartwallet.lancamento.model.SaldoProjetadoOutput;
 import com.prandini.smartwallet.lancamento.service.LancamentoService;
+import com.prandini.smartwallet.lancamento.service.SaldoProjetadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,19 +33,17 @@ public class LancamentoController {
     @Resource
     private LancamentoService service;
 
+    @Resource
+    private SaldoProjetadoService saldoProjetadoService;
+
     @GetMapping
-    public ResponseEntity<LancamentoOutput> byId(@RequestParam Long id){
-        return ResponseEntity.ok().body(service.findById(id));
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<LancamentoOutput>> searchAll(Pageable pageable){
-        return ResponseEntity.ok().body(service.findAll(pageable));
-    }
-
-    @GetMapping("/filter")
     public ResponseEntity<List<LancamentoOutput>> getByFilter(LancamentoFilter filter){
         return ResponseEntity.ok().body(service.findByFilter(filter));
+    }
+
+    @GetMapping("/id")
+    public ResponseEntity<LancamentoOutput> byId(@RequestParam Long id){
+        return ResponseEntity.ok().body(service.findById(id));
     }
 
     @GetMapping("/totalizador")
@@ -56,19 +52,40 @@ public class LancamentoController {
         return ResponseEntity.ok().body(this.service.getTotalizador(filter));
     }
 
-    @GetMapping("/totalizador/periodo")
-    @Operation(description = "Consulta o totalizador de lançamentos do sistema por periodo e conta. Retorna o total dos lançamentos do periodo, não das transações.")
-    public ResponseEntity<TotalizadorFinanceiro> getTotalizador(
-            @RequestParam(required = false) String conta,
-            @RequestParam(required = false) LocalDate dtInicio,
-            @RequestParam(required = false) LocalDate dtFim
-    ){
-        return ResponseEntity.ok().body(this.service.getTotalizadorByPeriodo(conta, dtInicio, dtFim));
-    }
-
     @PostMapping
     @Operation(description = "Criar lançamento com base na data atual.")
     public ResponseEntity<LancamentoOutput> criarLancamento(@RequestBody @Valid LancamentoInput input){
         return ResponseEntity.ok().body(service.criarLancamento(input));
+    }
+
+    @PostMapping("/create-input")
+    @Operation(description = "Cria um input de lançamento com base em um filtro.")
+    public ResponseEntity<LancamentoOutput> createInput(@RequestBody LancamentoInput input){
+        return ResponseEntity.ok().body(this.service.createMock(input));
+    }
+
+    @PostMapping("/byFilter")
+    @Operation(description = "Busca lancamentos por filtro")
+    public ResponseEntity<List<LancamentoOutput>> byFilter(@RequestBody @Valid LancamentoFilter filter){
+        return ResponseEntity.ok().body(service.findByFilter(filter));
+    }
+
+    @PutMapping
+    @Operation(description = "Editar um lançamento existente")
+    public ResponseEntity<LancamentoOutput> editar(@RequestBody @Valid LancamentoInput input){
+        return ResponseEntity.ok().body(this.service.editar(input));
+    }
+
+    @DeleteMapping
+    @Operation(description = "Apaga um lançamento e suas transações.")
+    public ResponseEntity<Void> delete(@RequestParam Long id){
+        this.service.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/resumo")
+    @Operation(description = "Retorna o resumo financeiro com base em um filtro.")
+    public ResponseEntity<List<ResumoFinanceiroOutput>> getResumo(ResumoFinanceiroFilter filter){
+        return ResponseEntity.ok().body(this.saldoProjetadoService.getResumoFinanceiro(filter));
     }
 }

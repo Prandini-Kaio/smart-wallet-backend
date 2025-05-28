@@ -8,6 +8,7 @@ package com.prandini.smartwallet.transacao.model;
 import com.prandini.smartwallet.lancamento.domain.CategoriaLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoLancamentoEnum;
 import com.prandini.smartwallet.lancamento.domain.TipoPagamentoEnum;
+import com.prandini.smartwallet.lancamento.model.ResumoFinanceiroFilter;
 import com.prandini.smartwallet.transacao.domain.StatusTransacaoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor
@@ -23,17 +25,32 @@ public class TransacaoFilter {
 
     private Long id;
 
-    private CategoriaLancamentoEnum categoria;
+    private Long idLancamento;
+
+    private List<CategoriaLancamentoEnum> categorias;
 
     private TipoLancamentoEnum tipo;
 
     private TipoPagamentoEnum pagamento;
 
-    private StatusTransacaoEnum status;
+    private List<StatusTransacaoEnum> status;
 
-    private String conta;
+    private List<Long> contaDestinoIds;
+
+    private List<Long> contaOrigemIds;
 
     private LocalDateTime dtInicio;
 
     private LocalDateTime dtFim;
+
+    public static TransacaoFilter byResumoFinanceiro(ResumoFinanceiroFilter filter) {
+        return TransacaoFilter.builder()
+                .tipo(filter.getTipo())
+                .categorias(filter.getCategorias())
+                .pagamento(filter.getPagamento())
+                .status(filter.getStatus())
+                .contaDestinoIds(filter.getContaDestinoIds())
+                .contaOrigemIds(filter.getContaOrigemIds())
+                .build();
+    }
 }
